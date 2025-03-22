@@ -1,13 +1,9 @@
 # Clone the project
 FROM alpine/git as git
 
-ARG REPOSITORY=https://github.com/buggregator/docs
-ARG BRANCH=master
-RUN git clone -b $BRANCH $REPOSITORY /app
-
 FROM node:19 as node
 
-COPY --from=git /app /app
+COPY . /app
 WORKDIR /app
 
 RUN npm add -D vitepress
