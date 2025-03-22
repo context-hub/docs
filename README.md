@@ -1,2 +1,0 @@
-# docs
-Context Generator documentation.
