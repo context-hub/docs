@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  buggregator-docs:
+    image: ghcr.io/context-hub/doc:latest
+    ports:
+      - 9001:80
+    networks:
+      - ch-docs
+
+networks:
+  ch-docs:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.0.62.0/24
