@@ -19,7 +19,10 @@ export default defineConfig({
         sidebar: [
             {
                 text: 'Home',
-                link: '/'
+                link: '/',
+                items: [
+                    {text: 'Quick Start', link: '/quick-start'},
+                ]
             },
             {
                 text: 'Getting Started',
