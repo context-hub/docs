@@ -73,7 +73,7 @@ export default defineConfig({
         ],
 
         socialLinks: [
-            {icon: 'github', link: 'https://github.com/butschster/context-generator'}
+            {icon: 'github', link: 'https://github.com/context-hub/docs'}
         ]
     }
 })
