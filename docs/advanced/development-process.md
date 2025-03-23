@@ -48,7 +48,7 @@ Interfaces and abstract classes define the contracts and relationships between c
 Use the following instruction to create a context file with detailed descriptions of the codebase using Claude:
 
 > Note: Provide the following instruction to Claude and
-> also [Json Schema](https://raw.githubusercontent.com/butschster/context-generator/refs/heads/main/json-schema.json) to
+> also [Json Schema](https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json) to
 > help it understand the document structure.
 
 ```

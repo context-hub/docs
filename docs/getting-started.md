@@ -20,7 +20,7 @@ latest version and sets it up for immediate use.
 
 ```bash
 # Install to /usr/local/bin (will be added to PATH in most Linux distributions)
-curl -sSL https://raw.githubusercontent.com/butschster/context-generator/main/download-latest.sh | sh
+curl -sSL https://raw.githubusercontent.com/context-hub/generator/main/download-latest.sh | sh
 ```
 
 **What the script does**
@@ -39,7 +39,7 @@ ctx
 ## PHAR File
 
 If you prefer to use a PHAR file, you can download the latest version from
-the [GitHub releases page](https://github.com/butschster/context-generator/releases)
+the [GitHub releases page](https://github.com/context-hub/generator/releases)
 
 ## Requirements
 

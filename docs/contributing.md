@@ -8,7 +8,7 @@ with contributing to our project.
 There are many ways to contribute to Context Generator:
 
 1. **Report Issues**: If you find a bug or have a
-   suggestion, [create an issue](https://github.com/butschster/context-generator/issues) on our GitHub repository.
+   suggestion, [create an issue](https://github.com/context-hub/generator/issues) on our GitHub repository.
 2. **Submit Pull Requests**: Have a fix or a new feature? Submit a pull request!
 3. **Improve Documentation**: Help us make our documentation more clear, comprehensive, and accessible.
 4. **Share Your Use Cases**: Let us know how you're using Context Generator in your projects.
@@ -238,6 +238,6 @@ collaborating with you!
 ## Questions?
 
 If you have any questions about contributing, feel free to open an issue labeled "question" or reach out through the
-[discussions](https://github.com/butschster/context-generator/discussions) section on GitHub.
+[discussions](https://github.com/context-hub/generator/discussions) section on GitHub.
 
 Thank you for considering contributing to Context Generator!

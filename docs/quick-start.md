@@ -8,7 +8,7 @@ for LLMs.
 Download and install the tool using our installation script:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/butschster/context-generator/main/download-latest.sh | sh
+curl -sSL https://raw.githubusercontent.com/context-hub/generator/main/download-latest.sh | sh
 ```
 
 This installs the `ctx` command to your system (typically in `/usr/local/bin`).

@@ -12,8 +12,8 @@ export default defineConfig({
 
         nav: [
             {text: 'Docs', link: '/'},
-            {text: 'GitHub', link: 'https://github.com/butschster/context-generator'},
-            {text: 'Json Schema', link: 'https://raw.githubusercontent.com/butschster/context-generator/refs/heads/main/json-schema.json'}
+            {text: 'GitHub', link: 'https://github.com/context-hub/generator'},
+            {text: 'Json Schema', link: 'https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json'}
         ],
 
         sidebar: [
