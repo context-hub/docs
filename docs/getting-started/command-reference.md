@@ -112,3 +112,43 @@ ctx schema --download --output=custom-name.json
 # or
 ctx schema -d -o custom-name.json
 ```
+
+## Inline Configuration
+
+You can provide a JSON configuration directly on the command line without needing a config file:
+
+```bash
+ctx --config='{"documents":[{"description":"Quick Context","outputPath":"output.md","sources":[{"type":"text","content":"Sample content"}]}]}'
+# or
+ctx -c '{"documents":[{"description":"Quick Context","outputPath":"output.md","sources":[{"type":"text","content":"Sample content"}]}]}'
+```
+
+**This is useful for:**
+
+- One-off context generation without creating config files
+- CI/CD pipelines or automated workflows
+- Testing configurations quickly
+- Scripting and integration with other tools
+
+The JSON configuration structure follows the same schema as config files. For complex configurations,
+consider using a heredoc in your shell scripts:
+
+```bash
+ctx --config='
+{
+  "documents": [
+    {
+      "description": "API Documentation",
+      "outputPath": "api-docs.md",
+      "sources": [
+        {
+          "type": "file",
+          "sourcePaths": ["src/Api"],
+          "filePattern": "*.php"
+        }
+      ]
+    }
+  ]
+}
+'
+```

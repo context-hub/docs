@@ -64,6 +64,7 @@ export default defineConfig({
                 text: 'Advanced',
                 items: [
                     {text: 'Development with Context Generator', link: '/advanced/development-process'},
+                    {text: 'LLM Integration: Smart Context Requesting', link: '/advanced/smart-context-requesting'},
                 ],
             },
             {
