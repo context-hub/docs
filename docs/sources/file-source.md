@@ -15,28 +15,28 @@ documents:
         sourcePaths: src
         filePattern: "*.php"
         notPath: [ "tests", "vendor" ]
-        showTreeView: true
         modifiers: [ "php-signature" ]
 ```
 
 ## Parameters
 
-| Parameter                        | Type          | Default  | Description                                                              |
-|----------------------------------|---------------|----------|--------------------------------------------------------------------------|
-| `type`                           | string        | required | Must be `"file"`                                                         |
-| `description`                    | string        | `""`     | Human-readable description of the source                                 |
-| `sourcePaths`                    | string\|array | required | Path(s) to directory or files to include                                 |
-| `filePattern`                    | string\|array | `"*.*"`  | File pattern(s) to match                                                 |
-| `notPath` (or `excludePatterns`) | array         | `[]`     | Patterns to exclude files                                                |
-| `path`                           | string\|array | `[]`     | Patterns to include only files in specific paths                         |
-| `contains`                       | string\|array | `[]`     | Patterns to include only files containing specific content               |
-| `notContains`                    | string\|array | `[]`     | Patterns to exclude files containing specific content                    |
-| `size`                           | string\|array | `[]`     | Size constraints for files (e.g., `"> 10K"`, `"< 1M"`)                   |
-| `date`                           | string\|array | `[]`     | Date constraints for files (e.g., `"since yesterday"`, `"> 2023-01-01"`) |
-| `ignoreUnreadableDirs`           | boolean       | `false`  | Whether to ignore unreadable directories                                 |
-| `showTreeView`                   | boolean       | `true`   | Whether to display a directory tree visualization                        |
-| `modifiers`                      | array         | `[]`     | Content modifiers to apply                                               |
-| `tags`                           | array         | []       | List of tags for this source                                             |
+| Parameter                        | Type            | Default  | Description                                                                            |
+|----------------------------------|-----------------|----------|----------------------------------------------------------------------------------------|
+| `type`                           | string          | required | Must be `"file"`                                                                       |
+| `description`                    | string          | `""`     | Human-readable description of the source                                               |
+| `sourcePaths`                    | string\|array   | required | Path(s) to directory or files to include                                               |
+| `filePattern`                    | string\|array   | `"*.*"`  | File pattern(s) to match                                                               |
+| `notPath` (or `excludePatterns`) | array           | `[]`     | Patterns to exclude files                                                              |
+| `path`                           | string\|array   | `[]`     | Patterns to include only files in specific paths                                       |
+| `contains`                       | string\|array   | `[]`     | Patterns to include only files containing specific content                             |
+| `notContains`                    | string\|array   | `[]`     | Patterns to exclude files containing specific content                                  |
+| `size`                           | string\|array   | `[]`     | Size constraints for files (e.g., `"> 10K"`, `"< 1M"`)                                 |
+| `date`                           | string\|array   | `[]`     | Date constraints for files (e.g., `"since yesterday"`, `"> 2023-01-01"`)               |
+| `ignoreUnreadableDirs`           | boolean         | `false`  | Whether to ignore unreadable directories                                               |
+| `showTreeView`                   | boolean         | `true`   | Whether to display a directory tree visualization (deprecated, use `treeView` instead) |
+| `treeView`                       | boolean\|object | `true`   | Tree view configuration, can be a boolean or detailed configuration object             |
+| `modifiers`                      | array           | `[]`     | Content modifiers to apply                                                             |
+| `tags`                           | array           | []       | List of tags for this source                                                           |
 
 ## Multiple Source Paths
 
@@ -249,3 +249,69 @@ This will:
 7. Skip directories that can't be read due to permissions
 8. Show a directory tree in the output
 9. Apply the PHP signature modifier to simplify method implementations
+
+## Tree View Configuration
+
+You can customize the tree view with detailed configuration options:
+
+```yaml
+documents:
+  - description: "Enhanced Tree View Example"
+    outputPath: "docs/enhanced-tree.md"
+    sources:
+      - type: file
+        description: "Files with Enhanced Tree View"
+        sourcePaths: src
+        filePattern: "*.php"
+        treeView:
+          enabled: true
+          showSize: true
+          showLastModified: true
+          showCharCount: true
+          includeFiles: true
+          maxDepth: 3
+          dirContext:
+            "src/Controller": "Application controllers"
+            "src/Models": "Domain models and entities"
+```
+
+### Tree View Options
+
+| Option             | Type    | Default | Description                                                      |
+|--------------------|---------|---------|------------------------------------------------------------------|
+| `enabled`          | boolean | `true`  | Whether to show the tree view                                    |
+| `showSize`         | boolean | `false` | Include file/directory sizes in the tree                         |
+| `showLastModified` | boolean | `false` | Include last modified dates in the tree                          |
+| `showCharCount`    | boolean | `false` | Include character counts in the tree                             |
+| `includeFiles`     | boolean | `true`  | Whether to include files (true) or only show directories (false) |
+| `maxDepth`         | integer | `0`     | Maximum depth of the tree to display (0 for unlimited)           |
+| `dirContext`       | object  | `{}`    | Optional descriptions for specific directories                   |
+
+Example output with enhanced tree view:
+
+```
+Project
+├── src/ [4.2 MB, 2024-03-12, 25,483 chars]
+│   ├── Controller/ [756 KB, 2024-03-10, 7,521 chars] # Application controllers
+│   │   ├── ApiController.php [328 KB, 2024-03-10, 3,845 chars]
+│   │   └── WebController.php [428 KB, 2024-03-05, 3,676 chars]
+│   ├── Models/ [1.2 MB, 2024-03-12, 12,345 chars] # Domain models and entities
+│   │   ├── User.php [128 KB, 2024-03-05, 1,234 chars]
+│   │   └── Product.php [96 KB, 2024-03-12, 987 chars]
+```
+
+### Simple Boolean Usage
+
+For backward compatibility, you can still use a boolean value:
+
+```yaml
+documents:
+  - description: "Simple Tree View Example"
+    outputPath: "docs/simple-tree.md"
+    sources:
+      - type: file
+        description: "Files with Simple Tree View"
+        sourcePaths: src
+        filePattern: "*.php"
+        treeView: false  # Disable tree view
+```
