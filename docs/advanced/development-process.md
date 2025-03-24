@@ -52,52 +52,38 @@ Use the following instruction to create a context file with detailed description
 > help it understand the document structure.
 
 ```
-Your goal is to create a `context.yaml` configuration that:
+Your goal is to create a `context.yaml` file, using provided JSON schema for context generator. 
+Always use YAML syntax.
 
-1. Organizes source code into logical, cohesive documents
-2. Provides detailed descriptions that explain each component's purpose and relationships
-3. Uses appropriate source types and filtering to capture relevant code
-4. Creates a structure that makes navigation and understanding intuitive
+Provide multiple configs. Split documents into small logical config files. Small configs is better that one big config.
 
-## Configuration Structure
+**Rules**
+1. **Organizes Code**
+    - Split your source code into clear, logical documents based on its functions or modules.
+    - Group related files together based on what they do, not just their folder structure.
+2. **Detailed Descriptions**
+    - Write a title and a short, clear description for each document.
+    - Explain the purpose of each component and how they connect to the rest of the project.
+3. **Relevant Sources and Filtering**
+    - Use the right source types (file, text, tree, etc.) to capture the needed code.
+    - Apply filters (by path, pattern, or content) to only include the important files.
+    - Do not try to use `contains` filter. Only by file path.
+4. **Output Paths**
+    - Make sure output paths start with the content/context type, like `project/` or `feature/`.
+5. **Content Limit**
+    - Ensure that each document does not exceed 50,000 characters.
 
-Start by analyzing the codebase to identify major functional areas. For each area, create a document with:
-
-1. A clear, descriptive title that indicates the document's focus
-2. A detailed description explaining what functionality this area provides
-3. Sources that target the relevant files with appropriate filtering
-4. For each source, a comprehensive description of what those specific files contribute
-
-## Provide the following information:
-
-Please create a configuration that:
-
-1. Organizes the code by [functional areas/module types/etc.]
-2. Provides detailed descriptions explaining [what aspects you want explained]
-3. Uses [specific source types if relevant]
-4. Includes explanatory content using the text source type where helpful
-
-## Best Practices
-
-When creating configurations:
-
-1. **Use meaningful groupings**: Group related files together based on functionality rather than just directory
-   structure
-2. **Provide context in descriptions**: Explain not just what components do, but how they relate to the larger system
-3. **Use filtering effectively**: Apply path, pattern, and content filters to include only relevant files
-4. **Include architectural overviews**: Use text sources to provide high-level explanations where appropriate
-5. **Leverage tree visualizations**: For complex projects, include tree sources to visualize structure
-6. **Add directory context**: When using tree sources, add explanations via the dirContext property
-
-## Using Advanced Features
-
-Consider using these advanced features for more comprehensive configurations:
-
-1. **Modifier configurations**: Use php-content-filter or sanitizer modifiers to focus on relevant code parts
-2. **Combined sources**: Mix different source types (file, text, tree) in a document for richer context
-3. **Nested documents**: Create hierarchical document structures with overview and detail documents
-4. **Tag-based organization**: Use tags to create cross-cutting views of the codebase
-5. **GitDiff sources**: For evolving codebases, capture recent changes for focused documentation
+**Extra Tips:**
+- **Meaningful Groupings:** Focus on functionality. Group files that work together.
+- More small documents is better than one big document. 
+- **Use Visuals:** For bigger projects, include tree views or mermaid diagrams with extra notes.
+- Do not provide default values for properties
+- Do not use quotes if it unnecessary
+- Do not use arrays in format `[...]`
+- Advanced Features:
+    - Mix different source types for richer details.
+    - Consider nested documents or tag-based views for more complex projects.
+    - Use GitDiff sources if you need to show recent changes.
 ```
 
 ### Step 3: Explore Configuration and Entry Points

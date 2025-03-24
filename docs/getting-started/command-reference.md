@@ -19,12 +19,14 @@ ctx build
 
 ### Options
 
-| Option                 | Description                                                                                    |
-|------------------------|------------------------------------------------------------------------------------------------|
-| `--github-token`, `-t` | GitHub token for authentication (default: reads from `GITHUB_TOKEN` environment variable)      |
-| `--env`, `-e`          | Load environment variables from a file. If used without specifying a file, defaults to `.env`. |
+| Option                 | Description                                                                                                                |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `--github-token`, `-t` | GitHub token for authentication (default: reads from `GITHUB_TOKEN` environment variable)                                  |
+| `--env`, `-e`          | Load environment variables from a file. If used without specifying a file, defaults to `.env`.                             |
+| `--inline`, `-i`       | Inline JSON configuration string. If provided, file-based configuration will be ignored.                                   |
+| `--config-file`, `-c`  | Path to a specific configuration file or directory. If not provided, will look for standard config files in the root path. |
 
-Examples of using the `--env` option:
+**Examples of using the `--env` option:**
 
 ```bash
 # Load variables from a specific file
@@ -32,6 +34,19 @@ ctx --env=.env.local
 
 # Do not load any environment variables (default behavior)
 ctx
+```
+
+**Examples of specifying configuration:**
+
+```bash
+# Use a specific configuration file
+ctx -c src/custom-config.yaml
+
+# Look for standard config files (context.json, context.yaml, etc.) in a specific directory
+ctx -c src/configs
+
+# Use inline JSON configuration
+ctx -i '{"documents":[{"description":"Quick Context","outputPath":"output.md","sources":[{"type":"text","content":"Sample content"}]}]}'
 ```
 
 ## Initialize a Configuration File
@@ -118,9 +133,9 @@ ctx schema -d -o custom-name.json
 You can provide a JSON configuration directly on the command line without needing a config file:
 
 ```bash
-ctx --config='{"documents":[{"description":"Quick Context","outputPath":"output.md","sources":[{"type":"text","content":"Sample content"}]}]}'
+ctx --inline='{"documents":[{"description":"Quick Context","outputPath":"output.md","sources":[{"type":"text","content":"Sample content"}]}]}'
 # or
-ctx -c '{"documents":[{"description":"Quick Context","outputPath":"output.md","sources":[{"type":"text","content":"Sample content"}]}]}'
+ctx -i '{"documents":[{"description":"Quick Context","outputPath":"output.md","sources":[{"type":"text","content":"Sample content"}]}]}'
 ```
 
 **This is useful for:**
@@ -134,7 +149,7 @@ The JSON configuration structure follows the same schema as config files. For co
 consider using a heredoc in your shell scripts:
 
 ```bash
-ctx --config='
+ctx --inline='
 {
   "documents": [
     {

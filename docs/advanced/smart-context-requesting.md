@@ -37,8 +37,35 @@ through executable commands. This creates a feedback loop that significantly enh
 Here's a complete workflow example showing how an LLM and the Context Generator can work together:
 
 1. **User Question**:
-   "I'm getting an error in our payment processing system when handling refunds. The error says 'Invalid transaction
-   state'. How can I fix this?"
+
+```
+I'm getting an error in our payment processing system when handling refunds. 
+The error says 'Invalid transactionstate'. How can I fix this?
+
+Here is my project structure:
+
+├── services/
+│   └── payment/
+│       └── app/
+│           └── src/
+│               └── Application/
+│                   ├── RefundService.php
+│                   ├── TransactionState.php
+│                   └── PaymentProcessor.php
+
+I attached JSON schema of Context generator. Use it to ask for the context you need to fix the issue in the following format:
+
+ctx --config='{
+  "documents": [{
+    "description": "Document description",
+    "outputPath": "context.md",
+    "sources": [{
+      "type": "file",
+      "sourcePaths": ["src"]
+    }]
+  }]
+}'
+```
 
 2. **LLM Initial Response**:
    "I'll help troubleshoot this issue. To understand what's happening, I need to see the payment processing code,
