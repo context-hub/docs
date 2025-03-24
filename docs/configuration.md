@@ -13,6 +13,7 @@ Configuration is built around three core concepts:
     - Composer package
     - or Git diffs
 - **Modifiers**: Transform source content before inclusion - clean up, simplify, or enhance raw content
+- **Imports**: Include and merge configuration from external files to enable modular configuration management
 
 ## YAML Configuration Format
 
@@ -107,3 +108,53 @@ Create a `context.json` file in your project root:
 ```
 
 As you can see it's pretty simple.
+
+## Configuration Imports
+
+For large projects with multiple components or services, you can split your configuration across multiple files using the import functionality.
+
+- Import paths are resolved relative to the importing file
+- You can apply path prefixes to source paths in imported configurations
+- Imports can be nested (configurations can import other configurations)
+- Circular imports are automatically detected and prevented
+
+### Import Example in YAML
+
+```yaml
+import:
+  - path: services/api/context.yaml
+
+documents:
+  - description: Project Overview
+    outputPath: docs/overview.md
+    sources:
+      - type: text
+        content: |
+          # Project Documentation
+
+          This is the main project documentation.
+```
+
+### Import Example in JSON
+
+```json
+{
+  "import": [
+    {
+      "path": "services/api/context.json"
+    }
+  ],
+  "documents": [
+    {
+      "description": "Project Overview",
+      "outputPath": "docs/overview.md",
+      "sources": [
+        {
+          "type": "text",
+          "content": "# Project Documentation\n\nThis is the main project documentation."
+        }
+      ]
+    }
+  ]
+}
+```

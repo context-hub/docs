@@ -55,12 +55,14 @@ name from the `src/Models` directory.
 
 #### Need more advanced configuration?
 
- - Learn about [Document Structure](/documents) and properties
- - Explore different source types like [GitHub](/sources/github-source), [Git Diff](/sources/git-diff-source),
-    or [URL](/sources/url-source)
- - Apply [Modifiers](/modifiers) to transform your content (like extracting PHP signatures)
- - Discover how to use [Environment Variables](/environment-variables) in your config
- - Use [IDE Integration](/getting-started/ide-integration) for autocompletion and validation
+- Learn about [Configuration formats and imports](/configuration) to understand available syntax options (YAML or JSON)
+  and how to organize your setup with modular imports.
+- Learn about [Document Structure](/documents) and properties
+- Explore different source types like [GitHub](/sources/github-source), [Git Diff](/sources/git-diff-source),
+  or [URL](/sources/url-source)
+- Apply [Modifiers](/modifiers) to transform your content (like extracting PHP signatures)
+- Discover how to use [Environment Variables](/environment-variables) in your config
+- Use [IDE Integration](/getting-started/ide-integration) for autocompletion and validation
 
 ## 4. Build the Context
 
