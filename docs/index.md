@@ -34,6 +34,10 @@ When working with AI-powered development tools context is everything.
   custom explanations. Use AI to generate user guides, API references, or developer documentation based on your actual
   code.
 
+- **Seamless AI Integration**: With MCP support, [connect](/mcp-server) Claude AI directly to your codebase, allowing
+  for real-time,
+  context-aware assistance without manual context sharing.
+
 ## How it works
 
 1. Gathers code from files, directories, GitHub repositories, web pages, or custom text.
@@ -41,3 +45,5 @@ When working with AI-powered development tools context is everything.
 3. Applies optional modifiers (like extracting PHP signatures without implementation details)
 4. Organizes content into well-structured markdown documents
 5. Saves context files ready to be shared with LLMs
+6. Optionally serves context through an MCP server, allowing AI assistants like Claude to directly access project
+   information

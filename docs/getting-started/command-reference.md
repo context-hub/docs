@@ -167,3 +167,18 @@ ctx --inline='
 }
 '
 ```
+
+## MCP Server
+
+Starts the Model Control Protocol (MCP) server to enable direct integration with Claude AI. This server acts as a bridge
+between your codebase and AI assistants, allowing Claude to access project context in real-time.
+
+```bash
+ctx server -c /path/to/project
+```
+
+### Options
+
+| Option              | Description                                                     |
+|---------------------|-----------------------------------------------------------------|
+| `-c, --config-path` | Path to the project containing context configuration (required) |

@@ -91,6 +91,28 @@ Example prompt:
 
 That's it! You're now ready to leverage LLMs with proper context about your codebase.
 
+## 6. Connect to Claude AI (Optional)
+
+For a more seamless experience, you can connect Context Generator directly to Claude AI using the MCP server:
+
+There is a built-in MCP server that allows you to connect Claude AI directly to your codebase.
+
+Point the MCP client to the Context Generator server:
+
+```json
+{
+  "mcpServers": {
+    "ctx": {
+      "command": "ctx server -c /path/to/your/project"
+    }
+  }
+}
+```
+
+> **Note:** Read more about [MCP Server](/mcp-server) for detailed setup instructions.
+
+Now you can ask Claude questions about your codebase without manually uploading context files!
+
 ## JSON Schema
 
 For better editing experience, Context Generator provides a JSON schema for autocompletion and validation in your IDE:

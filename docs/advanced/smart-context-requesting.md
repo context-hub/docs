@@ -55,7 +55,7 @@ Here is my project structure:
 
 I attached JSON schema of Context generator. Use it to ask for the context you need to fix the issue in the following format:
 
-ctx --config='{
+ctx --inline='{
   "documents": [{
     "description": "Document description",
     "outputPath": "context.md",
@@ -73,7 +73,7 @@ ctx --config='{
    relevant context?"
 
 ```bash
-ctx --config='{
+ctx --inline='{
   "documents": [{
     "description": "Payment Refund Processing",
     "outputPath": "payment-refund.md",

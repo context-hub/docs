@@ -1,6 +1,7 @@
 import {defineConfig} from 'vitepress'
+import {withMermaid} from "vitepress-plugin-mermaid";
 
-export default defineConfig({
+export default withMermaid({
     ignoreDeadLinks: true,
     title: "Context Generator Docs",
     description: "Documentation for Context Generator for LLM",
@@ -13,7 +14,10 @@ export default defineConfig({
         nav: [
             {text: 'Docs', link: '/'},
             {text: 'GitHub', link: 'https://github.com/context-hub/generator'},
-            {text: 'Json Schema', link: 'https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json'}
+            {
+                text: 'Json Schema',
+                link: 'https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json'
+            }
         ],
 
         sidebar: [
@@ -29,6 +33,7 @@ export default defineConfig({
                 items: [
                     {text: 'Installation', link: '/getting-started'},
                     {text: 'Configuration', link: '/configuration'},
+                    {text: 'MCP Server', link: '/mcp-server'},
                     {text: 'Command Reference', link: '/getting-started/command-reference'},
                     {text: 'Environment Variables', link: '/environment-variables'},
                     {text: 'IDE Integration', link: '/getting-started/ide-integration'},
@@ -63,6 +68,8 @@ export default defineConfig({
             {
                 text: 'Advanced',
                 items: [
+                    {text: 'Instructions (Examples)', link: '/advanced/instructions'},
+                    {text: 'Development steps', link: '/advanced/development-steps'},
                     {text: 'Development with Context Generator', link: '/advanced/development-process'},
                     {text: 'LLM Integration: Smart Context Requesting', link: '/advanced/smart-context-requesting'},
                 ],
@@ -76,5 +83,12 @@ export default defineConfig({
         socialLinks: [
             {icon: 'github', link: 'https://github.com/context-hub/docs'}
         ]
-    }
-})
+    },
+    mermaid: {
+        // refer https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults for options
+    },
+    // optionally set additional config for plugin itself with MermaidPluginConfig
+    mermaidPlugin: {
+        class: "mermaid my-class", // set additional css classes for parent container
+    },
+});
