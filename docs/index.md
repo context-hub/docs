@@ -35,8 +35,7 @@ When working with AI-powered development tools context is everything.
   code.
 
 - **Seamless AI Integration**: With MCP support, [connect](/mcp-server) Claude AI directly to your codebase, allowing
-  for real-time,
-  context-aware assistance without manual context sharing.
+  for real-time, context-aware assistance without manual context sharing.
 
 ## How it works
 

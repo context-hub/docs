@@ -43,6 +43,29 @@ sequenceDiagram
 The diagram shows how Claude communicates with the MCP Server, which accesses your project files
 according to your configuration.
 
+## Key Features
+
+### Context Awareness
+
+- Access to structured documentation and code from your project
+- Contextual understanding of project architecture and dependencies
+- Support for multiple context files organized by functionality or domain
+
+### Filesystem Operations
+
+- **Read files**
+- **Write and create files**
+- **Move and rename files** for project restructuring
+- **Get file information**
+
+### Routing System
+
+The MCP Server uses a flexible HTTP-style routing system that makes handling requests more maintainable and extensible.
+Each operation is handled by a dedicated controller, using appropriate HTTP semantics:
+
+- `GET` requests for reading data
+- `POST` requests for actions that modify state
+
 ## Why?
 
 **Developer-Controlled Context**: As a developer and product owner, YOU know your code best. Context Generator puts you
@@ -110,3 +133,21 @@ First of all you need to [install](https://claude.ai/download) Claude app and la
 ```
 
 **Important:** After saving the configuration, restart the app.
+
+## Available Tools
+
+When connected via MCP, Claude has access to the following tools:
+
+### Context Tools
+
+- `context-request`: Request context using JSON schema specification
+- `context-get`: Get a specific document by its path
+- `context`: List all available contexts in the project
+
+### Filesystem Tools
+
+- `file-read`: Read the content of a file with optional encoding
+- `file-write`: Write content to a file with optional directory creation
+- `file-rename`: Rename a file or directory
+- `file-move`: Move a file to a different location
+- `file-info`: Get detailed information about a file or directory

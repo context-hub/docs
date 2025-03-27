@@ -33,11 +33,17 @@ export default withMermaid({
                 items: [
                     {text: 'Installation', link: '/getting-started'},
                     {text: 'Configuration', link: '/configuration'},
-                    {text: 'MCP Server', link: '/mcp-server'},
                     {text: 'Command Reference', link: '/getting-started/command-reference'},
                     {text: 'Environment Variables', link: '/environment-variables'},
                     {text: 'IDE Integration', link: '/getting-started/ide-integration'},
                     {text: 'Logging', link: '/advanced/logging'}
+                ]
+            },
+            {
+                text: 'MCP Server',
+                items: [
+                    {text: 'Integration', link: '/mcp-server'},
+                    {text: 'Filesystem', link: '/mcp/filesystem'}
                 ]
             },
             {
