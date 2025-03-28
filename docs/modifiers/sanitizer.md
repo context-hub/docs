@@ -14,7 +14,7 @@ documents:
         description: API Classes
         sourcePaths:
           - src/Auth
-        filePattern: *.php
+        filePattern: "*.php"
         modifiers:
           - name: sanitizer
             options:
@@ -212,9 +212,9 @@ documents:
       - type: file
         sourcePaths:
           - src
-        filePattern: *.php
+        filePattern: "*.php"
       - type: file
         sourcePaths:
           - config
-        filePattern: *.json
+        filePattern: "*.json"
 ```

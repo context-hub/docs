@@ -13,7 +13,7 @@ documents:
         packages:
           - symfony/finder
           - psr/log
-        filePattern: *.php
+        filePattern: "*.php"
         notPath:
           - tests
 ```
@@ -66,7 +66,7 @@ documents:
         packages:
           - symfony/console
           - symfony/http-foundation
-        filePattern: *.php
+        filePattern: "*.php"
         path: Component
         notPath:
           - tests

@@ -16,7 +16,7 @@ documents:
         description: API Classes
         sourcePaths:
           - src/Api
-        filePattern: *.php
+        filePattern: "*.php"
         modifiers:
           - php-docs
 ```
@@ -34,7 +34,7 @@ documents:
         description: API Classes
         sourcePaths:
           - src/Api
-        filePattern: *.php
+        filePattern: "*.php"
         modifiers:
           - name: php-docs
             options:

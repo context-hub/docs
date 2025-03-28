@@ -26,7 +26,7 @@ documents:
         description: API Source Files
         sourcePaths:
           - src/Api
-        filePattern: *.php
+        filePattern: "*.php"
         modifiers:
           - php-docs
 ```
