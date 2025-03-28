@@ -1,11 +1,12 @@
 # Installation
 
-We provide two versions of Context Generator: 
- - a native binary
- - a PHAR file. 
+We provide two versions of Context Generator:
 
-The native binary is the recommended version, because it does not require PHP to be installed on your system. You can 
-use it on Linux and MacOS. 
+- a native binary
+- a PHAR file.
+
+The native binary is the recommended version, because it does not require PHP to be installed on your system. You can
+use it on Linux and MacOS.
 
 The PHAR file can be used on any system with PHP 8.2 or higher.
 
@@ -29,6 +30,26 @@ curl -sSL https://raw.githubusercontent.com/context-hub/generator/main/download-
 - Downloads the binary file from GitHub releases
 - Installs it (`ctx`) to your bin directory (default: `/usr/local/bin`)
 - Makes it executable
+
+<br>
+
+If you install to a system directory like `/usr/local/bin`, you probably need `sudo`:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/context-hub/generator/main/download-latest.sh | sudo sh
+```
+
+Install to a custom path to avoid using `sudo`:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/context-hub/generator/main/download-latest.sh | sh -s $HOME/.local/bin
+```
+
+<br>
+
+---
+
+<br>
 
 After installation, you can use it by simply running the command to generate context:
 
