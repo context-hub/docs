@@ -25,7 +25,7 @@ documents:
         description: API Source Files
         sourcePaths:
           - src/Api
-        filePattern: *.php
+        filePattern: "*.php"
         modifiers:
           - name: php-content-filter
             options:

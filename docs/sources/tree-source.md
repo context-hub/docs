@@ -12,7 +12,7 @@ documents:
         description: Project File Structure
         sourcePaths:
           - src
-        filePattern: *.php
+        filePattern: "*.php"
         notPath:
           - tests
           - vendor
@@ -96,7 +96,7 @@ documents:
         description: Source Code Structure
         sourcePaths:
           - src
-        filePattern: *.php
+        filePattern: "*.php"
         notPath:
           - tests
           - vendor
@@ -116,8 +116,8 @@ documents:
         sourcePaths:
           - src/Core
         filePattern:
-          - *.php
-          - *.json
+          - "*.php"
+          - "*.json"
         maxDepth: 2
         showSize: true
         showLastModified: true
@@ -141,7 +141,7 @@ documents:
           - src/App
           - config
           - resources/views
-        filePattern: *.*
+        filePattern: "*.*"
         maxDepth: 3
 ```
 
@@ -160,7 +160,7 @@ documents:
           - src
         contains: class Controller
         notContains: @deprecated
-        filePattern: *.php
+        filePattern: "*.php"
 ```
 
 ## Directory-Only View

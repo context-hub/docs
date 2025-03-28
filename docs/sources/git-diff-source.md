@@ -10,7 +10,7 @@ documents:
       - type: git_diff
         description: Recent Git Changes
         commit: last
-        filePattern: *.php
+        filePattern: "*.php"
         notPath:
           - tests
           - vendor
@@ -48,7 +48,7 @@ documents:
     sources:
       - type: git_diff
         commit: last-week
-        filePattern: *.php
+        filePattern: "*.php"
 ```
 
 | Preset                | Description                          | Git Command Equivalent                 |     |
@@ -100,7 +100,7 @@ documents:
       - type: git_diff
         repository: .
         commit: abc1234
-        filePattern: *.php
+        filePattern: "*.php"
 ```
 
 ## Specific file in commit
@@ -113,7 +113,7 @@ documents:
       - type: git_diff
         repository: .
         commit: abc1234:path/to/file.php
-        filePattern: *.php
+        filePattern: "*.php"
 ```
 
 ## Version comparison
@@ -126,7 +126,7 @@ documents:
       - type: git_diff
         repository: .
         commit: v1.0.0..v2.0.0
-        filePattern: *.php
+        filePattern: "*.php"
 ```
 
 ## Date-based commit
@@ -139,7 +139,7 @@ documents:
       - type: git_diff
         repository: .
         commit: since:2023-01-15
-        filePattern: *.php
+        filePattern: "*.php"
 ```
 
 ## Specific date commit
@@ -152,5 +152,5 @@ documents:
       - type: git_diff
         repository: .
         commit: date:2023-01-15
-        filePattern: *.php
+        filePattern: "*.php"
 ```

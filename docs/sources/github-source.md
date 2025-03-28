@@ -78,9 +78,9 @@ documents:
         sourcePaths:
           - src
         filePattern:
-          - *.php
-          - *.json
-          - *.md
+          - "*.php"
+          - "*.json"
+          - "*.md"
         showTreeView: true
 ```
 
@@ -99,7 +99,7 @@ documents:
         sourcePaths:
           - src
         path: Controller
-        filePattern: *.php
+        filePattern: "*.php"
         showTreeView: true
 ```
 
@@ -118,7 +118,7 @@ documents:
         path:
           - Controller
           - Service
-        filePattern: *.php
+        filePattern: "*.php"
         showTreeView: true
 ```
 
@@ -137,7 +137,7 @@ documents:
         sourcePaths:
           - src
         contains: class Repository
-        filePattern: *.php
+        filePattern: "*.php"
         showTreeView: true
 ```
 
@@ -154,7 +154,7 @@ documents:
         sourcePaths:
           - src
         notContains: @deprecated
-        filePattern: *.php
+        filePattern: "*.php"
         showTreeView: true
 ```
 
@@ -176,6 +176,6 @@ documents:
         notContains:
           - @deprecated
           - @internal
-        filePattern: *.php
+        filePattern: "*.php"
         showTreeView: true
 ```
