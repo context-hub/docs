@@ -17,25 +17,60 @@ documents:
         path: src
         contains: class
         notContains: @deprecated
-        showStats: true
+        render:
+          strategy: llm
+          showStats: true
+          showLineNumbers: true
+          contextLines: 5
 ```
 
 ## Parameters
 
-| Parameter     | Type          | Default    | Description                                                |
-|---------------|---------------|------------|------------------------------------------------------------|
-| `type`        | string        | required   | Must be `"git_diff"`                                       |
-| `description` | string        | `""`       | Human-readable description of the source                   |
-| `repository`  | string        | `"."`      | Path to the git repository                                 |
-| `commit`      | string        | `"staged"` | Git commit range or preset                                 |
-| `filePattern` | string\|array | `"*.*"`    | File pattern(s) to match                                   |
-| `notPath`     | array         | `[]`       | Patterns to exclude files                                  |
-| `path`        | string\|array | `[]`       | Patterns to include only files in specific paths           |
-| `contains`    | string\|array | `[]`       | Patterns to include only files containing specific content |
-| `notContains` | string\|array | `[]`       | Patterns to exclude files containing specific content      |
-| `showStats`   | boolean       | `true`     | Whether to show commit stats in output                     |
-| `modifiers`   | array         | `[]`       | Content modifiers to apply                                 |
-| `tags`        | array         | []         | List of tags for this source                               |
+| Parameter     | Type           | Default    | Description                                                |
+|---------------|----------------|------------|------------------------------------------------------------|
+| `type`        | string         | required   | Must be `"git_diff"`                                       |
+| `description` | string         | `""`       | Human-readable description of the source                   |
+| `repository`  | string         | `"."`      | Path to the git repository                                 |
+| `commit`      | string         | `"staged"` | Git commit range or preset                                 |
+| `filePattern` | string\|array  | `"*.*"`    | File pattern(s) to match                                   |
+| `notPath`     | array          | `[]`       | Patterns to exclude files                                  |
+| `path`        | string\|array  | `[]`       | Patterns to include only files in specific paths           |
+| `contains`    | string\|array  | `[]`       | Patterns to include only files containing specific content |
+| `notContains` | string\|array  | `[]`       | Patterns to exclude files containing specific content      |
+| `render`      | object\|string | see below  | Configuration for rendering diffs                          |
+| `showStats`   | boolean        | `true`     | **Deprecated:** Use `render.showStats` instead             |
+| `modifiers`   | array          | `[]`       | Content modifiers to apply                                 |
+| `tags`        | array          | []         | List of tags for this source                               |
+
+## Render Configuration
+
+The `render` parameter allows you to control how diffs are displayed. It can be either a string (for simple strategy
+selection) or an object with detailed configuration:
+
+```yaml
+# Simple form - just specify the strategy
+render: llm
+
+# Full configuration form
+render:
+  strategy: llm  # 'llm' or 'raw'
+  showStats: true
+  showLineNumbers: true
+  contextLines: 3
+```
+
+| Render Option     | Type    | Default | Description                                    |
+|-------------------|---------|---------|------------------------------------------------|
+| `strategy`        | string  | `"raw"` | Rendering strategy: `"raw"` or `"llm"`         |
+| `showStats`       | boolean | `true`  | Whether to show file stats in the output       |
+| `showLineNumbers` | boolean | `false` | Whether to show line numbers in diff output    |
+| `contextLines`    | integer | `3`     | Number of context lines to show around changes |
+
+### Render Strategies
+
+- **raw**: Standard git diff output with `+/-` notation
+- **llm**: Enhanced diff format optimized for readability by both humans and LLMs. Uses semantic tags for additions and
+  removals.
 
 ## Commit Range Presets
 
