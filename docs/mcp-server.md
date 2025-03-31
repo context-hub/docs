@@ -151,3 +151,23 @@ When connected via MCP, Claude has access to the following tools:
 - `file-rename`: Rename a file or directory
 - `file-move`: Move a file to a different location
 - `file-info`: Get detailed information about a file or directory
+
+## Environment Variables
+
+You can configure the MCP server using environment variables.
+
+### Configuring Document Names
+
+You can customize how document names appear in Claude's interface.
+
+```dotenv
+CTX_DOCUMENT_NAME_FORMAT="{description} ({tags}) - {path}"
+```
+
+Available placeholders:
+
+- `{path}` - The document's output path
+- `{description}` - The document description
+- `{tags}` - Comma-separated list of document tags
+
+By default, the format is: `[{path}] {description}`

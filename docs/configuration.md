@@ -111,7 +111,8 @@ As you can see it's pretty simple.
 
 ## Configuration Imports
 
-For large projects with multiple components or services, you can split your configuration across multiple files using the import functionality.
+For large projects with multiple components or services, you can split your configuration across multiple files using
+the import functionality.
 
 - Import paths are resolved relative to the importing file
 - You can apply path prefixes to source paths in imported configurations
@@ -158,3 +159,13 @@ documents:
   ]
 }
 ```
+
+## Using Environment Variables
+
+Context Generator supports configuration via environment variables, which provides a flexible way to override settings
+without modifying your main configuration files.
+
+### Setting Up
+
+1. Create a `.env` file in your project root directory
+2. Add configuration variables using `KEY=VALUE` format

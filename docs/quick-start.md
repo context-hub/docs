@@ -113,6 +113,23 @@ Point the MCP client to the Context Generator server:
 
 Now you can ask Claude questions about your codebase without manually uploading context files!
 
+## 7. Working with Prompts (Optional)
+
+Define prompts that can be used with MCP server.
+
+```yaml
+prompts:
+  - id: generate-controller
+    description: "Generate a controller for an entity"
+    messages:
+      - role: assistant
+        content: "I'll help you generate a controller."
+      - role: user
+        content: "Generate a controller for the {{entityName}} entity."
+```
+
+> **Note:** Read more about [Prompts](/mcp/prompts) for detailed configuration options.
+
 ## JSON Schema
 
 For better editing experience, Context Generator provides a JSON schema for autocompletion and validation in your IDE:

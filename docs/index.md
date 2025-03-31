@@ -34,6 +34,12 @@ When working with AI-powered development tools context is everything.
   custom explanations. Use AI to generate user guides, API references, or developer documentation based on your actual
   code.
 
+- **Reusable Prompt Libraries:** Create, share, and import collections of specialized prompts for common development
+  tasks. Build once, use everywhere, and leverage the community's expertise without reinventing the wheel.
+
+- **Standardized Team Workflows:** Establish consistent AI interaction patterns across your team by sharing prompt
+  libraries that encode best practices and domain expertise for your specific projects.
+
 - **Seamless AI Integration**: With MCP support, [connect](/mcp-server) Claude AI directly to your codebase, allowing
   for real-time, context-aware assistance without manual context sharing.
 
@@ -43,6 +49,7 @@ When working with AI-powered development tools context is everything.
 2. Targets specific files through pattern matching, content search, size, or date filters
 3. Applies optional modifiers (like extracting PHP signatures without implementation details)
 4. Organizes content into well-structured markdown documents
-5. Saves context files ready to be shared with LLMs
-6. Optionally serves context through an MCP server, allowing AI assistants like Claude to directly access project
+5. Provides pre-defined prompts for common tasks that can be imported, shared, and reused
+6. Saves context files ready to be shared with LLMs
+7. Optionally serves context through an MCP server, allowing AI assistants like Claude to directly access project
    information

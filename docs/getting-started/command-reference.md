@@ -57,13 +57,15 @@ Creates a new configuration file in the current directory. The default filename 
 ctx init
 ```
 
-You can also specify a different file type [Supported types: `yaml`, `json`]:
+You can also specify a different filename (e.g., `context.json`. By default, it will create `context.yaml`):
 
 ```bash
-ctx init --type=json
+ctx init --config-file=context.json
 # or
-ctx init -t json
+ctx init -t context.json
 ```
+
+> **Note**: Only `php`, `json`, and `yaml` formats are supported for the configuration file.
 
 ## Check Version
 
@@ -96,10 +98,10 @@ ctx update
 ctx u
 ```
 
-If you installed the PHAR file in a non-standard location, you can specify the path:
+If you installed ctx in a non-standard location, you can specify the path:
 
 ```bash
-ctx self-update --phar-path=/usr/local/bin/ctx
+ctx self-update --path=/usr/local/bin/ctx
 # or
 ctx self-update -p /usr/local/bin/ctx
 ```
