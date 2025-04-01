@@ -44,7 +44,7 @@ export default withMermaid({
                 items: [
                     {text: 'Integration', link: '/mcp-server'},
                     {text: 'Filesystem', link: '/mcp/filesystem'},
-                    {text: 'Prompts', link: '/mcp/propmts'}
+                    {text: 'Prompts', link: '/mcp/prompts'}
                 ]
             },
             {
