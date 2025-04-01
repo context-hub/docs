@@ -80,53 +80,36 @@ projects and teams. This creates an ecosystem where:
 - Specialized domain knowledge can be packaged into reusable templates
 - The community can collaborate on high-quality prompt libraries
 
-Context Generator currently supports basic configuration imports from local filesystem sources.
+Context Generator supports configuration imports from multiple sources to enable modular configuration management:
 
-**Coming soon**, we're extending this functionality to include remote sources, with a particular focus on making MCP
-prompts more accessible and shareable:
+### Import Capabilities
 
-### Upcoming Import Capabilities
-
-- **GitHub Repositories**: Import prompts directly from public or private GitHub repos
-- **Composer Packages**: Leverage prompts bundled in PHP Composer packages
-- **Remote URLs**: Reference prompt configurations via direct URLs
+- **Local Files**: Import prompts from local filesystem files
+- **URL Sources**: Import prompts directly from remote URLs
 - **Selective Imports**: Import only specific prompts from any source
 
-This will transform how teams work with AI by enabling:
+This transforms how teams work with AI by enabling:
 
 - **Reusability**: Create prompt repositories once, use them across multiple projects
 - **Community Sharing**: Participate in an ecosystem of community-maintained prompt libraries
 - **Standardization**: Promote best practices through shared prompt configurations
 - **Version Control**: Reference specific versions of remote prompt repositories
 
-### Example Remote Import Configuration
+### Example Import Configuration
 
 ```yaml
 import:
-  # Local import (current implementation)
+  # Local import
   - path: services/api/context.yaml
     type: local # default, can be omitted
 
-  # GitHub import (coming soon)
-  - path: butschster/ctx-prompts/prompts/refactoring.yaml
-    type: github
-    ref: main # optional, defaults to main/master
-    token: ${GITHUB_TOKEN} # optional, for private repos
-
-  # Composer package import (coming soon)
-  - path: vendor/butschster/ctx-prompts/prompts/refactoring.yaml
-    type: composer
-
-  # URL import (coming soon)
-  - path: https://example.com/context-configs/api-prompts.yaml
+  # URL import
+  - url: https://example.com/context-configs/api-prompts.yaml
     type: url
     headers: # optional HTTP headers
       Authorization: "Bearer ${API_TOKEN}"
 
-  # Selective import (coming soon, works with any source type)
-  - path: butschster/ctx-prompts/prompts/all.yaml
-    type: github
-    docs:
-      - refactoring/extract-method.md
-      - refactoring/rename-class.md
+  # GitHub Gist import (using URL)
+  - url: https://gist.githubusercontent.com/butschster/1b7e597691cc1a6476b15dc120ecbddb/raw/8c0f9d0145dcd260b814f866ec130ec630c80ee8/prompts.yaml
+    type: url
 ```

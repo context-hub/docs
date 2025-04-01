@@ -130,6 +130,14 @@ prompts:
 
 > **Note:** Read more about [Prompts](/mcp/prompts) for detailed configuration options.
 
+Import sharable prompts from the community or create your own to enhance your workflow.
+
+```yaml
+import:
+  - type: url
+    path: https://gist.githubusercontent.com/butschster/1b7e597691cc1a6476b15dc120ecbddb/raw/8c0f9d0145dcd260b814f866ec130ec630c80ee8/prompts.yaml
+```
+
 ## JSON Schema
 
 For better editing experience, Context Generator provides a JSON schema for autocompletion and validation in your IDE:

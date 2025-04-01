@@ -161,7 +161,7 @@ You can configure the MCP server using environment variables.
 You can customize how document names appear in Claude's interface.
 
 ```dotenv
-CTX_DOCUMENT_NAME_FORMAT="{description} ({tags}) - {path}"
+MCP_DOCUMENT_NAME_FORMAT="{description} ({tags}) - {path}"
 ```
 
 Available placeholders:
@@ -171,3 +171,13 @@ Available placeholders:
 - `{tags}` - Comma-separated list of document tags
 
 By default, the format is: `[{path}] {description}`
+
+### Configuring File Read/Write
+
+You can turn off file read/write operations in the MCP server.
+
+```dotenv
+MCP_FILE_OPERATIONS=false
+```
+
+By default, file operations are enabled. Set this to `false` to disable them.

@@ -22,6 +22,8 @@ If you prefer YAML syntax, you can use the following format.
 Create a `context.yaml` file in your project root:
 
 ```yaml
+$schema: https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json
+
 documents:
   - description: API Documentation
     outputPath: docs/api.md
@@ -62,6 +64,7 @@ Create a `context.json` file in your project root:
 
 ```json
 {
+  "$schema": "https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json",
   "documents": [
     {
       "description": "API Documentation",
@@ -114,12 +117,51 @@ As you can see it's pretty simple.
 For large projects with multiple components or services, you can split your configuration across multiple files using
 the import functionality.
 
-- Import paths are resolved relative to the importing file
-- You can apply path prefixes to source paths in imported configurations
-- Imports can be nested (configurations can import other configurations)
-- Circular imports are automatically detected and prevented
+### Key Features
 
-### Import Example in YAML
+* Import paths are resolved relative to the importing file
+* You can apply path prefixes to source paths in imported configurations
+* Imports can be nested (configurations can import other configurations)
+* Circular imports are automatically detected and prevented
+
+### Import Formats
+
+The `import` section supports several formats:
+
+#### String Format (Simplest)
+
+```yaml
+import:
+  - "services/api/context.yaml"
+```
+
+#### Object Format with Path
+
+```yaml
+import:
+  - path: services/api/context.yaml
+```
+
+#### Object Format with Path and Prefix
+
+```yaml
+import:
+  - path: services/api/context.yaml
+    pathPrefix: /api
+```
+
+#### Explicit Type Format
+
+```yaml
+import:
+  - type: file
+    path: services/api/context.yaml
+    pathPrefix: /api
+  - type: url
+    url: https://example.com/shared-config.json
+```
+
+### Example in YAML
 
 ```yaml
 import:
@@ -136,7 +178,7 @@ documents:
           This is the main project documentation.
 ```
 
-### Import Example in JSON
+### Example in JSON
 
 ```json
 {
@@ -159,6 +201,13 @@ documents:
   ]
 }
 ```
+
+### Import Types
+
+| Type   | Description                                                 | Required Fields |
+|--------|-------------------------------------------------------------|-----------------|
+| `file` | Imports configuration from a local file                     | `path`          |
+| `url`  | Imports configuration (`prompts` section) from a remote URL | `url`           |
 
 ## Using Environment Variables
 
