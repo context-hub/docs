@@ -3,6 +3,35 @@
 To get the best experience when working with Context Generator configuration files, you can use the JSON schema for
 autocompletion and validation in your IDE:
 
+## Using schema definition in configuration files
+
+The easiest way to enable IDE validation and autocompletion is to define the `$schema` property directly in your
+configuration file. This approach works in most modern IDEs without requiring additional setup.
+
+### YAML Configuration with Schema
+
+```yaml
+$schema: 'https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json'
+documents:
+  ...
+```
+
+### JSON Configuration with Schema
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json",
+  "documents": [
+    ...
+  ]
+}
+```
+
+> **Note:** `ctx init` commands will automatically add the `$schema` property to generated configuration files.
+
+This approach eliminates the need for manual schema downloads or complex IDE configurations, making it the recommended
+method for integrating schema validation into your workflow.
+
 ## Download the schema
 
 ```bash
