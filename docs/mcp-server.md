@@ -109,11 +109,34 @@ First of all you need to [install](https://claude.ai/download) Claude app and la
 {
   "mcpServers": {
     "ctx": {
-      "command": "ctx server -c /path/to/project"
+      "command": "ctx",
+      "args": [
+        "server",
+        "-c",
+        "/path/to/project"
+      ]
     }
   }
 }
 ```
+
+### Windows Configuration
+
+```json
+{
+  "mcpServers": {
+    "ctx": {
+      "command": "C:\\ctx.exe",
+      "args": [
+        "server",
+        "-cC:\\Path\\To\\Project"
+      ]
+    }
+  }
+}
+```
+
+> **Note**: You can app path to `ctx.exe` to your environment variables to avoid specifying the full path.
 
 ### Windows with WSL Configuration
 
