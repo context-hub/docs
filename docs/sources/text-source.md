@@ -71,7 +71,12 @@ This document provides an overview of the API.
 ----------------------------------------------------------
 ```
 
-## Environment variables
+## Using variables in configuration
+
+Context Generator supports various types of variables throughout your configuration files, including environment
+variables, predefined system variables, and custom configuration variables.
+
+Read more about [variables](./variables.md) in the documentation.
 
 ```yaml
 documents:
@@ -82,7 +87,7 @@ documents:
         description: API Configuration
         content: |
           # ${ENV_NAME} Environment
-          
+
           Base URL: https://api.${ENV_NAME}.example.com
 
           API Key: Please use the ${ENV_NAME}_API_KEY environment variable

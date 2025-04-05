@@ -209,12 +209,9 @@ documents:
 | `file` | Imports configuration from a local file                     | `path`          |
 | `url`  | Imports configuration (`prompts` section) from a remote URL | `url`           |
 
-## Using Environment Variables
+## Using variables in configuration
 
-Context Generator supports configuration via environment variables, which provides a flexible way to override settings
-without modifying your main configuration files.
+Context Generator supports various types of variables throughout your configuration files, including environment
+variables, predefined system variables, and custom configuration variables.
 
-### Setting Up
-
-1. Create a `.env` file in your project root directory
-2. Add configuration variables using `KEY=VALUE` format
+Read more about [variables](./variables.md) in the documentation.

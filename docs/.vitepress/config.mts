@@ -34,7 +34,7 @@ export default withMermaid({
                     {text: 'Installation', link: '/getting-started'},
                     {text: 'Configuration', link: '/configuration'},
                     {text: 'Command Reference', link: '/getting-started/command-reference'},
-                    {text: 'Environment Variables', link: '/environment-variables'},
+                    {text: 'Variables in Configuration', link: '/variables'},
                     {text: 'IDE Integration', link: '/getting-started/ide-integration'},
                     {text: 'Logging', link: '/advanced/logging'}
                 ]

@@ -61,7 +61,7 @@ name from the `src/Models` directory.
 - Explore different source types like [GitHub](/sources/github-source), [Git Diff](/sources/git-diff-source),
   or [URL](/sources/url-source)
 - Apply [Modifiers](/modifiers) to transform your content (like extracting PHP signatures)
-- Discover how to use [Environment Variables](/environment-variables) in your config
+- Discover how to use [Variables](/variables) in your config
 - Use [IDE Integration](/getting-started/ide-integration) for autocompletion and validation
 
 ## 4. Build the Context

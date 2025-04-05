@@ -1,6 +1,7 @@
 # URL Source
 
-Fetch content from websites with 
+Fetch content from websites with
+
 - optional CSS selector support
 - custom headers
 - environment variable support
@@ -32,3 +33,10 @@ documents:
 | `selector`    | string | `null`   | CSS selector to extract specific content (null for full page)    |
 | `headers`     | object | `{}`     | Custom headers to include in the request (support env variables) |
 | `tags`        | array  | []       | List of tags for this source                                     |
+
+## Using variables in configuration
+
+Context Generator supports various types of variables throughout your configuration files, including environment
+variables, predefined system variables, and custom configuration variables.
+
+Read more about [variables](./variables.md) in the documentation.
