@@ -78,7 +78,7 @@ ctx version
 ctx v
 ```
 
-Displays the current version of Context Generator.
+Displays the current version of **CTX**.
 
 ```bash
 ctx version --check-updates
@@ -88,7 +88,7 @@ ctx version -c
 
 ## Self-Update
 
-Updates the Context Generator to the latest version.
+Updates the **CTX** to the latest version.
 
 ```bash
 ctx self-update

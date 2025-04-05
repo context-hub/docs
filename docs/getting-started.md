@@ -14,7 +14,9 @@ The PHAR file can be used on any system with PHP 8.2 or higher.
 
 ### Requirements
 
-- Linux or MacOS
+- Linux,
+- MacOS
+- or Windows with or without WSL
 
 The easiest way to install Context Generator is by using our installation script. This automatically downloads the
 latest version and sets it up for immediate use.
@@ -38,6 +40,8 @@ If you install to a system directory like `/usr/local/bin`, you probably need `s
 ```bash
 curl -sSL https://raw.githubusercontent.com/context-hub/generator/main/download-latest.sh | sudo sh
 ```
+
+> **Note**: When using `sudo`, to run the script, you may need use `sudo` to run the `ctx` command as well.
 
 Install to a custom path to avoid using `sudo`:
 

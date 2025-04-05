@@ -72,7 +72,7 @@ Here's how LLM might use prompts during a conversation:
 
 ## Shareable Prompts
 
-Prompts in Context Generator aren't just static templates - they're designed to be shared, imported, and reused across
+Prompts in **CTX** aren't just static templates - they're designed to be shared, imported, and reused across
 projects and teams. This creates an ecosystem where:
 
 - Teams can maintain consistent approaches to common development tasks
@@ -80,7 +80,7 @@ projects and teams. This creates an ecosystem where:
 - Specialized domain knowledge can be packaged into reusable templates
 - The community can collaborate on high-quality prompt libraries
 
-Context Generator supports configuration imports from multiple sources to enable modular configuration management:
+**CTX** supports configuration imports from multiple sources to enable modular configuration management:
 
 ### Import Capabilities
 
@@ -110,6 +110,6 @@ import:
       Authorization: "Bearer ${API_TOKEN}"
 
   # GitHub Gist import (using URL)
-  - url: https://gist.githubusercontent.com/butschster/1b7e597691cc1a6476b15dc120ecbddb/raw/8c0f9d0145dcd260b814f866ec130ec630c80ee8/prompts.yaml
+  - url: https://gist.githubusercontent.com/butschster/1b7e597691cc1a6476b15dc120ecbddb/raw/9cda0186689e5c819e1f60b486a9d960fcf412c2/prompts.yaml
     type: url
 ```

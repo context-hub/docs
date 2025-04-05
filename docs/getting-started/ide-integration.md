@@ -1,6 +1,6 @@
 # IDE Integration
 
-To get the best experience when working with Context Generator configuration files, you can use the JSON schema for
+To get the best experience when working with **CTX** configuration files, you can use the JSON schema for
 autocompletion and validation in your IDE:
 
 ## Using schema definition in configuration files

@@ -1,6 +1,6 @@
 # Variables in configuration
 
-Context Generator supports various types of variables throughout your configuration files, including environment
+**CTX** supports various types of variables throughout your configuration files, including environment
 variables, predefined system variables, and custom configuration variables.
 
 ## Variable Types

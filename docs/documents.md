@@ -1,6 +1,6 @@
 # Document
 
-A document is the primary output unit produced by the Context Generator. It represents a complete, formatted context
+A document is the primary output unit produced by the **CTX**. It represents a complete, formatted context
 file that's designed to be shared with Large Language Models (LLMs) like ChatGPT or Claude.
 
 Each document produces a single output file (typically Markdown) that contains all the compiled

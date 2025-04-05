@@ -553,6 +553,6 @@ ctx --inline='{
 }'
 ```
 
-These examples illustrate how to use Context Generator effectively at each stage of the development workflow. The
+These examples illustrate how to use **CTX** effectively at each stage of the development workflow. The
 combination of inline ctx commands and clear instructions for AI assistants creates a powerful methodology for managing
 complex development tasks with appropriate context.

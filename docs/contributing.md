@@ -1,29 +1,29 @@
-# Contributing to Context Generator
+# Contributing to **CTX**
 
-We're excited to welcome you as a contributor to the Context Generator project! This guide will help you get started
+We're excited to welcome you as a contributor to the **CTX** project! This guide will help you get started
 with contributing to our project.
 
 ## How to Contribute
 
-There are many ways to contribute to Context Generator:
+There are many ways to contribute to **CTX**:
 
 1. **Report Issues**: If you find a bug or have a
    suggestion, [create an issue](https://github.com/context-hub/generator/issues) on our GitHub repository.
 2. **Submit Pull Requests**: Have a fix or a new feature? Submit a pull request!
 3. **Improve Documentation**: Help us make our documentation more clear, comprehensive, and accessible.
-4. **Share Your Use Cases**: Let us know how you're using Context Generator in your projects.
+4. **Share Your Use Cases**: Let us know how you're using **CTX** in your projects.
 
 We label issues that are suitable for community contribution with the `help wanted` tag. Additionally, we use labels
 such as `good first issue` for newcomer-friendly tasks, and complexity indicators to help you choose tasks that match
 your experience level.
 
 I'd be happy to write a better instruction for the Getting Started section that highlights the use of the context.yaml
-file for context generation. This will help new contributors understand how they can use Context Generator itself to
+file for context generation. This will help new contributors understand how they can use **CTX** itself to
 explore and work with the codebase.
 
 ## Getting Started with Contributing
 
-Follow this guide to set up your environment and effectively contribute to the Context Generator project. We've designed
+Follow this guide to set up your environment and effectively contribute to the **CTX** project. We've designed
 a workflow that leverages the tool's own capabilities to help you understand and improve the codebase.
 
 ### 1. Set Up Your Environment
@@ -83,7 +83,7 @@ Run this configuration to generate a visual representation of the codebase struc
 This will create a `docs/file-structure.md` file that outlines the project's organization. Just put this file in the
 Claude project context to help it understand the codebase.
 
-### 3. Explore the Codebase Using Context Generator
+### 3. Explore the Codebase Using **CTX**
 
 The project includes a pre-configured `context.yaml` file to help you explore the codebase:
 
@@ -220,7 +220,7 @@ documents:
 - Include relevant context files or excerpts
 - Reference any related issues
 
-By using Context Generator in your contribution workflow, you'll not only improve the project but also gain firsthand
+By using **CTX** in your contribution workflow, you'll not only improve the project but also gain firsthand
 experience with the tool while developing more effective collaboration patterns with AI assistants.
 
 ## Areas Where Help Is Needed
@@ -232,7 +232,7 @@ We're particularly looking for help with:
 - Creating specialized content modifiers for different languages
 - Building integrations with popular IDEs and tools
 
-Your contributions, big or small, help make Context Generator a better tool for everyone. We look forward to
+Your contributions, big or small, help make **CTX** a better tool for everyone. We look forward to
 collaborating with you!
 
 ## Questions?
@@ -240,4 +240,4 @@ collaborating with you!
 If you have any questions about contributing, feel free to open an issue labeled "question" or reach out through the
 [discussions](https://github.com/context-hub/generator/discussions) section on GitHub.
 
-Thank you for considering contributing to Context Generator!
+Thank you for considering contributing to **CTX**!

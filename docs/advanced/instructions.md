@@ -1,5 +1,11 @@
 # Instructions
 
+There are several useful instructions for different tasks. Each instruction is tailored to a specific role or task,
+ensuring clarity and efficiency in the process.
+
+CTX supports also prompts definition straight in the `context.yaml` file. Read more about it in the [Prompts](/prompts)
+section.
+
 ## PHP Developer
 
 ```
@@ -298,3 +304,17 @@ repositories).
 By following these principles, repositories will become the **single source of truth** for querying entities, 
 improving maintainability and consistency in the application.
 ```
+
+## **Shared Prompts Resources:**
+
+CTX supports importing prompts from external sources, allowing you to leverage community-maintained prompt libraries.
+You can add ready-to-use prompts to your project by adding the following to your `context.yaml`:
+
+```yaml
+import:
+  - type: url
+    url: https://gist.githubusercontent.com/butschster/1b7e597691cc1a6476b15dc120ecbddb/raw/9cda0186689e5c819e1f60b486a9d960fcf412c2/prompts.yaml
+```
+
+These shared prompt collections can help standardize approaches to common development tasks across your team and
+projects. **For more details on working with prompts, see the [Prompts documentation](/prompts)**.

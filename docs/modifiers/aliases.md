@@ -1,6 +1,6 @@
 # Modifier Aliases
 
-Context Generator supports defining reusable modifier configurations through aliases. This allows you to define common
+**CTX** supports defining reusable modifier configurations through aliases. This allows you to define common
 modifier configurations once and reference them by name throughout your configuration, reducing duplication and
 improving maintainability.
 ``

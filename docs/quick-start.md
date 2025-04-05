@@ -1,9 +1,9 @@
 # Quick Start
 
-Getting started with Context Generator is straightforward. Follow these simple steps to create your first context file
+Getting started with **CTX** is straightforward. Follow these simple steps to create your first context file
 for LLMs.
 
-## 1. Install Context Generator
+## 1. Install **CTX**
 
 Download and install the tool using our installation script:
 
@@ -86,18 +86,18 @@ Example prompt:
 > I've shared my authentication system code with you. Can you help me identify potential security vulnerabilities in the
 > user registration process?
 
-> **Next steps:** Check out [Development with Context Generator](/advanced/development-process) for best practices on
+> **Next steps:** Check out [Development with **CTX**](/advanced/development-process) for best practices on
 > integrating context generation into your AI-powered development workflow.
 
 That's it! You're now ready to leverage LLMs with proper context about your codebase.
 
 ## 6. Connect to Claude AI (Optional)
 
-For a more seamless experience, you can connect Context Generator directly to Claude AI using the MCP server:
+For a more seamless experience, you can connect **CTX** directly to Claude AI using the MCP server:
 
 There is a built-in MCP server that allows you to connect Claude AI directly to your codebase.
 
-Point the MCP client to the Context Generator server:
+Point the MCP client to the **CTX** server:
 
 ```json
 {
@@ -140,7 +140,7 @@ import:
 
 ## JSON Schema
 
-For better editing experience, Context Generator provides a JSON schema for autocompletion and validation in your IDE:
+For better editing experience, **CTX** provides a JSON schema for autocompletion and validation in your IDE:
 
 ```bash
 # Show schema URL

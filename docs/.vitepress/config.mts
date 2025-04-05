@@ -3,8 +3,8 @@ import {withMermaid} from "vitepress-plugin-mermaid";
 
 export default withMermaid({
     ignoreDeadLinks: true,
-    title: "Context Generator Docs",
-    description: "Documentation for Context Generator for LLM",
+    title: "CTX Docs",
+    description: "Documentation for CTX",
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
         search: {
@@ -77,7 +77,7 @@ export default withMermaid({
                 items: [
                     {text: 'Instructions (Examples)', link: '/advanced/instructions'},
                     {text: 'Development steps', link: '/advanced/development-steps'},
-                    {text: 'Development with Context Generator', link: '/advanced/development-process'},
+                    {text: 'Development with CTX', link: '/advanced/development-process'},
                     {text: 'LLM Integration: Smart Context Requesting', link: '/advanced/smart-context-requesting'},
                 ],
             },

@@ -1,15 +1,19 @@
-# Context Generator for AI-Powered Development
+# CTX: Context as Code (CaC) tool with MCP server inside. 
+### The missing link between your codebase and your LLM.
 
-## What is Context Generator?
+![Good morning, LLM](https://github.com/user-attachments/assets/8129f227-dc3f-4671-bc0e-0ecd2f3a1888)
 
-Context Generator is a tool designed to solve a common problem when working with LLMs like ChatGPT, Claude: providing
-sufficient context about your codebase.
+## What is **CTX**?
 
-> There is an article about Context Generator
+**CTX** is a tool made to solve a big problem when chatting with LLMs like ChatGPT or Claude: **giving them enough
+context about your project**.
+
+> There is an article about **CTX**
 > on [Medium](https://medium.com/@butschster/context-not-prompts-2-0-the-evolution-9c4a84214784) that explains the
 > motivation behind the project and the problem it solves.
 
-It automates the process of building context files from various sources:
+Instead of manually copying or explaining your entire codebase each time, ctx automatically builds neat, organized
+context files from:
 
 - Code files,
 - GitHub repositories,
@@ -24,11 +28,11 @@ context about your codebase.
 
 When working with AI-powered development tools context is everything.
 
-- **Code Refactoring Assistance**: Want AI help refactoring a complex class? Context Generator builds a properly
+- **Code Refactoring Assistance**: Want AI help refactoring a complex class? **CTX** builds a properly
   formatted document containing all relevant code files.
 
 - **Multiple Iteration Development**: Working through several iterations with an AI helper requires constantly updating
-  the context. Context Generator automates this process.
+  the context. **CTX** automates this process.
 
 - **Documentation Generation:** Transform your codebase into comprehensive documentation by combining source code with
   custom explanations. Use AI to generate user guides, API references, or developer documentation based on your actual

@@ -9,7 +9,7 @@ requests without the need for predefined configuration files.
 
 Before diving into advanced usage, you need to understand:
 
-1. **JSON Schema**: The Context Generator uses a specific JSON structure to define what context to gather
+1. **JSON Schema**: **CTX** uses a specific JSON structure to define what context to gather
 
 > Link to the [JSON Schema](https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json)
 
@@ -34,7 +34,7 @@ through executable commands. This creates a feedback loop that significantly enh
 
 ## Real-World Example Workflow
 
-Here's a complete workflow example showing how an LLM and the Context Generator can work together:
+Here's a complete workflow example showing how an LLM and the **CTX** can work together:
 
 1. **User Question**:
 
@@ -127,7 +127,7 @@ When working with sensitive codebases:
 
 ## Conclusion
 
-The combination of Context Generator's inline configuration and LLMs creates a powerful workflow that drastically
+The combination of **CTX**'s inline configuration and LLMs creates a powerful workflow that drastically
 improves the efficiency of code assistance, troubleshooting, and development guidance. By enabling LLMs to request
 precise context, you eliminate the need for lengthy explanations and manual code searching, leading to faster and more
 accurate solutions.

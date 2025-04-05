@@ -1,6 +1,6 @@
 # Filesystem Tools
 
-The Context Generator MCP server includes a comprehensive set of filesystem tools that allow Claude to directly interact
+**CTX** MCP server includes a comprehensive set of filesystem tools that allow Claude to directly interact
 with your project files. These tools enable powerful AI-assisted development workflows and make it easy to analyze,
 modify, and create files without leaving your conversation.
 

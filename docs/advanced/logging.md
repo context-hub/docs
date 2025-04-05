@@ -1,6 +1,6 @@
 # Logging
 
-Context Generator includes a PSR-3 compliant logging system with console output support. The logger integrates with
+**CTX** includes a PSR-3 compliant logging system with console output support. The logger integrates with
 Symfony Console and respects verbosity levels.
 
 ### Verbosity Levels

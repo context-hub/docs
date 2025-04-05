@@ -1,7 +1,7 @@
-# How to Use Context Generator to Explore and Work with Any Codebase
+# How to Use **CTX** to Explore and Work with Any Codebase
 
-Context Generator is a powerful tool that can help you understand and navigate any codebase, making it easier to
-implement features, fix bugs, and contribute to projects. This guide shows you how to leverage Context Generator's
+**CTX** is a powerful tool that can help you understand and navigate any codebase, making it easier to
+implement features, fix bugs, and contribute to projects. This guide shows you how to leverage **CTX**'s
 capabilities throughout your development workflow.
 
 ## Understanding a New Codebase
@@ -325,7 +325,7 @@ Share this with team members or AI assistants to get feedback on your implementa
 
 ### Pattern 3: Documentation Generation
 
-Use Context Generator to create comprehensive documentation:
+Use **CTX** to create comprehensive documentation:
 
 ```yaml
 documents:
@@ -352,6 +352,6 @@ documents:
 6. **Create Implementation Plans**: Use gathered context to formulate clear implementation strategies
 7. **Share Context Efficiently**: Generate focused context documents to share with team members or AI assistants
 
-By effectively using Context Generator to explore unfamiliar codebases, you can significantly reduce the time needed to
+By effectively using **CTX** to explore unfamiliar codebases, you can significantly reduce the time needed to
 understand complex systems, implement features more confidently, and solve bugs more efficiently. The tool transforms
 overwhelming code exploration into a structured, methodical process that builds comprehensive understanding.
