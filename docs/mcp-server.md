@@ -1,20 +1,22 @@
 # MCP Server Integration
 
-The Model Control Protocol (MCP) server is a bridge that enables AI assistants like Claude to directly access and
-understand your project's context. It acts as an intermediary that provides real-time, structured information about your
-codebase to AI models, enabling more accurate and contextually relevant assistance.
-
-**CTX** now supports the MCP protocol, allowing Claude to seamlessly access your project's contexts, and
-documentation without requiring manual context uploads.
+The MCP Server can also be integrated with AI assistants like Claude to provide direct access to your project's context.
+This allows AI models to request specific information about your codebase without requiring manual context uploads.
 
 ## How integration works
 
-When you connect Claude to **CTX** via MCP:
+When you connect an AI assistant to your application via **MCP**:
 
-1. Claude can request specific context about your project directly through the MCP protocol
-2. **CTX** processes these requests by accessing your codebase based on your `context.yaml`
-3. Relevant code, documentation, and structural information is formatted and returned to Claude
-4. Claude uses this rich context to provide more accurate, project-aware responses
+1. The assistant can request specific context about your project directly through the MCP protocol
+2. Your application processes these requests by accessing your codebase based on your configuration
+3. Relevant code, documentation, and structural information is formatted and returned to the assistant
+4. The assistant uses this rich context to provide more accurate, project-aware responses
+
+This integration enhances both Tools and Prompts components by:
+
+- Allowing AI assistants to trigger tool execution directly
+- Enabling assistants to access and utilize your prompt library
+- Providing real-time context awareness for more accurate assistance
 
 ```mermaid
 sequenceDiagram
@@ -23,21 +25,19 @@ sequenceDiagram
     participant MCP Server as "CTX<br/>MCP Server"
     participant Files as "Project Files"
     participant Config as "context.yaml/<br/>context.json"
-    
-    User->>Claude: Ask question about project
-    Claude->>MCP Server: Request context (MCP protocol)
-    MCP Server->>Config: Read configuration
-    MCP Server->>Files: Access relevant files
+    User ->> Claude: Ask question about project
+    Claude ->> MCP Server: Request context (MCP protocol)
+    MCP Server ->> Config: Read configuration
+    MCP Server ->> Files: Access relevant files
     Note over MCP Server: Filter & process content<br/>based on configuration
-    MCP Server-->>Claude: Return formatted context
-    Claude->>User: Provide contextually aware response
-    
-    Note over User,Claude: Subsequent questions
-    User->>Claude: Follow-up question
-    Claude->>MCP Server: Request additional context
-    MCP Server->>Files: Access specific files
-    MCP Server-->>Claude: Return targeted information
-    Claude->>User: Provide detailed response
+    MCP Server -->> Claude: Return formatted context
+    Claude ->> User: Provide contextually aware response
+    Note over User, Claude: Subsequent questions
+    User ->> Claude: Follow-up question
+    Claude ->> MCP Server: Request additional context
+    MCP Server ->> Files: Access specific files
+    MCP Server -->> Claude: Return targeted information
+    Claude ->> User: Provide detailed response
 ```
 
 The diagram shows how Claude communicates with the MCP Server, which accesses your project files

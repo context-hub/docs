@@ -1,4 +1,5 @@
-# CTX: Context as Code (CaC) tool with MCP server inside. 
+# CTX: Context as Code (CaC) tool with MCP server inside.
+
 ### The missing link between your codebase and your LLM.
 
 ![Good morning, LLM](https://github.com/user-attachments/assets/8129f227-dc3f-4671-bc0e-0ecd2f3a1888)
@@ -46,6 +47,9 @@ When working with AI-powered development tools context is everything.
 
 - **Seamless AI Integration**: With MCP support, [connect](/mcp-server) Claude AI directly to your codebase, allowing
   for real-time, context-aware assistance without manual context sharing.
+
+- **Automated Tool Execution**: Define [custom tools](/mcp/tools) that can be triggered through the MCP server, enabling
+  automated code checks, builds, and other development workflows directly from your AI assistant.
 
 ## How it works
 
