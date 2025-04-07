@@ -115,15 +115,23 @@ Now you can ask Claude questions about your codebase without manually uploading 
 
 ## 7. Working with Prompts (Optional)
 
-Define prompts that can be used with MCP server.
+Define prompts that can be used with MCP server to create structured conversations with your LLM.
 
 ```yaml
 prompts:
   - id: generate-controller
     description: "Generate a controller for an entity"
+    schema:
+      properties:
+        entityName:
+          description: "Name of the entity (e.g. User, Product)"
+      required:
+        - entityName
     messages:
+      - role: user
+        content: "You are a PHP code generator specializing in Symfony controllers."
       - role: assistant
-        content: "I'll help you generate a controller."
+        content: "I'll help you generate a controller for your entity. Please provide the entity name."
       - role: user
         content: "Generate a controller for the {{entityName}} entity."
 ```
@@ -135,19 +143,46 @@ Import sharable prompts from the community or create your own to enhance your wo
 ```yaml
 import:
   - type: url
-    path: https://gist.githubusercontent.com/butschster/1b7e597691cc1a6476b15dc120ecbddb/raw/8c0f9d0145dcd260b814f866ec130ec630c80ee8/prompts.yaml
+    url: https://gist.githubusercontent.com/butschster/1b7e597691cc1a6476b15dc120ecbddb/raw/a4d706bf0738e440da04b71a32707bb9bb950f86/prompts.yaml
 ```
+
+## 8. Custom Tools Configuration (Optional)
+
+Define custom tools that can be executed directly by your LLM through the MCP server:
+
+```yaml
+tools:
+  - id: cs-fixer
+    description: 'Fix code style issues'
+    schema:
+      type: object
+      properties:
+        dry-run:
+          type: boolean
+          description: "Don't make changes"
+          default: false
+    commands:
+      - cmd: composer
+        args:
+          - cs:fix
+          - "{{path}}"
+          - name: --dry-run
+            when: "{{dry-run}}"
+```
+
+These tools can be executed directly by the LLM during conversations, enabling the AI to run code quality checks, tests,
+or other development tasks.
+
+> **Note:** Read more about [Tools](/mcp/tools) for detailed configuration options and examples.
 
 ## JSON Schema
 
 For better editing experience, **CTX** provides a JSON schema for autocompletion and validation in your IDE:
 
-```bash
-# Show schema URL
-ctx schema
-
-# Download schema to current directory
-ctx schema --download
+```yaml
+$schema: 'https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json'
+documents:
+  ...
 ```
 
 > **Learn more:** See [IDE Integration](/getting-started/ide-integration) for detailed setup instructions for VSCode,

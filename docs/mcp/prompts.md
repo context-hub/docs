@@ -16,6 +16,8 @@ placeholders filled in based on the provided arguments.
 
 ## Defining Prompts
 
+Prompts can be defined in your configuration files using the `prompts` key:
+
 ```yaml
 prompts:
   - id: generate-controller
@@ -40,12 +42,24 @@ Each prompt contains:
 - **id**: Unique identifier for the prompt
 - **description**: Human-readable description
 - **schema** (optional): Defines input parameters with descriptions and required fields
-- **messages**: The sequence of conversation messages that make up the prompt
+- **messages**: The sequence of conversation messages that make up the prompt template
 
 ## Variable Substitution
 
 Prompts support variable substitution in message content using the format `{{variableName}}`. When LLM requests a
 prompt with arguments, the MCP server replaces these placeholders with the provided values.
+
+## Prompt Message Structure
+
+Each message in the `messages` array must include:
+
+- **role**: The role of the message sender (system, user, or assistant)
+- **content**: The content of the message (can include variable placeholders)
+
+Valid role values are defined in the `Mcp\Types\Role` enum and include:
+
+- `user`
+- `assistant`
 
 ## Available Prompt Tools
 
@@ -53,18 +67,18 @@ When connected via MCP, LLM has access to the following prompt-related tools:
 
 ### Prompts Tools
 
-- `prompts.list`: List all available prompts defined in the configuration
-- `prompts.get`: Get a specific prompt by ID
+- `prompts-list`: List all available prompts defined in the configuration
+- `prompt-get`: Get a specific prompt by ID
 
 ## Example Usage
 
 Here's how LLM might use prompts during a conversation:
 
 1. **Listing available prompts**:
-   Claude can request a list of all available prompts to discover what templates are available.
+   LLM can request a list of all available prompts to discover what templates are available.
 
 2. **Using a prompt with arguments**:
-   Claude can request a specific prompt with arguments, which will return the prompt messages with variables
+   LLM can request a specific prompt with arguments, which will return the prompt messages with variables
    substituted.
 
 3. **Custom workflows**:
