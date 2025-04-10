@@ -3,7 +3,7 @@
 There are several useful instructions for different tasks. Each instruction is tailored to a specific role or task,
 ensuring clarity and efficiency in the process.
 
-CTX supports also prompts definition straight in the `context.yaml` file. Read more about it in the [Prompts](/prompts)
+CTX supports also prompts definition straight in the `context.yaml` file. Read more about it in the [Prompts](/mcp/prompts)
 section.
 
 ## PHP Developer
@@ -313,8 +313,8 @@ You can add ready-to-use prompts to your project by adding the following to your
 ```yaml
 import:
   - type: url
-    url: https://gist.githubusercontent.com/butschster/1b7e597691cc1a6476b15dc120ecbddb/raw/9cda0186689e5c819e1f60b486a9d960fcf412c2/prompts.yaml
+    url: https://gist.githubusercontent.com/butschster/1b7e597691cc1a6476b15dc120ecbddb/raw/a4d706bf0738e440da04b71a32707bb9bb950f86/prompts.yaml
 ```
 
 These shared prompt collections can help standardize approaches to common development tasks across your team and
-projects. **For more details on working with prompts, see the [Prompts documentation](/prompts)**.
+projects. **For more details on working with prompts, see the [Prompts documentation](/mcp/prompts)**.
