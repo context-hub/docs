@@ -4,14 +4,7 @@ Configuration is built around three core concepts:
 
 - **Document**: The primary output unit produced by the generator - a complete, formatted context file to share with
   LLMs
-- **Source**: Where content is collected from
-    - Files,
-    - GitHub,
-    - URLs,
-    - Text,
-    - Tree,
-    - Composer package
-    - or Git diffs
+- **Source**: Where content is collected from Files, GitHub, Gitlab, URLs, Text, Tree, Composer package MCP or Git diffs
 - **Modifiers**: Transform source content before inclusion - clean up, simplify, or enhance raw content
 - **Imports**: Include and merge configuration from external files to enable modular configuration management
 
@@ -161,11 +154,80 @@ import:
     url: https://example.com/shared-config.json
 ```
 
+### Local File Imports
+
+The local import type allows importing configuration from files on the local filesystem.
+
+| Parameter    | Description                                       | Required | Default |
+|--------------|---------------------------------------------------|----------|---------|
+| `path`       | Path to the local configuration file              | Yes      | -       |
+| `pathPrefix` | Prefix to apply to all paths in the configuration | No       | -       |
+| `docs`       | List of document paths to selectively import      | No       | -       |
+
+#### Selective Imports
+
+You can selectively import specific documents by specifying their output paths:
+
+```yaml
+import:
+  - path: services/common/context.yaml
+    docs:
+      - "api/*.md"      # Import all API docs
+      - "docs/core.md"  # Import a specific document
+```
+
+#### Wildcard Imports
+
+You can use wildcards to import multiple configuration files at once:
+
+```yaml
+import:
+  - path: "services/*/context.yaml"  # Import from all service directories
+  - path: "modules/**/*.yaml"        # Import all YAML files in modules and subdirectories
+```
+
+Wildcard patterns support:
+
+- `*` - Match any characters except directory separators
+- `**` - Match any characters including directory separators
+- `?` - Match a single character
+- `[abc]` - Match any character in the set
+- `{a,b,c}` - Match any of the comma-separated patterns
+
+### URL Imports
+
+The URL import type allows importing configuration from remote URLs.
+
+| Parameter | Description                            | Required | Default |
+|-----------|----------------------------------------|----------|---------|
+| `url`     | URL to fetch the configuration from    | Yes      | -       |
+| `ttl`     | Cache time-to-live in seconds          | No       | 300     |
+| `headers` | HTTP headers to include in the request | No       | {}      |
+
+URL imports support both JSON and YAML formats, automatically detected from the Content-Type header or file extension.
+
+#### URL Import Example
+
+```yaml
+import:
+  - type: url
+    url: https://example.com/shared-config.json
+    ttl: 600  # Cache time-to-live in seconds (default: 300)
+    headers: # Optional HTTP headers for the request
+      Authorization: "Bearer {{TOKEN}}"
+      Accept: "application/json"
+```
+
 ### Example in YAML
+
+This example imports configurations from both local files and a URL:
 
 ```yaml
 import:
   - path: services/api/context.yaml
+    pathPrefix: /api
+  - type: url
+    url: https://example.com/shared-configs.json
 
 documents:
   - description: Project Overview
@@ -176,9 +238,15 @@ documents:
           # Project Documentation
 
           This is the main project documentation.
+      - type: file
+        description: Project README
+        sourcePaths:
+          - README.md
 ```
 
 ### Example in JSON
+
+The same configuration in JSON format:
 
 ```json
 {
@@ -188,6 +256,18 @@ documents:
     }
   ],
   "documents": [
+    {
+      "description": "Common Components",
+      "outputPath": "docs/components.md",
+      "sources": [
+        {
+          "type": "file",
+          "sourcePaths": [
+            "src/Components"
+          ]
+        }
+      ]
+    },
     {
       "description": "Project Overview",
       "outputPath": "docs/overview.md",
@@ -202,12 +282,20 @@ documents:
 }
 ```
 
-### Import Types
+### Circular Import Detection
 
-| Type   | Description                                                 | Required Fields |
-|--------|-------------------------------------------------------------|-----------------|
-| `file` | Imports configuration from a local file                     | `path`          |
-| `url`  | Imports configuration (`prompts` section) from a remote URL | `url`           |
+The system automatically detects and prevents circular imports. If a circular import is detected, an error will be
+thrown with information about the import chain that created the circular dependency.
+
+### Import Resolution Process
+
+When a configuration file is processed:
+
+1. All imports are processed before the main configuration
+2. Nested imports are resolved recursively
+3. Path prefixes are applied to document output paths and source paths
+4. The resolved configuration is merged with the original configuration
+5. Document sections are combined (not replaced)
 
 ## Using variables in configuration
 

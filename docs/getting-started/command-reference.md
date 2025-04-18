@@ -15,16 +15,17 @@ You can also explicitly call:
 ctx generate
 # or 
 ctx build
+# or
+ctx compile
 ```
 
 ### Options
 
-| Option                 | Description                                                                                                                |
-|------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| `--github-token`, `-t` | GitHub token for authentication (default: reads from `GITHUB_TOKEN` environment variable)                                  |
-| `--env`, `-e`          | Load environment variables from a file. If used without specifying a file, defaults to `.env`.                             |
-| `--inline`, `-i`       | Inline JSON configuration string. If provided, file-based configuration will be ignored.                                   |
-| `--config-file`, `-c`  | Path to a specific configuration file or directory. If not provided, will look for standard config files in the root path. |
+| Option                | Description                                                                                                                |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `--inline`, `-i`      | Inline JSON configuration string. If provided, file-based configuration will be ignored.                                   |
+| `--config-file`, `-c` | Path to a specific configuration file or directory. If not provided, will look for standard config files in the root path. |
+| `--env`, `-e`         | Path to .env (like .env.local) file. If not provided, will ignore any .env files.                                          |
 
 **Examples of using the `--env` option:**
 
@@ -49,6 +50,21 @@ ctx -c src/configs
 ctx -i '{"documents":[{"description":"Quick Context","outputPath":"output.md","sources":[{"type":"text","content":"Sample content"}]}]}'
 ```
 
+## Display Configuration
+
+Displays the context configuration in a human-readable format.
+
+```bash
+ctx display
+```
+
+### Options
+
+| Option                | Description                                                                                                                |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `--inline`, `-i`      | Inline JSON configuration string. If provided, file-based configuration will be ignored.                                   |
+| `--config-file`, `-c` | Path to a specific configuration file or directory. If not provided, will look for standard config files in the root path. |
+
 ## Initialize a Configuration File
 
 Creates a new configuration file in the current directory. The default filename is `context.yaml` if not specified.
@@ -57,53 +73,84 @@ Creates a new configuration file in the current directory. The default filename 
 ctx init
 ```
 
-You can also specify a different filename (e.g., `context.json`. By default, it will create `context.yaml`):
+You can also specify a different filename:
 
 ```bash
 ctx init --config-file=context.json
 # or
-ctx init -t context.json
+ctx init -c context.json
 ```
 
-> **Note**: Only `php`, `json`, and `yaml` formats are supported for the configuration file.
+> **Note**: Only `json` and `yaml` formats are supported for the configuration file.
 
-## Check Version
+## MCP Server
 
-Checks for available updates by comparing your version with the latest release on GitHub, and provides update
-instructions if a newer version is available.
+Starts the Model Control Protocol (MCP) server to enable direct integration with Claude AI. This server acts as a bridge
+between your codebase and AI assistants, allowing Claude to access project context in real-time.
+
+> **Note**: To enable Claude to access your project context through the MCP server read
+> the [MCP documentation](/mcp-server.md#setting-up).
 
 ```bash
-ctx version
-# or by first letter
-ctx v
+ctx server
 ```
 
-Displays the current version of **CTX**.
+### Options
+
+| Option                | Description                                                                       |
+|-----------------------|-----------------------------------------------------------------------------------|
+| `--config-file`, `-c` | Path to configuration file (absolute or relative to current directory).           |
+| `--env`, `-e`         | Path to .env (like .env.local) file. If not provided, will ignore any .env files. |
+
+### Examples
+
+**Starting the server with default settings:**
 
 ```bash
-ctx version --check-updates
+ctx server
+```
+
+**Using a specific configuration file:**
+
+```bash
+ctx server --config-file=path/to/custom-context.yaml
 # or
-ctx version -c
+ctx server -c path/to/custom-context.yaml
 ```
 
-## Self-Update
-
-Updates the **CTX** to the latest version.
+**Loading environment variables from a specific file:**
 
 ```bash
-ctx self-update
+ctx server --env=.env.development
 # or
-ctx update
-# or by first letter
-ctx u
+ctx server -e .env.development
 ```
 
-If you installed ctx in a non-standard location, you can specify the path:
+**Combining configuration and environment options:**
 
 ```bash
-ctx self-update --path=/usr/local/bin/ctx
-# or
-ctx self-update -p /usr/local/bin/ctx
+ctx server -c path/to/project/context.yaml -e .env.local
+```
+
+**Pointing to a project directory (will use default config file in that directory):**
+
+```bash
+ctx server -c /path/to/project/
+```
+
+### Log Verbosity
+
+The MCP server logs its activities to a `mcp.log` file in the project root directory. The log level is determined by the
+verbosity level of the command:
+
+- Default: Warning level logs
+- `--verbose` or `-v`: Info level logs
+- `--very-verbose` or `-vv`: Debug level logs
+- `--quiet` or `-q`: Error level logs only
+
+```bash
+# Get more detailed logs
+ctx server -c /path/to/project -vv
 ```
 
 ## Get JSON Schema
@@ -112,9 +159,16 @@ Shows the URL where the JSON schema for IDE integration is hosted.
 
 ```bash
 ctx schema
-# or by first letter
-ctx s
+# or
+ctx json-schema
 ```
+
+### Options
+
+| Option             | Description                                    |
+|--------------------|------------------------------------------------|
+| `--download`, `-d` | Download the schema to the current directory   |
+| `--output`, `-o`   | The file path where the schema should be saved |
 
 ```bash
 ctx schema --download
@@ -128,6 +182,55 @@ Downloads the JSON schema to the current directory with the default filename (`j
 ctx schema --download --output=custom-name.json
 # or
 ctx schema -d -o custom-name.json
+```
+
+## Self-Update
+
+Updates the **CTX** to the latest version.
+
+```bash
+ctx self-update
+# or
+ctx update
+```
+
+### Options
+
+| Option         | Description                               |
+|----------------|-------------------------------------------|
+| `--path`, `-p` | Path where to store the binary            |
+| `--name`, `-b` | Name of the binary file. Default is [ctx] |
+| `--type`, `-t` | Binary type (phar or bin)                 |
+| `--repository` | GitHub repository to update from          |
+
+If you installed ctx in a non-standard location, you can specify the path:
+
+```bash
+ctx self-update --path=/usr/local/bin/ctx
+# or
+ctx self-update -p /usr/local/bin/ctx
+```
+
+## Check Version
+
+Displays the current version of **CTX**.
+
+```bash
+ctx version
+```
+
+### Options
+
+| Option                  | Description       |
+|-------------------------|-------------------|
+| `--check-updates`, `-c` | Check for updates |
+
+To check for available updates:
+
+```bash
+ctx version --check-updates
+# or
+ctx version -c
 ```
 
 ## Inline Configuration
@@ -169,18 +272,3 @@ ctx --inline='
 }
 '
 ```
-
-## MCP Server
-
-Starts the Model Control Protocol (MCP) server to enable direct integration with Claude AI. This server acts as a bridge
-between your codebase and AI assistants, allowing Claude to access project context in real-time.
-
-```bash
-ctx server -c /path/to/project
-```
-
-### Options
-
-| Option              | Description                                                     |
-|---------------------|-----------------------------------------------------------------|
-| `-c, --config-path` | Path to the project containing context configuration (required) |

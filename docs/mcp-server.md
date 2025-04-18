@@ -3,7 +3,26 @@
 The MCP Server can also be integrated with AI assistants like Claude to provide direct access to your project's context.
 This allows AI models to request specific information about your codebase without requiring manual context uploads.
 
-## How integration works
+### Table of Contents
+
+- [How Integration Works](#how-integration-works)
+- [Key Features](#key-features)
+    - [Context Awareness](#context-awareness)
+    - [Filesystem Operations](#filesystem-operations)
+    - [Routing System](#routing-system)
+- [Why Use MCP?](#why)
+- [Setting Up](#setting-up)
+    - [Installation Prerequisites](#setting-up)
+    - [Basic Configuration](#steps)
+    - [Platform-Specific Configurations](#platform-specific-configurations)
+        - [Linux Configuration](#linux-configuration)
+        - [Windows Configuration](#windows-configuration)
+        - [Windows with WSL Configuration](#windows-with-wsl-configuration)
+    - [Environment Variable Configuration](#environment-variable-configuration)
+        - [Setting Environment Variables in Config](#setting-environment-variables-in-config)
+        - [Environment Variables with WSL](#environment-variables-with-wsl)
+
+## How Integration Works
 
 When you connect an AI assistant to your application via **MCP**:
 
@@ -103,7 +122,9 @@ First of all you need to [install](https://claude.ai/download) Claude app and la
 **Important: You must specify the path to your project using the `-c` flag. The project root should contain a
 `context.json` or `context.yaml` configuration file.**
 
-### Linux Configuration
+### Platform-Specific Configurations
+
+#### Linux Configuration
 
 ```json
 {
@@ -120,7 +141,7 @@ First of all you need to [install](https://claude.ai/download) Claude app and la
 }
 ```
 
-### Windows Configuration
+#### Windows Configuration
 
 ```json
 {
@@ -136,9 +157,9 @@ First of all you need to [install](https://claude.ai/download) Claude app and la
 }
 ```
 
-> **Note**: You can app path to `ctx.exe` to your environment variables to avoid specifying the full path.
+> **Note**: You can add path to `ctx.exe` to your environment variables to avoid specifying the full path.
 
-### Windows with WSL Configuration
+#### Windows with WSL Configuration
 
 ```json
 {
@@ -155,52 +176,52 @@ First of all you need to [install](https://claude.ai/download) Claude app and la
 }
 ```
 
+### Environment Variable Configuration
+
+#### Setting Environment Variables in Config
+
+You can pass environment variables to the MCP server by using the `env` property in your configuration. This is useful
+for providing authentication tokens, API keys, or other configuration values:
+
+```json
+{
+  "mcpServers": {
+    "ctx": {
+      "command": "ctx",
+      "args": [
+        "server",
+        "-c",
+        "/path/to/project"
+      ],
+      "env": {
+        "GITHUB_PAT": "ghp_your_personal_access_token",
+        "MCP_DOCUMENT_NAME_FORMAT": "{description} ({tags}) - {path}",
+        "MCP_FILE_OPERATIONS": "true"
+      }
+    }
+  }
+}
+```
+
+#### Environment Variables with WSL
+
+**Important note for WSL users**: When using `wsl.exe` as the command, the `env` property in the configuration will not
+properly pass environment variables to the WSL environment. Instead, you should set environment variables directly in
+the bash command:
+
+```json
+{
+  "mcpServers": {
+    "ctx": {
+      "command": "wsl.exe",
+      "args": [
+        "bash",
+        "-c",
+        "export GITHUB_PAT=ghp_your_personal_access_token && export MCP_FILE_OPERATIONS=true && ctx server -c /path/to/project"
+      ]
+    }
+  }
+}
+```
+
 **Important:** After saving the configuration, restart the app.
-
-## Available Tools
-
-When connected via MCP, Claude has access to the following tools:
-
-### Context Tools
-
-- `context-request`: Request context using JSON schema specification
-- `context-get`: Get a specific document by its path
-- `context`: List all available contexts in the project
-
-### Filesystem Tools
-
-- `file-read`: Read the content of a file with optional encoding
-- `file-write`: Write content to a file with optional directory creation
-- `file-rename`: Rename a file or directory
-- `file-move`: Move a file to a different location
-- `file-info`: Get detailed information about a file or directory
-
-## Environment Variables
-
-You can configure the MCP server using environment variables.
-
-### Configuring Document Names
-
-You can customize how document names appear in Claude's interface.
-
-```dotenv
-MCP_DOCUMENT_NAME_FORMAT="{description} ({tags}) - {path}"
-```
-
-Available placeholders:
-
-- `{path}` - The document's output path
-- `{description}` - The document description
-- `{tags}` - Comma-separated list of document tags
-
-By default, the format is: `[{path}] {description}`
-
-### Configuring File Read/Write
-
-You can turn off file read/write operations in the MCP server.
-
-```dotenv
-MCP_FILE_OPERATIONS=false
-```
-
-By default, file operations are enabled. Set this to `false` to disable them.

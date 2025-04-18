@@ -33,6 +33,7 @@ documents:
 | `size`                           | string\|array   | `[]`     | Size constraints for files (e.g., `"> 10K"`, `"< 1M"`)                                 |
 | `date`                           | string\|array   | `[]`     | Date constraints for files (e.g., `"since yesterday"`, `"> 2023-01-01"`)               |
 | `ignoreUnreadableDirs`           | boolean         | `false`  | Whether to ignore unreadable directories                                               |
+| `maxFiles`                       | integer         | `0`      | Maximum number of files to include (0 for no limit)                                    |
 | `showTreeView`                   | boolean         | `true`   | Whether to display a directory tree visualization (deprecated, use `treeView` instead) |
 | `treeView`                       | boolean\|object | `true`   | Tree view configuration, can be a boolean or detailed configuration object             |
 | `modifiers`                      | array           | `[]`     | Content modifiers to apply                                                             |
@@ -215,6 +216,30 @@ date:
   - "< 2023-06-01"
 ```
 
+## Limiting the Number of Files
+
+You can limit the number of files to process:
+
+```yaml
+documents:
+  - description: "Limited File Sample"
+    outputPath: "docs/limited-sample.md"
+    sources:
+      - type: file
+        description: "First 10 PHP Files (Alphabetically)"
+        sourcePaths: src
+        filePattern: "*.php"
+        maxFiles: 10
+        showTreeView: true
+```
+
+This will:
+
+1. Find all files matching the criteria
+2. Sort them alphabetically
+3. Take only the first 10 files for processing
+4. Still show all matching files in the tree view for context
+
 ## Combined Filtering (Advanced Example)
 
 You can combine multiple filters for precise targeting:
@@ -233,6 +258,7 @@ documents:
         notContains: "@deprecated"
         size: "< 100K"
         date: "since 1 month ago"
+        maxFiles: 20
         ignoreUnreadableDirs: true
         showTreeView: true
         modifiers: [ "php-signature" ]
@@ -246,9 +272,10 @@ This will:
 4. Exclude files containing "@deprecated"
 5. Only include files smaller than 100KB
 6. Only include files modified in the last month
-7. Skip directories that can't be read due to permissions
-8. Show a directory tree in the output
-9. Apply the PHP signature modifier to simplify method implementations
+7. Limit to the first 20 matching files
+8. Skip directories that can't be read due to permissions
+9. Show a directory tree in the output
+10. Apply the PHP signature modifier to simplify method implementations
 
 ## Tree View Configuration
 

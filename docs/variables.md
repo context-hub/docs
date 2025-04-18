@@ -123,12 +123,12 @@ documents:
         urls:
           - "{{api_base}}/schema"
         headers:
-          Authorization: "Bearer ${API_TOKEN}"
+          Authorization: "Bearer {{API_TOKEN}}"
       - type: text
         content: |
           # {{company}} API Documentation
           Version: {{version}}
           Environment: {{environment}}
 
-          Generated on ${DATETIME} by ${USER}
+          Generated on {{DATETIME}} by {{USER}}
 ```

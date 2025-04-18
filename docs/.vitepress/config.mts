@@ -45,7 +45,8 @@ export default withMermaid({
                     {text: 'Integration', link: '/mcp-server'},
                     {text: 'Filesystem', link: '/mcp/filesystem'},
                     {text: 'Prompts', link: '/mcp/prompts'},
-                    {text: 'Tools', link: '/mcp/tools'}
+                    {text: 'Tools', link: '/mcp/tools'},
+                    {text: 'Custom tools', link: '/mcp/custom-tools'}
                 ]
             },
             {
@@ -54,11 +55,13 @@ export default withMermaid({
                     {text: 'Document Structure', link: '/documents'},
                     {text: 'File Source', link: '/sources/file-source'},
                     {text: 'GitHub Source', link: '/sources/github-source'},
+                    {text: 'GitLab  Source', link: '/sources/gitlab-source'},
                     {text: 'Git Diff Source', link: '/sources/git-diff-source'},
                     {text: 'URL Source', link: '/sources/url-source'},
                     {text: 'Text Source', link: '/sources/text-source'},
                     {text: 'Composer Source', link: '/sources/composer-source'},
-                    {text: 'Tree Source', link: '/sources/tree-source'}
+                    {text: 'Tree Source', link: '/sources/tree-source'},
+                    {text: 'MCP Source', link: '/sources/mcp-source'}
                 ]
             },
             {
