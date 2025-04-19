@@ -25,6 +25,23 @@ context files from:
 It was created to solve a common problem: efficiently providing AI language models like ChatGPT, Claude with necessary
 context about your codebase.
 
+## CTX, CaC, and CDD: A Powerful Combination
+
+**CTX** is the foundational tool that enables two powerful development approaches:
+
+- **CaC (Context as Code)**: An approach where code, documentation, and structure serve as explicit context for both
+  humans and AI. With CaC, your codebase becomes self-documenting through meaningful comments, examples, and
+  well-structured organization. CTX automatically extracts and formats this context, making it consumable by LLMs.
+
+- **CDD (Claude/Context Driven Development)**: A methodology where AI assistants like Claude help generate and review
+  code based on well-structured context, with humans providing guidance and final approval. CTX facilitates CDD by
+  automating the context gathering process and maintaining a constant bridge between your code and the AI assistant.
+
+This virtuous cycle means better context leads to better AI assistance, which leads to better code, which in turn
+provides even better context.
+
+> **Read more about the principles of CaC and CDD in the [Understanding CaC, CDD](/cdd.md) section.**
+
 ## Why You Need This
 
 When working with AI-powered development tools context is everything.

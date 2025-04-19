@@ -25,24 +25,27 @@ export default withMermaid({
                 text: 'Home',
                 link: '/',
                 items: [
+                    {text: 'What is CTX?', link: '/'},
                     {text: 'Quick Start', link: '/quick-start'},
+                    {text: 'Understanding CaC, CDD', link: '/cdd'}
                 ]
             },
             {
                 text: 'Getting Started',
                 items: [
                     {text: 'Installation', link: '/getting-started'},
-                    {text: 'Configuration', link: '/configuration'},
+                    {text: 'Configuration', link: '/getting-started/configuration'},
+                    {text: 'Json Schema', link: '/getting-started/json-schema'},
                     {text: 'Command Reference', link: '/getting-started/command-reference'},
-                    {text: 'Variables in Configuration', link: '/variables'},
+                    {text: 'Variables in Configuration', link: '/getting-started/variables'},
                     {text: 'IDE Integration', link: '/getting-started/ide-integration'},
-                    {text: 'Logging', link: '/advanced/logging'}
+                    {text: 'Logging', link: '/getting-started/logging'}
                 ]
             },
             {
                 text: 'MCP Server',
                 items: [
-                    {text: 'Integration', link: '/mcp-server'},
+                    {text: 'Integration', link: '/mcp'},
                     {text: 'Filesystem', link: '/mcp/filesystem'},
                     {text: 'Prompts', link: '/mcp/prompts'},
                     {text: 'Tools', link: '/mcp/tools'},
