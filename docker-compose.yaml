@@ -4,6 +4,8 @@ services:
   docs:
     image: ghcr.io/context-hub/docs:latest
     restart: always
+    environment:
+      NUXT_PUBLIC_GTAG_ID: ${NUXT_PUBLIC_GTAG_ID}
     ports:
       - 9001:80
     networks:
