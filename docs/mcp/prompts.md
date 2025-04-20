@@ -19,6 +19,12 @@ prompts can serve as starting points for common tasks, code generation, or proje
 - [Import](#import)
     - [Import Capabilities](#import-capabilities)
     - [Example Import Configuration](#example-import-configuration)
+- [Tagging Prompts](#tagging-prompts)
+- [Filtered Imports](#filtered-imports)
+    - [Filtering by IDs](#filtering-by-ids)
+    - [Filtering by Tags](#filtering-by-tags)
+    - [Combining Filter Types](#combining-filter-types)
+    - [Match Strategies](#match-strategies)
 
 ## How Prompts Work
 
@@ -329,3 +335,172 @@ import:
 
 > **Note**: There is an example of shared prompts
 > on [Gist](https://gist.github.com/butschster/1b7e597691cc1a6476b15dc120ecbddb) that can be used as a starting point.
+
+## Prompt Tagging and Filtering
+
+CTX allows you to organize prompts with tags and selectively import them based on these tags or their IDs. This helps
+manage large prompt collections and create specialized subsets of prompts for different contexts or use cases.
+
+### Tagging Prompts
+
+Tags are simple string labels that you can assign to prompts to categorize them:
+
+```yaml
+prompts:
+  - id: python-helper
+    description: "Helps with Python code and concepts"
+    tags: [ "python", "coding", "development" ]
+    messages:
+      - role: user
+        content: "You are a Python coding assistant. Help me write efficient Python code."
+
+  - id: creative-writing
+    description: "Helps generate creative writing pieces"
+    tags: [ "writing", "creative", "content-generation" ]
+    messages:
+      - role: user
+        content: "You are a creative writing assistant. Help me generate compelling stories."
+```
+
+Tags can be used to categorize prompts by:
+
+- Domain (e.g., "writing", "coding", "data")
+- Skill level (e.g., "beginner", "advanced")
+- Purpose (e.g., "brainstorming", "debugging", "analysis")
+- Any other organizational scheme that fits your needs
+
+### Filtered Imports
+
+When importing prompts from external sources, you can selectively include only the prompts that match specific criteria
+using filters.
+
+#### Filtering by IDs
+
+To import only specific prompts by their IDs:
+
+```yaml
+import:
+  - url: "https://example.com/prompts-repository.yaml"
+    filter:
+      ids: [ "python-helper", "php-debug", "js-refactor" ]
+```
+
+This will only import the three specified prompts and ignore all others from the source.
+
+#### Filtering by Tags
+
+To import prompts based on their tags:
+
+```yaml
+import:
+  - path: "./local-prompts.yaml"
+    filter:
+      tags:
+        include: [ "coding", "debugging" ]
+        exclude: [ "advanced" ]
+        match: "any"  # Can be "all" for AND logic
+```
+
+This filter will:
+
+- Include prompts that have either the "coding" OR "debugging" tag (because `match: "any"`)
+- Exclude prompts that have the "advanced" tag, regardless of other tags
+
+The `match` parameter determines how the `include` tags are evaluated:
+
+- `any`: Include if the prompt has ANY of the specified tags (OR logic)
+- `all`: Include only if the prompt has ALL of the specified tags (AND logic)
+
+#### Combining Filter Types
+
+You can combine ID and tag filtering in a single import:
+
+```yaml
+import:
+  - path: "./prompt-collection.yaml"
+    filter:
+      ids:
+        - creative-writing
+        - summarization-prompt
+      tags:
+        include:
+          - content
+        exclude:
+          - technical
+      match: "any"  # This applies to the overall filter strategy
+```
+
+With combined filtering:
+
+- The `match` parameter at the root level determines how different filter types (IDs and tags) are combined
+- `match: "any"` means prompts matching EITHER the ID criteria OR the tag criteria will be imported
+- `match: "all"` would require prompts to match BOTH the ID criteria AND the tag criteria
+
+#### Match Strategies
+
+Both tag filtering and combined filtering support two match strategies:
+
+1. **ANY** strategy (`match: "any"`, default):
+    - For tags: Include if the prompt has any of the specified include tags
+    - For combined filters: Include if the prompt matches either the ID criteria or the tag criteria
+
+2. **ALL** strategy (`match: "all"`):
+    - For tags: Include only if the prompt has all of the specified include tags
+    - For combined filters: Include only if the prompt matches both the ID criteria and the tag criteria
+
+### Use Cases
+
+#### Creating Domain-Specific Collections
+
+Import only prompts related to a specific domain:
+
+```yaml
+import:
+  - url: "https://example.com/all-prompts.yaml"
+    filter:
+      tags:
+        include: [ "writing", "content-generation" ]
+```
+
+#### Excluding Advanced Prompts
+
+Import all coding prompts except advanced ones:
+
+```yaml
+import:
+  - url: "https://example.com/coding-prompts.yaml"
+    filter:
+      tags:
+        include: [ "coding" ]
+        exclude: [ "advanced" ]
+```
+
+#### Creating Curated Collections
+
+Import a carefully selected set of prompts by their IDs:
+
+```yaml
+import:
+  - url: "https://example.com/prompt-repository.yaml"
+    filter:
+      ids:
+        - python-helper
+        - summarization-prompt
+        - brainstorming
+```
+
+#### Combining Tag-Based and ID-Based Filtering
+
+Import prompts that are either in a specific category OR are specifically chosen:
+
+```yaml
+import:
+  - url: "https://example.com/prompts.yaml"
+    filter:
+      ids:
+        - special-prompt-1
+        - special-prompt-2
+      tags:
+        include: [ "recommended" ]
+      match: "any"  # Import if either the ID matches OR it has the "recommended" tag
+```

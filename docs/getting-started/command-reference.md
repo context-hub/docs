@@ -272,3 +272,66 @@ ctx --inline='
 }
 '
 ```
+
+## List Available Prompts
+
+Lists all available prompts with their IDs, types, descriptions, tags, and arguments.
+
+```bash
+ctx prompts:list
+# or
+ctx prompts
+```
+
+### Options
+
+| Option                | Description                                                             |
+|-----------------------|-------------------------------------------------------------------------|
+| `--config-file`, `-c` | Path to configuration file (absolute or relative to current directory). |
+| `--tag`, `-t`         | Filter prompts by tag (can be used multiple times).                     |
+| `--exclude-tag`, `-x` | Exclude prompts with specific tag (can be used multiple times).         |
+| `--id`, `-p`          | Filter prompts by ID (can be used multiple times).                      |
+| `--detailed`, `-d`    | Show detailed information including arguments.                          |
+
+### Examples
+
+**List all prompts in table format:**
+
+```bash
+ctx prompts:list
+```
+
+**Show detailed information with arguments:**
+
+```bash
+ctx prompts:list --detailed
+# or
+ctx prompts -d
+```
+
+**Filter prompts by tags:**
+
+```bash
+ctx prompts:list --tag api --tag documentation
+# or
+ctx prompts -t api -t documentation
+```
+
+**Exclude prompts with specific tags:**
+
+```bash
+ctx prompts:list --exclude-tag experimental
+# or
+ctx prompts -x experimental
+```
+
+**Filter prompts by ID:**
+
+```bash
+ctx prompts:list --id system-prompt --id user-query
+# or
+ctx prompts -p system-prompt -p user-query
+```
+
+This command helps you discover and explore available prompts in your configuration, making it easier to understand what
+prompts are available for use with the MCP server.
