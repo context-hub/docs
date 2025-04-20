@@ -335,3 +335,111 @@ ctx prompts -p system-prompt -p user-query
 
 This command helps you discover and explore available prompts in your configuration, making it easier to understand what
 prompts are available for use with the MCP server.
+
+## List Available Tools
+
+Lists all available MCP tools with their IDs, types, descriptions, and schema information.
+
+```bash
+ctx tool:list
+# or
+ctx tools
+```
+
+### Options
+
+| Option                | Description                                                             |
+|-----------------------|-------------------------------------------------------------------------|
+| `--config-file`, `-c` | Path to configuration file (absolute or relative to current directory). |
+| `--type`, `-t`        | Filter tools by type (e.g., run, http).                                 |
+| `--id`, `-i`          | Filter tools by ID (can be used multiple times).                        |
+| `--detailed`, `-d`    | Show detailed information including commands.                           |
+
+### Examples
+
+**List all tools in table format:**
+
+```bash
+ctx tool:list
+```
+
+**Show detailed information with commands:**
+
+```bash
+ctx tool:list --detailed
+# or
+ctx tools -d
+```
+
+**Filter tools by type:**
+
+```bash
+ctx tool:list --type run
+# or
+ctx tools -t http
+```
+
+**Filter tools by ID:**
+
+```bash
+ctx tool:list --id git-status --id lint-code
+# or
+ctx tools -i git-status -i lint-code
+```
+
+## Execute a Tool
+
+Executes an MCP tool with interactive prompts for arguments based on the tool's schema.
+
+```bash
+ctx tool:run <tool-id>
+```
+
+### Options
+
+| Option                   | Description                                                             |
+|--------------------------|-------------------------------------------------------------------------|
+| `--config-file`, `-c`    | Path to configuration file (absolute or relative to current directory). |
+| `--arg`, `-a`            | Tool arguments in format name=value (can be used multiple times).       |
+| `--no-interaction`, `-n` | Do not ask any interactive questions.                                   |
+
+### Examples
+
+**Execute a tool with interactive prompts:**
+
+```bash
+ctx tool:run git-status
+```
+
+**Execute a tool with arguments provided on command line:**
+
+```bash
+ctx tool:run lint-code --arg path=src/MyClass.php --arg fix=true
+# or
+ctx tool:run lint-code -a path=src/MyClass.php -a fix=true
+```
+
+**Execute in non-interactive mode (requires all necessary arguments):**
+
+```bash
+ctx tool:run build-assets --arg env=production --no-interaction
+# or
+ctx tool:run build-assets -a env=production -n
+```
+
+**Select a tool interactively:**
+
+```bash
+ctx tool:run
+```
+
+**Use a specific configuration file:**
+
+```bash
+ctx tool:run deploy-app --config-file=tools-config.yaml
+# or
+ctx tool:run deploy-app -c tools-config.yaml
+```
+
+This command simplifies testing and executing MCP tools during development without requiring code changes or application
+redeployment.
