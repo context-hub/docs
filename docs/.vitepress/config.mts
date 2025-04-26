@@ -64,7 +64,8 @@ export default withMermaid({
                     {text: 'Text Source', link: '/sources/text-source'},
                     {text: 'Composer Source', link: '/sources/composer-source'},
                     {text: 'Tree Source', link: '/sources/tree-source'},
-                    {text: 'MCP Source', link: '/sources/mcp-source'}
+                    {text: 'MCP Source', link: '/sources/mcp-source'},
+                    {text: 'Docs Source', link: '/sources/docs-source'},
                 ]
             },
             {
