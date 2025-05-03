@@ -165,9 +165,8 @@ First of all you need to [install](https://claude.ai/download) Claude app and la
 {
   "mcpServers": {
     "ctx": {
-      "command": "wsl.exe",
+      "command": "bash.exe",
       "args": [
-        "bash",
         "-c",
         "ctx server -c /path/to/project"
       ]
@@ -213,9 +212,8 @@ the bash command:
 {
   "mcpServers": {
     "ctx": {
-      "command": "wsl.exe",
+      "command": "bash.exe",
       "args": [
-        "bash",
         "-c",
         "export GITHUB_PAT=ghp_your_personal_access_token && export MCP_FILE_OPERATIONS=true && ctx server -c /path/to/project"
       ]
@@ -225,3 +223,8 @@ the bash command:
 ```
 
 **Important:** After saving the configuration, restart the app.
+
+## Dynamic Projects Switching
+
+The MCP server supports dynamic project switching, allowing you to work with multiple projects. Read more about
+dynamic project switching in the [Projects](projects.md) section.

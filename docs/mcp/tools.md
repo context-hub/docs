@@ -10,15 +10,16 @@ The tools system can be configured using environment variables to enable or disa
 
 ### General Configuration
 
-| Variable                     | Description                                | Default |
-|------------------------------|--------------------------------------------|---------|
-| `MCP_CUSTOM_TOOLS_ENABLE`    | Enable/disable custom tools                | `true`  |
-| `MCP_TOOL_MAX_RUNTIME`       | Maximum runtime for a command in seconds   | `30`    |
-| `MCP_TOOL_COMMAND_EXECUTION` | Enable/disable command execution           | `true`  |
-| `MCP_FILE_OPERATIONS`        | Master switch for all file operation tools | `true`  |
-| `MCP_FILE_WRITE`             | Enable/disable file write operations       | `true`  |
-| `MCP_FILE_APPLY_PATCH`       | Enable/disable applying patches to files   | `false` |
-| `MCP_FILE_DIRECTORIES_LIST`  | Enable/disable directory listing           | `true`  |
+| Variable                     | Description                                 | Default |
+|------------------------------|---------------------------------------------|---------|
+| `MCP_CUSTOM_TOOLS_ENABLE`    | Enable/disable custom tools                 | `true`  |
+| `MCP_TOOL_MAX_RUNTIME`       | Maximum runtime for a command in seconds    | `30`    |
+| `MCP_TOOL_COMMAND_EXECUTION` | Enable/disable command execution            | `true`  |
+| `MCP_FILE_OPERATIONS`        | Master switch for all file operation tools  | `true`  |
+| `MCP_FILE_WRITE`             | Enable/disable file write operations        | `true`  |
+| `MCP_FILE_APPLY_PATCH`       | Enable/disable applying patches to files    | `false` |
+| `MCP_FILE_DIRECTORIES_LIST`  | Enable/disable directory listing            | `true`  |
+| `MCP_DOCS_TOOLS_ENABLED`     | Enable/disable Context7 documentation tools | `true`  |
 
 ## Available Tool Categories
 
@@ -55,6 +56,17 @@ Experimental tools for working with prompts.
 |----------------|----------------------------|-------------------------|------------------------|
 | `prompt-get`   | Retrieve a specific prompt | `MCP_PROMPT_OPERATIONS` | `false` (experimental) |
 | `prompts-list` | List all available prompts | `MCP_PROMPT_OPERATIONS` | `false` (experimental) |
+
+### Docs Tools (`MCP_DOCS_TOOLS_ENABLED`)
+
+Search for documentation libraries available on the Context7 service.
+
+#### Parameters
+
+| Parameter | Type    | Required | Default | Description                                  |
+|-----------|---------|----------|---------|----------------------------------------------|
+| `query`   | string  | Yes      | -       | Search query to find documentation libraries |
+| `limit`   | integer | No       | 5       | Maximum number of results to return          |
 
 ### Always Available Tools
 
