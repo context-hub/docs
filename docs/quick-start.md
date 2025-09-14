@@ -1,7 +1,6 @@
 # Quick Start
 
-Getting started with **CTX** is straightforward. Follow these simple steps to create your first context file
-for LLMs.
+Getting started with **CTX** is straightforward. Follow these steps to create your first context file for LLMs.
 
 ## 1. Install **CTX**
 
@@ -72,9 +71,10 @@ Generate your context file by running:
 ctx
 ```
 
-The tool will process your configuration and create the specified output file (`auth-context.md` in our example).
+The tool will process your configuration and create the specified output file (`.context/auth-context.md` in our
+example).
 
-> **Tip**: Configure [Logging](/advanced/logging) with `-v`, `-vv`, or `-vvv` for detailed output
+> **Tip**: Configure [Logging](./getting-started/logging.md) with `-v`, `-vv`, or `-vvv` for detailed output
 
 ## 5. Share with an LLM
 
@@ -86,7 +86,7 @@ Example prompt:
 > I've shared my authentication system code with you. Can you help me identify potential security vulnerabilities in the
 > user registration process?
 
-> **Next steps:** Check out [Development with **CTX**](/advanced/development-process) for best practices on
+> **Next steps:** Check out [Development with **CTX**](./advanced/development-process.md) for best practices on
 > integrating context generation into your AI-powered development workflow.
 
 That's it! You're now ready to leverage LLMs with proper context about your codebase.
@@ -109,7 +109,7 @@ Point the MCP client to the **CTX** server:
 }
 ```
 
-> **Note:** Read more about [MCP Server](/mcp-server) for detailed setup instructions.
+> **Note:** Read more about [MCP Server](./mcp/index.md#setting-up) for detailed setup instructions.
 
 Now you can ask Claude questions about your codebase without manually uploading context files!
 
@@ -136,7 +136,7 @@ prompts:
         content: "Generate a controller for the {{entityName}} entity."
 ```
 
-> **Note:** Read more about [Prompts](/mcp/prompts) for detailed configuration options.
+> **Note:** Read more about [Prompts](./mcp/prompts.md) for detailed configuration options.
 
 Import sharable prompts from the community or create your own to enhance your workflow.
 
@@ -173,7 +173,7 @@ tools:
 These tools can be executed directly by the LLM during conversations, enabling the AI to run code quality checks, tests,
 or other development tasks.
 
-> **Note:** Read more about [Tools](/mcp/tools) for detailed configuration options and examples.
+> **Note:** Read more about [Tools](./mcp/tools.md) for detailed configuration options and examples.
 
 ## JSON Schema
 
@@ -185,5 +185,5 @@ documents:
   ...
 ```
 
-> **Learn more:** See [IDE Integration](/getting-started/ide-integration) for detailed setup instructions for VSCode,
-> PhpStorm, and other editors.
+> **Learn more:** See [IDE Integration](./getting-started/ide-integration.md) for detailed setup instructions for
+> VSCode, PhpStorm, and other editors.

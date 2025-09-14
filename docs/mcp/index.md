@@ -105,11 +105,9 @@ ensuring the AI receives precisely the information needed to assist you effectiv
 
 ## Setting Up
 
-First of all you need to [install](https://claude.ai/download) Claude app and latest version of **CTX** (**>
-1.18.0**).
+First, you need to [install](https://claude.ai/download) Claude app and latest version of **CTX** (**>1.18.0**).
 
 > **Note**: The MCP server is only available in the desktop version of Claude. The web version does not support it.
->
 
 ### Steps
 
