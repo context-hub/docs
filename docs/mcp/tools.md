@@ -17,28 +17,24 @@ The tools system can be configured using environment variables to enable or disa
 | `MCP_TOOL_COMMAND_EXECUTION` | Enable/disable command execution            | `true`  |
 | `MCP_FILE_OPERATIONS`        | Master switch for all file operation tools  | `true`  |
 | `MCP_FILE_WRITE`             | Enable/disable file write operations        | `true`  |
-| `MCP_FILE_APPLY_PATCH`       | Enable/disable applying patches to files    | `false` |
 | `MCP_FILE_DIRECTORIES_LIST`  | Enable/disable directory listing            | `true`  |
 | `MCP_DOCS_TOOLS_ENABLED`     | Enable/disable Context7 documentation tools | `true`  |
+| `MCP_PROJECT_OPERATIONS`     | Enable/disable project operations           | `true`  |
 
 ## Available Tool Categories
 
-### File Operations (`MCP_FILE_OPERATIONS=true`)
+### File Operations
 
 Master switch for all file operation tools. When set to `false`, all below file tools are disabled regardless of their
 individual settings.
 
-| Tool Key           | Description                                                  | Environment Variable                              | Default                |
-|--------------------|--------------------------------------------------------------|---------------------------------------------------|------------------------|
-| `file-info`        | Get information about a file (size, type, modification date) | Always available when file operations are enabled | -                      |
-| `file-read`        | Read content from a file                                     | Always available when file operations are enabled | -                      |
-| `file-rename`      | Rename a file                                                | Always available when file operations are enabled | -                      |
-| `file-move`        | Move a file from one location to another                     | Always available when file operations are enabled | -                      |
-| `directory-list`   | List files and directories in a specified path               | `MCP_FILE_DIRECTORIES_LIST`                       | `true`                 |
-| `file-write`       | Create new files or modify existing ones                     | `MCP_FILE_WRITE`                                  | `true`                 |
-| `file-apply-patch` | Apply git-style patches to files                             | `MCP_FILE_APPLY_PATCH`                            | `false` (experimental) |
+| Tool Key         | Description                                    | Environment Variable                              | Default |
+|------------------|------------------------------------------------|---------------------------------------------------|---------|
+| `file-read`      | Read content from a file                       | Always available when file operations are enabled | -       |
+| `directory-list` | List files and directories in a specified path | `MCP_FILE_DIRECTORIES_LIST`                       | `true`  |
+| `file-write`     | Create new files or modify existing ones       | `MCP_FILE_WRITE`                                  | `true`  |
 
-### Context Operations (`MCP_CONTEXT_OPERATIONS=true`)
+### Context Operations
 
 Tools for working with context information.
 
@@ -48,7 +44,7 @@ Tools for working with context information.
 | `context-get`     | Get a specific context document                         | Always available when context operations are enabled | -       |
 | `context`         | List all available contexts                             | Always available when context operations are enabled | -       |
 
-### Prompt Operations (`MCP_PROMPT_OPERATIONS=false`)
+### Prompt Operations
 
 Experimental tools for working with prompts.
 
@@ -57,16 +53,57 @@ Experimental tools for working with prompts.
 | `prompt-get`   | Retrieve a specific prompt | `MCP_PROMPT_OPERATIONS` | `false` (experimental) |
 | `prompts-list` | List all available prompts | `MCP_PROMPT_OPERATIONS` | `false` (experimental) |
 
-### Docs Tools (`MCP_DOCS_TOOLS_ENABLED`)
+### Docs Tools
 
-Search for documentation libraries available on the Context7 service.
+Tools for searching and retrieving documentation from the Context7 service.
 
-#### Parameters
+| Tool Key         | Description                                              | Environment Variable     | Default |
+|------------------|----------------------------------------------------------|--------------------------|---------|
+| `library-search` | Search for available documentation libraries in Context7 | `MCP_DOCS_TOOLS_ENABLED` | `true`  |
+| `find-docs`      | Find and retrieve documentation for a specific library   | `MCP_DOCS_TOOLS_ENABLED` | `true`  |
 
-| Parameter | Type    | Required | Default | Description                                  |
-|-----------|---------|----------|---------|----------------------------------------------|
-| `query`   | string  | Yes      | -       | Search query to find documentation libraries |
-| `limit`   | integer | No       | 5       | Maximum number of results to return          |
+#### library-search Tool
+
+Search for available documentation libraries in the Context7 service.
+
+**Parameters:**
+
+| Parameter    | Type    | Required | Default | Description                      |
+|--------------|---------|----------|---------|----------------------------------|
+| `query`      | string  | Yes      | -       | Search query to find libraries   |
+| `maxResults` | integer | No       | 5       | Maximum number of results (1-10) |
+
+**Response:** Returns a JSON array of matching libraries with their IDs, names, and descriptions.
+
+#### find-docs Tool
+
+Retrieve documentation content for a specific library from Context7.
+
+**Parameters:**
+
+| Parameter | Type    | Required | Default | Description                                   |
+|-----------|---------|----------|---------|-----------------------------------------------|
+| `id`      | string  | Yes      | -       | Library ID (obtained from library-search)     |
+| `tokens`  | integer | No       | -       | Maximum number of tokens to retrieve          |
+| `topic`   | string  | No       | -       | Specific topic within the library to focus on |
+
+**Response:** Returns the documentation content as text, filtered by the specified topic and token limit if provided.
+
+### Project Operations
+
+Tools for managing and switching between different project contexts.
+
+| Tool Key         | Description                                                   | Environment Variable     | Default |
+|------------------|---------------------------------------------------------------|--------------------------|---------|
+| `projects-list`  | List all registered projects with their configuration details | `MCP_PROJECT_OPERATIONS` | `true`  |
+| `project-switch` | Switch to a different project by path or alias                | `MCP_PROJECT_OPERATIONS` | `true`  |
+
+- Projects must be registered using the `project:add` command before they can be switched to
+- The tool validates project existence before attempting to switch
+- Provides helpful error messages with available options when a project is not found
+- Supports both absolute and relative paths, with automatic path normalization
+
+> **Note:** Read more about project management in the [Project Management](./projects.md) section.
 
 ### Always Available Tools
 

@@ -168,3 +168,8 @@ In your Claude app configuration, set up the MCP Server without specifying a pro
 
 This configuration allows the MCP server to automatically use the currently active project from your project registry
 without requiring a specific path at startup time.
+
+## MCP Tools for Project Management
+
+In addition to the command-line interface, CTX provides MCP tools that AI assistants can use to manage projects
+programmatically. Read more about [MCP Tools](./tools.md#project-operations-mcp_project_operationstrue).
