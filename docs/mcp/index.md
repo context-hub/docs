@@ -109,16 +109,47 @@ First, you need to [install](https://claude.ai/download) Claude app and latest v
 
 > **Note**: The MCP server is only available in the desktop version of Claude. The web version does not support it.
 
-### Steps
+### Quick Setup
+
+The easiest way to set up MCP integration is using the built-in configuration generator:
+
+```bash
+ctx mcp:config
+```
+
+> **Note**: All the command options can be found in
+> the [CLI Reference](../getting-started/command-reference.md#generate-mcp-configuration).
+
+This command will:
+
+- 🔍 Auto-detect your operating system (Windows, Linux, macOS, WSL)
+- 🎯 Generate the correct configuration for your environment
+- 📋 Provide copy-paste ready JSON for Claude Desktop
+- 🧭 Include setup instructions and troubleshooting tips
+
+### Manual Configuration Steps
 
 1. Download Claude App for your operating system
 2. Open **Settings** → **Developer** → **Edit config** → open config file `claude_desktop_config`
-3. Register the **CTX** MCP server using the appropriate configuration
+3. Add the generated configuration to your Claude Desktop config file
+4. Save and restart Claude Desktop
 
---- 
-
-**Important: You must specify the path to your project using the `-c` flag. The project root should contain a
+> **Important: You must specify the path to your project using the `-c` flag. The project root should contain a
 `context.json` or `context.yaml` configuration file.**
+
+### Configuration Modes
+
+**Global Registry Mode (recommended for multiple projects):**
+
+- Uses `ctx server` without project path
+- Enables dynamic switching between registered projects
+- Requires projects to be registered with `ctx project:add`
+
+**Project-Specific Mode (single project):**
+
+- Uses `ctx server -c /path/to/project`
+- Ties configuration to a specific project path
+- Good for focused single-project workflows
 
 ### Platform-Specific Configurations
 

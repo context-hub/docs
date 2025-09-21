@@ -83,6 +83,106 @@ ctx init -c context.json
 
 > **Note**: Only `json` and `yaml` formats are supported for the configuration file.
 
+## Generate MCP Configuration
+
+Generates MCP configuration snippets for connecting CTX to Claude Desktop or other MCP clients. This command
+automatically detects your operating system and generates the appropriate configuration format.
+
+```bash
+ctx mcp:config
+```
+
+### Options
+
+| Option                | Description                                        |
+|-----------------------|----------------------------------------------------|
+| `--explain`           | Show detailed setup instructions                   |
+| `--interactive`, `-i` | Interactive mode with guided questions             |
+| `--client`, `-c`      | MCP client type (claude, generic). Default: claude |
+| `--global`, `-g`      | Use global project registry (no -c option)         |
+
+### Examples
+
+**Auto-detect and generate global registry configuration:**
+
+```bash
+ctx mcp:config
+```
+
+**Interactive mode with guided questions:**
+
+```bash
+ctx mcp:config --interactive
+# or
+ctx mcp:config -i
+```
+
+**Global registry mode (default):**
+
+```bash
+ctx mcp:config --global
+# or
+ctx mcp:config -g
+```
+
+**Generate for different MCP clients:**
+
+```bash
+ctx mcp:config --client=generic
+# or
+ctx mcp:config -c generic
+```
+
+### Sample Output
+
+**Global Registry Mode:**
+
+```json
+{
+  "mcpServers": {
+    "ctx": {
+      "command": "ctx",
+      "args": [
+        "server"
+      ]
+    }
+  }
+}
+```
+
+**Project-Specific Mode:**
+
+```json
+{
+  "mcpServers": {
+    "ctx": {
+      "command": "ctx",
+      "args": [
+        "server",
+        "-c",
+        "/path/to/project"
+      ]
+    }
+  }
+}
+```
+
+**WSL Configuration:**
+
+```json
+{
+  "mcpServers": {
+    "ctx": {
+      "command": "bash.exe",
+      "args": [
+        "-c",
+        "ctx server -c /path/to/project"
+      ]
+    }
+  }
+}
+```
+
 ## MCP Server
 
 Starts the Model Control Protocol (MCP) server to enable direct integration with Claude AI. This server acts as a bridge
