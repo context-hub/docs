@@ -2,12 +2,16 @@
 
 ![Good morning, LLM](https://github.com/user-attachments/assets/8129f227-dc3f-4671-bc0e-0ecd2f3a1888)
 
-**CTX** is a tool that solves the context management gap when working with LLMs like ChatGPT or Claude. It helps
-developers organize and automatically collect information from their codebase into structured documents that can be
-easily shared with AI assistants.
+During development, your codebase constantly evolves. Files are added, modified, and removed. Each time you need to
+continue working with an LLM, you need to regenerate context to provide updated information about your current codebase
+state.
 
-**The tool doesn't work instead of developer - it's a tool where developers can describe their contexts and use them
-to provide information to LLMs.**
+**CTX** is a context management tool that gives developers full control over what AI sees from their codebase. Instead
+of letting AI tools guess what's relevant, you define exactly what context to provide - making your AI-assisted
+development more predictable, secure, and efficient.
+
+It helps developers organize contexts and automatically collect information from their codebase into structured
+documents that can be easily shared with LLM.
 
 For example, a developer describes what context they need:
 
@@ -56,30 +60,84 @@ into a chat session or provided via the built-in [MCP server](./mcp/index.md).
 
 > Here is a [Quickstart guide](./quick-start.md) to get you started with CTX.
 
-### The Problem CTX Solves
+### Why CTX?
 
-**Without such a tool, you would need to:**
+Current AI coding tools automatically scan your entire codebase, which creates several issues:
 
-- Manually search for all files that were changed
-- Copy their contents each time
-- Explain the codebase structure repeatedly
-- Spend significant time maintaining context consistency
+- **Security risk**: Your sensitive files (env vars, tokens, private code) get uploaded to cloud services
+- **Context dilution**: AI gets overwhelmed with irrelevant code, reducing output quality
+- **No control**: You can't influence what the AI considers when generating responses
+- **Expensive**: Premium tools charge based on how much they scan, not how much you actually need
 
-This repetitive process becomes frustrating and can discourage continued development, as you end up doing the same
-context-gathering work over and over instead of writing code.
+### The CTX Approach
 
-Since CTX describes contexts, this process becomes automated.
+You know your code better than any AI. CTX puts you in control:
 
-## Use Cases
+- ✅ Define exactly what context to share - no more, no less
+- ✅ Keep sensitive data local - works with local LLMs or carefully curated cloud contexts
+- ✅ Generate reusable, shareable contexts - commit configurations to your repo
+- ✅ Improve code architecture - designing for AI context windows naturally leads to better modular code
+- ✅ Works with any LLM - Claude, ChatGPT, local models, or future tools
 
-When working with AI-powered development tools context is everything.
+## Real-World Use Cases
 
-- **Code Development**: Maintain up-to-date context for iterative development sessions with AI assistants. When your
-  codebase changes, regenerate context documents to continue working with current code state.
-- **Code Refactoring**: Provide AI with complete context about classes, functions, and their dependencies for
-  refactoring assistance.
-- **Documentation**: Generate documentation by combining source code with explanations, using AI to create guides and
-  references based on actual code.
-- **Team Workflows**: Share context configurations across team members to maintain consistent AI interaction patterns.
-- **MCP Integration**: Connect Claude AI directly to your codebase for real-time, context-aware assistance without
-  manual context sharing.
+### 🚀 Onboarding New Team Member
+
+```yaml
+# Quick project overview for new developers
+documents:
+  - description: "Project Architecture Overview"
+    outputPath: "docs/architecture.md"
+    sources:
+      - type: tree
+        sourcePaths: [ "src" ]
+        maxDepth: 2
+      - type: file
+        description: "Core interfaces and main classes"
+        sourcePaths: [ "src" ]
+        filePattern: "*Interface.php"
+```
+
+### 📝 Feature Development
+
+```yaml
+# Context for developing a new feature
+documents:
+  - description: "User Authentication System"
+    outputPath: "contexts/auth-context.md"
+    sources:
+      - type: file
+        sourcePaths: [ "src/Auth", "src/Models" ]
+        filePattern: "*.php"
+      - type: git_diff
+        description: "Recent auth changes"
+        commit: "last-week"
+```
+
+### 📚 Documentation Generation
+
+```yaml
+# Generate API documentation
+documents:
+  - description: "API Documentation"
+    outputPath: "docs/api.md"
+    sources:
+      - type: file
+        sourcePaths: [ "src/Controllers" ]
+        modifiers: [ "php-signature" ]
+        contains: [ "@Route", "@Api" ]
+```
+
+## Join Our Community
+
+Join hundreds of developers using CTX for professional AI-assisted coding:
+
+[![Join Discord](https://img.shields.io/discord/1419284404315881633?color=5865F2&label=Join%20Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/YmFckwVkQM)
+
+**What you'll find in our Discord:**
+
+- 💡 Share and discover context configurations
+- 🛠️ Get help with setup and advanced usage
+- 🚀 Showcase your AI development workflows
+- 🤝 Connect with like-minded developers
+- 📢 First to know about new releases and features

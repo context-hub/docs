@@ -1,7 +1,6 @@
-# Contributing to **CTX**
+# Contributing
 
-We're excited to welcome you as a contributor to the **CTX** project! This guide will help you get started
-with contributing to our project.
+We're excited to welcome you as a contributor to our project!
 
 ## How to Contribute
 
@@ -10,16 +9,13 @@ There are many ways to contribute to **CTX**:
 1. **Report Issues**: If you find a bug or have a
    suggestion, [create an issue](https://github.com/context-hub/generator/issues) on our GitHub repository.
 2. **Submit Pull Requests**: Have a fix or a new feature? Submit a pull request!
-3. **Improve Documentation**: Help us make our documentation more clear, comprehensive, and accessible.
+3. **Improve Documentation**: Help us make our [documentation](https://github.com/context-hub/docs) more clear,
+   comprehensive, and accessible.
 4. **Share Your Use Cases**: Let us know how you're using **CTX** in your projects.
 
 We label issues that are suitable for community contribution with the `help wanted` tag. Additionally, we use labels
 such as `good first issue` for newcomer-friendly tasks, and complexity indicators to help you choose tasks that match
 your experience level.
-
-I'd be happy to write a better instruction for the Getting Started section that highlights the use of the context.yaml
-file for context generation. This will help new contributors understand how they can use **CTX** itself to
-explore and work with the codebase.
 
 ## Getting Started with Contributing
 
@@ -37,31 +33,19 @@ cd context-generator
 composer install
 
 # Make the CLI tool available locally
-chmod +x context-generator
+chmod +x ctx
 
 # Test the command
-./context-generator --help
+./ctx --help
 ```
 
-> **Note:** Use the local `./context-generator` command during development to test your changes. The globally installed
-`ctx` command won't reflect your local modifications.
+> **Note:** Use the local `./ctx` command during development to test your changes. The globally installed`ctx` command
+> won't reflect your local modifications.
 
 ### 2. Understand the Project Structure
 
-Before diving into specific components, familiarize yourself with the project structure:
-
-```
-└── src/
-    ├── ConfigLoader/ - Configuration loading and processing
-    ├── Console/ - CLI commands and interfaces
-    ├── Document/ - Document generation and formatting
-    ├── Fetcher/ - Content fetching mechanisms
-    ├── Lib/ - Utility libraries and helpers
-    ├── Modifier/ - Content modification systems
-    └── Source/ - Different source type implementations
-```
-
-To get a more detailed view of the project structure, use the `tree` source type:
+Before diving into specific components, familiarize yourself with the project structure. To get a detailed view of the
+project structure, use the `tree` source type:
 
 ```yaml
 documents:
@@ -77,27 +61,13 @@ documents:
 Run this configuration to generate a visual representation of the codebase structure:
 
 ```bash
-./context-generator
+./ctx
 ```
 
-This will create a `docs/file-structure.md` file that outlines the project's organization. Just put this file in the
+This will create a `docs/file-structure.md` file that outlines the project's organization. Put this file in the
 Claude project context to help it understand the codebase.
 
-### 3. Explore the Codebase Using **CTX**
-
-The project includes a pre-configured `context.yaml` file to help you explore the codebase:
-
-```bash
-# Generate context files using the provided configuration
-./context-generator
-
-# This will create documentation in the .context/ directory
-```
-
-The generated context files provide a comprehensive overview of the most important parts of the system. Upload documents
-connected to your task to an LLM like Claude to get a better understanding of the codebase.
-
-### 4. Request Specific Context Using YAML
+### 3. Request Specific Context Using YAML
 
 When working on a specific feature or bug fix, create targeted context requests to get exactly the information you need.
 
@@ -122,7 +92,7 @@ documents:
 Generate your custom context:
 
 ```bash
-./context-generator
+./ctx
 ```
 
 This structured approach offers several advantages:
@@ -134,7 +104,7 @@ This structured approach offers several advantages:
 
 Let me enhance the section on collaborating with AI assistants to include this important recommendation:
 
-### 5. Collaborate with AI Assistants
+### 4. Collaborate with AI Assistants
 
 Share the generated context files with AI assistants like Claude to get help with:
 
@@ -176,7 +146,7 @@ Include the problem statement, proposed solution, implementation details, and po
 This gives the AI assistant exactly the context needed to provide meaningful assistance with your specific task, and the
 resulting document becomes a valuable asset throughout your development process.
 
-### 6. Implement Your Changes
+### 5. Implement Your Changes
 
 > **Tip**: When you provide all required context to Claude, it will be able to solve your task efficiently. With proper
 > context, the solution will be fast, precise, and aligned with the project's patterns and standards.
@@ -196,7 +166,7 @@ With a solid understanding of the codebase:
     3. Review and refine the suggested documentation
     4. Include the updated documentation in your pull request
 
-### 7. Document Your Changes
+### 6. Document Your Changes
 
 If you worked with an LLM to implement your changes, ask it to help draft commit messages and pull request descriptions.
 
@@ -213,7 +183,7 @@ documents:
         commit: "unstaged"  # or "staged" if you've already staged your changes
 ```
 
-### 8. Submit Your Pull Request
+### 7. Submit Your Pull Request
 
 - Push your changes to your fork
 - Open a pull request with a clear description
