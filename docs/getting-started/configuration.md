@@ -282,6 +282,109 @@ The same configuration in JSON format:
 }
 ```
 
+### Markdown Imports
+
+The markdown import type allows importing directories containing markdown files with YAML frontmatter metadata,
+automatically converting them into CTX prompts, documents, and resources.
+
+| Parameter | Description                                 | Required | Default |
+|-----------|---------------------------------------------|----------|---------|
+| `type`    | Import type (must be "local")               | No       | -       |
+| `path`    | Path to directory containing markdown files | Yes      | -       |
+| `format`  | Format type ("md")                          | Yes      | -       |
+
+When you specify `format: md`, the system will:
+
+1. **Recursively scan** the specified directory and all subdirectories for `.md` and `.markdown` files
+2. **Parse YAML frontmatter** from each file to extract metadata
+3. **Auto-detect resource types** based on metadata (`type: prompt` or default to resource)
+4. **Register each file** as an individual CTX resource accessible via MCP
+5. **Extract titles** from first `#` header if no title is provided in frontmatter
+
+#### Basic Markdown Import
+
+```yaml
+import:
+  - path: ./docs
+    format: md
+```
+
+#### Markdown Import with Path Prefix
+
+```yaml
+import:
+  - path: ./prompts
+    format: md
+    pathPrefix: /team-prompts
+```
+
+#### Markdown File Formats
+
+**With YAML Frontmatter:**
+
+```markdown
+---
+type: prompt
+title: "Code Review Helper"
+description: "Assists with code review tasks"
+tags: ["code-review", "development"]
+schema:
+  properties:
+    language:
+      type: string
+      description: "Programming language"
+---
+
+# Code Review Assistant
+
+I'll help you review {{language}} code effectively.
+```
+
+**Without Frontmatter (Auto Title Extraction):**
+
+```markdown
+# Database Best Practices
+
+This document outlines database design guidelines...
+```
+
+#### Title/Description Priority
+
+The system uses this hierarchy for determining titles and descriptions:
+
+1. `description` field in frontmatter (highest priority)
+2. `title` field in frontmatter
+3. First `#` header in content (auto-extracted)
+4. Generated from filename (lowest priority)
+
+#### Supported Frontmatter Fields
+
+**For Prompts (`type: prompt`):**
+
+- `id`: Unique identifier (auto-generated from filename if not provided)
+- `title`/`description`: Human readable description
+- `tags`: Array or comma-separated string of tags
+- `role`: Message role (user/assistant)
+- `schema`: JSON schema for prompt arguments
+- `messages`: Array of message objects
+- `extend`: Template inheritance configuration
+
+#### Example Directory Structure
+
+```
+prompts/
+├── python-helper.md          # With full frontmatter
+├── code-review-checklist.md  # No frontmatter, auto title
+└── debugging/
+    └── error-analysis.md     # Nested directory
+```
+
+This import type is particularly useful for:
+
+- **AI Coding Tools Integration**: Making documentation discoverable to Claude Code, Cursor, and other AI assistants
+- **Team Knowledge Bases**: Converting documentation directories into structured resources
+- **Prompt Libraries**: Managing collections of prompts in familiar markdown format
+
 ### Circular Import Detection
 
 The system automatically detects and prevents circular imports. If a circular import is detected, an error will be
