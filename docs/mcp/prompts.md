@@ -19,6 +19,7 @@ prompts can serve as starting points for common tasks, code generation, or proje
 - [Import](#import)
     - [Import Capabilities](#import-capabilities)
     - [Example Import Configuration](#example-import-configuration)
+    - [Markdown Import for Prompts](#markdown-import-for-prompts)
 - [Tagging Prompts](#tagging-prompts)
 - [Filtered Imports](#filtered-imports)
     - [Filtering by IDs](#filtering-by-ids)
@@ -335,6 +336,168 @@ import:
 
 > **Note**: There is an example of shared prompts
 > on [Gist](https://gist.github.com/butschster/1b7e597691cc1a6476b15dc120ecbddb) that can be used as a starting point.
+
+## Markdown Import for Prompts
+
+In addition to defining prompts directly in configuration files, CTX supports importing prompts from markdown files with
+YAML frontmatter metadata. This approach enables teams to manage prompt libraries using familiar markdown format while
+maintaining the power of structured configuration.
+
+### How Markdown Import Works
+
+When you specify a directory with `format: md` in your import configuration:
+
+```yaml
+import:
+  - path: ./prompts
+    format: md
+```
+
+CTX will:
+
+1. **Recursively scan** the directory for `.md` and `.markdown` files
+2. **Parse YAML frontmatter** to extract prompt metadata and configuration
+3. **Auto-detect prompt types** based on metadata fields
+4. **Convert markdown content** to prompt messages
+5. **Register each file** as an individual prompt accessible via MCP
+
+### Markdown Prompt Format
+
+#### Basic Prompt with Frontmatter
+
+```markdown
+---
+type: prompt
+id: python-code-helper
+title: "Python Programming Assistant"
+description: "Helps with Python coding tasks and best practices"
+tags: ["python", "programming", "development"]
+role: assistant
+schema:
+  properties:
+    task:
+      type: string
+      description: "What Python task you need help with"
+    complexity:
+      type: string
+      description: "Complexity level"
+      enum: ["beginner", "intermediate", "advanced"]
+  required: ["task"]
+---
+
+# Python Programming Assistant
+
+I'm here to help you with Python programming! I'll provide guidance for **{{task}}** at a {{complexity}} level.
+
+I can help with:
+
+- Code writing and debugging
+- Best practices and patterns
+- Library recommendations
+- Performance optimization
+
+Please share your Python code or describe what you're trying to accomplish.
+```
+
+#### Prompt without Frontmatter
+
+```markdown
+# Code Review Checklist
+
+## Security Review
+
+- Check for SQL injection vulnerabilities
+- Validate all user inputs
+- Review authentication and authorization
+
+## Performance Review
+
+- Review database queries for efficiency
+- Check for memory leaks
+- Validate caching strategies
+```
+
+When no frontmatter is present, CTX automatically:
+
+- Uses the first `#` header as the title/description
+- Converts the entire content to a single user message
+- Generates an ID from the filename
+
+### Template Inheritance in Markdown
+
+Markdown prompts can also use template inheritance:
+
+```markdown
+---
+type: prompt
+id: laravel-controller
+description: "Generate Laravel controller with validation"
+extend:
+  - id: base-php-template
+    arguments:
+      framework: "Laravel"
+      type: "Controller"
+schema:
+  properties:
+    entity:
+      type: string
+      description: "Entity name (e.g., User, Product)"
+  required: ["entity"]
+---
+
+# Laravel Controller Generator
+
+Create a {{entity}} controller following Laravel best practices with:
+
+- Resource methods (index, show, store, update, destroy)
+- Form request validation
+- API resource transformers
+```
+
+### Supported Frontmatter Fields
+
+| Field         | Type   | Description                                      |
+|---------------|--------|--------------------------------------------------|
+| `type`        | string | Must be "prompt" (auto-detected if omitted)      |
+| `id`          | string | Unique identifier (auto-generated from filename) |
+| `title`       | string | Human-readable title                             |
+| `description` | string | Detailed description of the prompt               |
+| `tags`        | array  | Tags for categorization and filtering            |
+| `role`        | string | Default message role ("user" or "assistant")     |
+| `schema`      | object | JSON schema for prompt arguments                 |
+| `messages`    | array  | Explicit message definitions (overrides content) |
+| `extend`      | array  | Template inheritance configuration               |
+
+### Directory Organization
+
+Organize your markdown prompts in logical directories:
+
+```
+prompts/
+├── development/
+│   ├── code-review.md
+│   ├── debugging-guide.md
+│   └── refactoring-helper.md
+├── documentation/
+│   ├── api-docs-generator.md
+│   └── readme-writer.md
+└── project-management/
+    ├── issue-template.md
+    └── sprint-planning.md
+```
+
+Each file becomes an individual prompt accessible through the MCP interface.
+
+### Title/Description Resolution
+
+CTX uses this priority order for prompt titles and descriptions:
+
+1. **`description`** field in frontmatter (highest priority)
+2. **`title`** field in frontmatter
+3. **First `#` header** in markdown content
+4. **Generated from filename** (lowest priority)
+
+This flexibility allows for both structured metadata-driven prompts and simple markdown files that just need a header.
 
 ## Prompt Tagging and Filtering
 
