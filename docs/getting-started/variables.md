@@ -27,7 +27,8 @@ Built-in system values automatically available in all configurations.
 
 ## Using Variables in Configuration
 
-You can reference variables using either `${VAR_NAME}` or `{{VAR_NAME}}` syntax in most configuration fields.
+You can reference variables using either `${VAR_NAME}` or `{{VAR_NAME}}` syntax in most configuration fields, *
+*including source paths**.
 
 ### Example
 
@@ -61,21 +62,139 @@ When a variable is defined in multiple places, it is resolved in the following o
 
 ## Built-in Predefined Variables
 
-#### Date and Time
+### Date and Time Variables
 
-- `${DATETIME}` - Current date and time (e.g., `2024-03-22 14:33:00`)
-- `${DATE}` - Current date (e.g., `2024-03-22`)
-- `${TIME}` - Current time (e.g., `14:33:00`)
-- `${TIMESTAMP}` - Current Unix timestamp
+| Variable       | Description            | Example               |
+|----------------|------------------------|-----------------------|
+| `${DATETIME}`  | Current date and time  | `2024-03-22 14:33:00` |
+| `${DATE}`      | Current date           | `2024-03-22`          |
+| `${TIME}`      | Current time           | `14:33:00`            |
+| `${TIMESTAMP}` | Current Unix timestamp | `1711115580`          |
 
-#### System Information
+### System Information Variables
 
-- `${USER}` - Current system user
-- `${HOME_DIR}` - User's home directory
-- `${TEMP_DIR}` - System temporary directory
-- `${OS}` - Operating system name
-- `${HOSTNAME}` - Computer hostname
-- `${PWD}` - Current working directory
+| Variable      | Description                | Example                      |
+|---------------|----------------------------|------------------------------|
+| `${USER}`     | Current system user        | `john.doe`                   |
+| `${HOME_DIR}` | User's home directory      | `/home/john.doe`             |
+| `${TEMP_DIR}` | System temporary directory | `/tmp`                       |
+| `${OS}`       | Operating system name      | `Linux`, `Darwin`, `Windows` |
+| `${HOSTNAME}` | Computer hostname          | `dev-machine.local`          |
+| `${PWD}`      | Current working directory  | `/home/user/project`         |
+
+### Project Path Variables
+
+| Variable         | Description                       | Example                              |
+|------------------|-----------------------------------|--------------------------------------|
+| `${ROOT_PATH}`   | Project root directory path       | `/home/user/my-project`              |
+| `${CONFIG_PATH}` | Configuration file path           | `/home/user/my-project/context.yaml` |
+| `${ENV_PATH}`    | Environment file path (if loaded) | `/home/user/my-project/.env.local`   |
+| `${BINARY_PATH}` | CTX binary path                   | `/usr/local/bin/ctx`                 |
+
+## Using Variables in Source Paths
+
+Variables can now be used in source paths, making configurations more flexible and reusable across different
+environments and project structures.
+
+### Basic Source Path Variables
+
+```yaml
+variables:
+  src_dir: src/Application
+
+documents:
+  - description: "Application Code"
+    outputPath: docs/application.md
+    sources:
+      - type: file
+        sourcePaths:
+          - "{{src_dir}}/Controllers"
+          - "{{src_dir}}/Services"
+        filePattern: "*.php"
+```
+
+### Using Predefined Path Variables
+
+```yaml
+documents:
+  - description: "Project Structure"
+    outputPath: docs/structure.md
+    sources:
+      - type: file
+        sourcePaths:
+          - "${ROOT_PATH}/src"
+          - "${ROOT_PATH}/config"
+        filePattern: "*.php"
+```
+
+### Environment-Specific Paths
+
+```yaml
+variables:
+  env: production
+  module_path: modules/${env}
+
+documents:
+  - description: "Environment Modules"
+    outputPath: docs/{{env}}-modules.md
+    sources:
+      - type: file
+        sourcePaths:
+          - "{{module_path}}/api"
+          - "{{module_path}}/services"
+```
+
+### Import Paths with Variables
+
+Variables are resolved before path prefixes are applied during imports:
+
+```yaml
+# main-config.yaml
+variables:
+  services_base: services
+
+import:
+  - path: "{{services_base}}/api/context.yaml"
+    pathPrefix: /api
+  - path: "{{services_base}}/auth/context.yaml"
+    pathPrefix: /auth
+```
+
+### Dynamic Multi-Environment Configuration
+
+```yaml
+variables:
+  app_env: ${APP_ENV}  # From environment variable
+
+documents:
+  - description: "Environment-Specific Configuration"
+    outputPath: docs/{{app_env}}-config.md
+    sources:
+      - type: file
+        sourcePaths:
+          - "config/{{app_env}}"
+          - "${ROOT_PATH}/config/{{app_env}}/services"
+        filePattern: "*.yaml"
+```
+
+### Complex Path Construction
+
+```yaml
+variables:
+  version: 2.1.0
+  platform: linux
+  arch: x64
+  build_dir: builds/{{version}}/{{platform}}-{{arch}}
+
+documents:
+  - description: "Build Artifacts"
+    outputPath: docs/builds/{{version}}.md
+    sources:
+      - type: file
+        sourcePaths:
+          - "{{build_dir}}/binaries"
+          - "{{build_dir}}/packages"
+```
 
 ## Loading Variables from `.env` Files
 
@@ -103,6 +222,8 @@ Custom variables are particularly useful for:
 3. **API Credentials**: Store tokens and keys in one place
 4. **Template Values**: Reuse common text across multiple documents
 5. **Import Control**: Use variables in import paths to control what gets imported
+6. **Multi-Environment Configurations**: Switch between dev, staging, and production paths
+7. **Monorepo Management**: Reference different packages or services dynamically
 
 ## Examples
 
@@ -114,6 +235,7 @@ variables:
   company: Acme Corp
   api_base: https://api.example.com/v2
   environment: staging
+  source_root: src/{{environment}}
 
 documents:
   - description: "{{company}} API Documentation"
@@ -124,11 +246,59 @@ documents:
           - "{{api_base}}/schema"
         headers:
           Authorization: "Bearer {{API_TOKEN}}"
+
+      - type: file
+        sourcePaths:
+          - "{{source_root}}/Controllers"
+          - "{{source_root}}/Models"
+        filePattern: "*.php"
+
       - type: text
         content: |
           # {{company}} API Documentation
           Version: {{version}}
           Environment: {{environment}}
+          Source Path: {{source_root}}
 
           Generated on {{DATETIME}} by {{USER}}
+          Project Root: ${ROOT_PATH}
 ```
+
+### Monorepo Package Documentation
+
+```yaml
+variables:
+  package_name: auth-service
+  packages_dir: packages
+
+documents:
+  - description: "{{package_name}} Documentation"
+    outputPath: docs/packages/{{package_name}}.md
+    sources:
+      - type: file
+        sourcePaths:
+          - "{{packages_dir}}/{{package_name}}/src"
+        filePattern: "*.php"
+
+      - type: file
+        sourcePaths:
+          - "${ROOT_PATH}/{{packages_dir}}/{{package_name}}/README.md"
+```
+
+## Important Notes
+
+### Variable Resolution in Imports
+
+When using variables in source paths within imported configurations:
+
+1. Variables are resolved **before** path prefixes are applied
+2. Absolute paths (starting with `/`) are not modified by path prefixes
+3. Variables from the importing configuration are available in imported files
+
+### Best Practices
+
+1. **Use descriptive variable names**: `src_controllers` instead of `sc`
+2. **Combine custom and predefined variables**: Leverage both for maximum flexibility
+3. **Document your variables**: Add comments in YAML for team clarity
+4. **Test variable resolution**: Verify paths exist before running generation
+5. **Avoid circular references**: Don't reference variables within themselves
