@@ -4,7 +4,11 @@ import {withMermaid} from "vitepress-plugin-mermaid";
 export default withMermaid({
     ignoreDeadLinks: true,
     title: "CTX Docs",
-    description: "Documentation for CTX",
+    lang: 'en-US',
+    description: "Open-source context generator that gives you complete control over what your LLM sees.",
+    head: [
+        ['link', {rel: 'icon', href: '/ctx.svg', 'type': 'image/svg+xml'}]
+    ],
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
         search: {
@@ -46,6 +50,8 @@ export default withMermaid({
                 text: 'MCP Server',
                 items: [
                     {text: 'Integration', link: '/mcp'},
+                    {text: 'Configuration', link: '/mcp/config'},
+                    {text: 'HTTP Server', link: '/mcp/http'},
                     {text: 'Docker', link: '/mcp/docker'},
                     {text: 'Projects', link: '/mcp/projects'},
                     {text: 'Filesystem', link: '/mcp/filesystem'},

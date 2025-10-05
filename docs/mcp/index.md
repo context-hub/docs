@@ -1,6 +1,6 @@
 # MCP Server Integration
 
-The MCP Server can also be integrated with AI assistants like Claude to provide direct access to your project's context.
+The MCP Server can be integrated with AI assistants to provide direct access to your project's context.
 This allows AI models to request specific information about your codebase without requiring manual context uploads.
 
 ### Table of Contents
@@ -11,16 +11,9 @@ This allows AI models to request specific information about your codebase withou
     - [Filesystem Operations](#filesystem-operations)
     - [Routing System](#routing-system)
 - [Why Use MCP?](#why)
-- [Setting Up](#setting-up)
-    - [Installation Prerequisites](#setting-up)
-    - [Basic Configuration](#steps)
-    - [Platform-Specific Configurations](#platform-specific-configurations)
-        - [Linux Configuration](#linux-configuration)
-        - [Windows Configuration](#windows-configuration)
-        - [Windows with WSL Configuration](#windows-with-wsl-configuration)
-    - [Environment Variable Configuration](#environment-variable-configuration)
-        - [Setting Environment Variables in Config](#setting-environment-variables-in-config)
-        - [Environment Variables with WSL](#environment-variables-with-wsl)
+- [Quick Start](#quick-start)
+- [Configuration Guide](#configuration-guide)
+- [HTTP Server Mode](#http-server-mode)
 
 ## How Integration Works
 
@@ -40,26 +33,26 @@ This integration enhances both Tools and Prompts components by:
 ```mermaid
 sequenceDiagram
     participant User
-    participant Claude
+    participant LLM as "AI Assistant"
     participant MCP Server as "CTX<br/>MCP Server"
     participant Files as "Project Files"
     participant Config as "context.yaml/<br/>context.json"
-    User ->> Claude: Ask question about project
-    Claude ->> MCP Server: Request context (MCP protocol)
+    User ->> LLM: Ask question about project
+    LLM ->> MCP Server: Request context (MCP protocol)
     MCP Server ->> Config: Read configuration
     MCP Server ->> Files: Access relevant files
     Note over MCP Server: Filter & process content<br/>based on configuration
-    MCP Server -->> Claude: Return formatted context
-    Claude ->> User: Provide contextually aware response
-    Note over User, Claude: Subsequent questions
-    User ->> Claude: Follow-up question
-    Claude ->> MCP Server: Request additional context
+    MCP Server -->> LLM: Return formatted context
+    LLM ->> User: Provide contextually aware response
+    Note over User, LLM: Subsequent questions
+    User ->> LLM: Follow-up question
+    LLM ->> MCP Server: Request additional context
     MCP Server ->> Files: Access specific files
-    MCP Server -->> Claude: Return targeted information
-    Claude ->> User: Provide detailed response
+    MCP Server -->> LLM: Return targeted information
+    LLM ->> User: Provide detailed response
 ```
 
-The diagram shows how Claude communicates with the MCP Server, which accesses your project files
+The diagram shows how AI assistants communicate with the MCP Server, which accesses your project files
 according to your configuration.
 
 ## Key Features
@@ -103,13 +96,17 @@ Let's imagine IDE tools like Cursor that attempt to gather context automatically
 **CTX** solves these problems by giving you explicit control over which parts of your codebase are included,
 ensuring the AI receives precisely the information needed to assist you effectively.
 
-## Setting Up
+## Quick Start
 
-First, you need to [install](https://claude.ai/download) Claude app and latest version of **CTX** (**>1.18.0**).
+First, you need to install your favorite AI assistant that supports MCP protocol and the latest version of **CTX** (**>
+1.18.0**).
 
-> **Note**: The MCP server is only available in the desktop version of Claude. The web version does not support it.
+> **Popular MCP-compatible clients:**
+> - [Claude Desktop](https://claude.ai/download) - Desktop app with built-in MCP support
+> - [Cline](https://github.com/cline/cline) - VS Code extension
+> - Other MCP-compatible clients
 
-### Quick Setup
+### Generate Configuration
 
 The easiest way to set up MCP integration is using the built-in configuration generator:
 
@@ -117,43 +114,15 @@ The easiest way to set up MCP integration is using the built-in configuration ge
 ctx mcp:config
 ```
 
-> **Note**: All the command options can be found in
-> the [CLI Reference](../getting-started/command-reference.md#generate-mcp-configuration).
+This command will auto-detect your operating system and generate the correct configuration for your MCP client.
 
-This command will:
+### Add to Your MCP Client
 
-- 🔍 Auto-detect your operating system (Windows, Linux, macOS, WSL)
-- 🎯 Generate the correct configuration for your environment
-- 📋 Provide copy-paste ready JSON for Claude Desktop
-- 🧭 Include setup instructions and troubleshooting tips
+1. Locate your MCP client's configuration file
+2. Add the generated configuration
+3. Save and restart your client
 
-### Manual Configuration Steps
-
-1. Download Claude App for your operating system
-2. Open **Settings** → **Developer** → **Edit config** → open config file `claude_desktop_config`
-3. Add the generated configuration to your Claude Desktop config file
-4. Save and restart Claude Desktop
-
-> **Important: You must specify the path to your project using the `-c` flag. The project root should contain a
-`context.json` or `context.yaml` configuration file.**
-
-### Configuration Modes
-
-**Global Registry Mode (recommended for multiple projects):**
-
-- Uses `ctx server` without project path
-- Enables dynamic switching between registered projects
-- Requires projects to be registered with `ctx project:add`
-
-**Project-Specific Mode (single project):**
-
-- Uses `ctx server -c /path/to/project`
-- Ties configuration to a specific project path
-- Good for focused single-project workflows
-
-### Platform-Specific Configurations
-
-#### Linux Configuration
+### Basic Example
 
 ```json
 {
@@ -170,88 +139,30 @@ This command will:
 }
 ```
 
-#### Windows Configuration
+> **Important**: The `-c` flag must point to a directory containing a `context.json` or `context.yaml` configuration
+> file.
 
-```json
-{
-  "mcpServers": {
-    "ctx": {
-      "command": "C:\\ctx.exe",
-      "args": [
-        "server",
-        "-cC:\\Path\\To\\Project"
-      ]
-    }
-  }
-}
-```
+That's it! You're ready to use CTX with your AI assistant.
 
-> **Note**: You can add path to `ctx.exe` to your environment variables to avoid specifying the full path.
+For detailed configuration options, platform-specific setups, and advanced features, see
+the [Configuration Guide](config.md).
 
-#### Windows with WSL Configuration
+## Configuration Guide
 
-```json
-{
-  "mcpServers": {
-    "ctx": {
-      "command": "bash.exe",
-      "args": [
-        "-c",
-        "ctx server -c /path/to/project"
-      ]
-    }
-  }
-}
-```
+For comprehensive configuration details including:
 
-### Environment Variable Configuration
+- Platform-specific configurations (Linux, Windows, WSL)
+- Configuration modes (Global Registry vs Project-Specific)
+- Environment variables and their usage
+- Dynamic project switching
+- Troubleshooting tips
 
-#### Setting Environment Variables in Config
+Please refer to the [Configuration Guide](config.md).
 
-You can pass environment variables to the MCP server by using the `env` property in your configuration. This is useful
-for providing authentication tokens, API keys, or other configuration values:
+## HTTP Server Mode
 
-```json
-{
-  "mcpServers": {
-    "ctx": {
-      "command": "ctx",
-      "args": [
-        "server",
-        "-c",
-        "/path/to/project"
-      ],
-      "env": {
-        "GITHUB_PAT": "ghp_your_personal_access_token",
-        "MCP_DOCUMENT_NAME_FORMAT": "{description} ({tags}) - {path}",
-        "MCP_FILE_OPERATIONS": "true"
-      }
-    }
-  }
-}
-```
-
-#### Environment Variables with WSL
-
-**Important note for WSL users**: When using `wsl.exe` as the command, the `env` property in the configuration will not
-properly pass environment variables to the WSL environment. Instead, you should set environment variables directly in
-the bash command:
-
-```json
-{
-  "mcpServers": {
-    "ctx": {
-      "command": "bash.exe",
-      "args": [
-        "-c",
-        "export GITHUB_PAT=ghp_your_personal_access_token && export MCP_FILE_OPERATIONS=true && ctx server -c /path/to/project"
-      ]
-    }
-  }
-}
-```
-
-**Important:** After saving the configuration, restart the app.
+For advanced use cases requiring remote access or web-based integrations, CTX supports running as an HTTP server with
+SSE (Server-Sent Events). Learn more about [HTTP Server Configuration](http.md).
 
 ## Dynamic Projects Switching
 
