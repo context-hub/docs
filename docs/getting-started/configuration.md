@@ -147,7 +147,7 @@ import:
 
 ```yaml
 import:
-  - type: file
+  - type: local
     path: services/api/context.yaml
     pathPrefix: /api
   - type: url
@@ -163,6 +163,7 @@ The local import type allows importing configuration from files on the local fil
 | `path`       | Path to the local configuration file              | Yes      | -       |
 | `pathPrefix` | Prefix to apply to all paths in the configuration | No       | -       |
 | `docs`       | List of document paths to selectively import      | No       | -       |
+| `format`     | Format type (`config`, `md`, or `markdown`)       | No       | config  |
 
 #### Selective Imports
 
@@ -217,6 +218,238 @@ import:
       Authorization: "Bearer {{TOKEN}}"
       Accept: "application/json"
 ```
+
+### Markdown Imports
+
+The markdown import type allows importing directories containing markdown files with YAML frontmatter metadata,
+automatically converting them into CTX prompts and documents.
+
+This is particularly useful for integrating with AI coding tools like Claude Code and Cursor, and for converting
+documentation directories into structured, discoverable resources.
+
+| Parameter    | Description                                       | Required | Default |
+|--------------|---------------------------------------------------|----------|---------|
+| `type`       | Import type (must be "local")                     | Yes      | -       |
+| `path`       | Path to directory containing markdown files       | Yes      | -       |
+| `format`     | Format type (must be "md" or "markdown")          | Yes      | -       |
+| `pathPrefix` | Prefix to apply to all paths in the configuration | No       | -       |
+
+#### How Markdown Import Works
+
+When you specify `format: md`, the system will:
+
+1. **Recursively scan** the specified directory and all subdirectories for `.md` and `.markdown` files
+2. **Parse YAML frontmatter** from each file to extract metadata
+3. **Auto-detect resource types** based on metadata:
+
+- Files with `type: prompt` become **prompts**
+- Files with `type: document` or explicit document metadata become **documents**
+- All other files become **documents** by default (not resources)
+
+4. **Extract titles** from first `#` header if no title/description is provided in frontmatter
+5. **Convert content** appropriately based on detected type
+
+> **Important**: Unlike regular resources, markdown files are converted into **prompts** or **documents** that are
+> included in your configuration, not registered as separate MCP resources.
+
+#### Primary Use Cases
+
+**1. AI Coding Tools Integration**
+
+Import your existing prompt libraries as structured prompts accessible to AI assistants like Claude Code and Cursor.
+
+```yaml
+import:
+  - path: ./prompts
+    format: md
+```
+
+**2. Documentation Directory Import**
+
+Convert documentation folders into CTX documents with proper structure and metadata.
+
+```yaml
+import:
+  - path: ./docs
+    format: md
+  - path: ./wiki
+    format: md
+```
+
+**3. Team Knowledge Base**
+
+Share prompts and documentation across team members while maintaining version control in familiar markdown format.
+
+```yaml
+import:
+  - path: ./team-knowledge
+    format: md
+```
+
+#### Markdown File Formats
+
+**Prompt with YAML Frontmatter:**
+
+```markdown
+---
+type: prompt
+description: "Code Review Helper"
+tags: ["code-review", "development"]
+role: user
+schema:
+  properties:
+    language:
+      type: string
+      description: "Programming language"
+---
+
+# Code Review Assistant
+
+I'll help you review {{language}} code effectively.
+```
+
+**Document with Frontmatter:**
+
+```markdown
+---
+type: document
+title: "Database Best Practices"
+outputPath: "docs/database.md"
+tags: ["database", "guidelines"]
+---
+
+# Database Best Practices
+
+This document outlines database design guidelines...
+```
+
+**Without Frontmatter (Auto Title Extraction):**
+
+```markdown
+# API Documentation
+
+This document describes the API endpoints...
+```
+
+The system automatically extracts the title from the first `#` header and creates a document.
+
+#### Title/Description Priority
+
+The system uses this hierarchy for determining titles and descriptions:
+
+1. `description` field in frontmatter (highest priority)
+2. `title` field in frontmatter
+3. First `#` header in content (auto-extracted)
+4. Generated from filename/path (lowest priority)
+
+#### Supported Frontmatter Fields
+
+**For Prompts (`type: prompt`):**
+
+- `type`: Must be "prompt" to create a prompt resource
+- `description`: Human readable description (recommended)
+- `title`: Alternative to description
+- `tags`: Array or comma-separated string of tags
+- `role`: Message role (user/assistant), defaults to "user"
+- `promptType`: Type of prompt, defaults to "prompt"
+- `schema`: JSON schema for prompt arguments
+
+**For Documents (default or `type: document`):**
+
+- `type`: Set to "document" or omit for default behavior
+- `description`: Human readable description (recommended)
+- `title`: Alternative to description
+- `outputPath`: Where to save the generated document
+- `overwrite`: Boolean to control file overwriting
+- `tags`: Array or comma-separated string of tags
+- `sources`: Custom source definitions (optional)
+
+**Type Detection Rules:**
+
+The system determines the resource type in this order:
+
+1. Explicit `type: prompt` in metadata → **Prompt**
+2. Has `model` field in metadata → **Prompt** (Claude-style)
+3. Has `role`, `messages`, or `schema` fields → **Prompt**
+4. Everything else → **Document**
+
+#### Example Directory Structure
+
+```
+prompts/
+├── python-helper.md          # type: prompt in frontmatter
+├── code-review.md            # role field makes it a prompt
+└── debugging/
+    └── error-analysis.md     # No type field, becomes document
+docs/
+├── api.md                    # No frontmatter, becomes document
+└── guides/
+    └── setup.md              # type: document in frontmatter
+```
+
+#### Complete Example
+
+```yaml
+import:
+  # Import team prompts as prompt resources
+  - type: local
+    path: ./prompts
+    format: md
+    pathPrefix: /prompts
+
+  # Import documentation as documents
+  - type: local
+    path: ./docs
+    format: md
+
+  # Import knowledge base with custom prefix
+  - type: local
+    path: ./wiki
+    format: md
+    pathPrefix: /wiki
+
+documents:
+  - description: Project Overview
+    outputPath: docs/overview.md
+    sources:
+      - type: text
+        content: |
+          # Project Documentation
+
+          This project uses imported markdown resources.
+```
+
+#### What Gets Created
+
+Based on the frontmatter and content, the markdown import creates:
+
+**Prompts**:
+
+- Registered in the `prompts` section of configuration
+- Accessible via MCP as prompt resources
+- Content becomes message content with specified role
+
+**Documents**:
+
+- Registered in the `documents` section of configuration
+- Content converted to text sources
+- Output paths determined by frontmatter or generated from filename
+
+#### Benefits
+
+- **Version Control Friendly**: Changes to `.md` files automatically update configuration
+- **Familiar Format**: Team members work with standard markdown files
+- **Flexible Metadata**: Rich frontmatter support for detailed configuration
+- **Auto-Discovery**: No manual registration needed - just add `.md` files to the directory
+- **Type Flexibility**: Same directory can contain both prompts and documents
+
+#### Important Notes
+
+- Markdown imports create **prompts** and **documents**, not generic "resources"
+- The `type` field in frontmatter determines whether a file becomes a prompt or document
+- Default behavior (no `type` specified) creates documents
+- Directory structure is preserved but all files are processed recursively
+- Path prefix affects output paths for generated documents
 
 ### Example in YAML
 
@@ -281,114 +514,6 @@ The same configuration in JSON format:
   ]
 }
 ```
-
-### Markdown Imports
-
-The markdown import type allows importing directories containing markdown files with YAML frontmatter metadata,
-automatically converting them into CTX prompts, documents, and resources.
-
-| Parameter | Description                                 | Required | Default |
-|-----------|---------------------------------------------|----------|---------|
-| `type`    | Import type (must be "local")               | No       | -       |
-| `path`    | Path to directory containing markdown files | Yes      | -       |
-| `format`  | Format type ("md")                          | Yes      | -       |
-
-When you specify `format: md`, the system will:
-
-1. **Recursively scan** the specified directory and all subdirectories for `.md` and `.markdown` files
-2. **Parse YAML frontmatter** from each file to extract metadata
-3. **Auto-detect resource types** based on metadata (`type: prompt` or default to resource)
-4. **Register each file** as an individual CTX resource accessible via MCP
-5. **Extract titles** from first `#` header if no title is provided in frontmatter
-
-#### Basic Markdown Import
-
-```yaml
-import:
-  - path: ./docs
-    format: md
-```
-
-#### Markdown Import with Path Prefix
-
-```yaml
-import:
-  - path: ./prompts
-    format: md
-    pathPrefix: /team-prompts
-```
-
-#### Markdown File Formats
-
-**With YAML Frontmatter:**
-
-```markdown
----
-type: prompt
-title: "Code Review Helper"
-description: "Assists with code review tasks"
-tags: ["code-review", "development"]
-schema:
-  properties:
-    language:
-      type: string
-      description: "Programming language"
----
-
-# Code Review Assistant
-
-I'll help you review {{language}} code effectively.
-```
-
-**Without Frontmatter (Auto Title Extraction):**
-
-```markdown
-# Database Best Practices
-
-This document outlines database design guidelines...
-```
-
-#### Title/Description Priority
-
-The system uses this hierarchy for determining titles and descriptions:
-
-1. `description` field in frontmatter (highest priority)
-2. `title` field in frontmatter
-3. First `#` header in content (auto-extracted)
-4. Generated from filename (lowest priority)
-
-#### Supported Frontmatter Fields
-
-**For Prompts (`type: prompt`):**
-
-- `id`: Unique identifier (auto-generated from filename if not provided)
-- `title`/`description`: Human readable description
-- `tags`: Array or comma-separated string of tags
-- `role`: Message role (user/assistant)
-- `schema`: JSON schema for prompt arguments
-- `messages`: Array of message objects
-- `extend`: Template inheritance configuration
-
-#### Example Directory Structure
-
-```
-prompts/
-├── python-helper.md          # With full frontmatter
-├── code-review-checklist.md  # No frontmatter, auto title
-└── debugging/
-    └── error-analysis.md     # Nested directory
-```
-
-This import type is particularly useful for:
-
-- **AI Coding Tools Integration**: Making documentation discoverable to Claude Code, Cursor, and other AI assistants
-- **Team Knowledge Bases**: Converting documentation directories into structured resources
-- **Prompt Libraries**: Managing collections of prompts in familiar markdown format
-
-### Circular Import Detection
-
-The system automatically detects and prevents circular imports. If a circular import is detected, an error will be
-thrown with information about the import chain that created the circular dependency.
 
 ### Import Resolution Process
 
