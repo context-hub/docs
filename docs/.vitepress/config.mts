@@ -89,6 +89,16 @@ export default withMermaid({
                 ]
             },
             {
+                text: 'Research',
+                items: [
+                    {text: 'Overview', link: '/research'},
+                    {text: 'Getting Started', link: '/research/getting-started'},
+                    {text: 'Domain Entities', link: '/research/entities'},
+                    {text: 'MCP Integration', link: '/research/mcp'},
+                    {text: 'Best Practices', link: '/research/best-practices'}
+                ]
+            },
+            {
                 text: 'Advanced',
                 items: [
                     {text: 'Instructions (Examples)', link: '/advanced/instructions'},
