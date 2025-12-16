@@ -51,6 +51,64 @@ curl -sSL https://raw.githubusercontent.com/context-hub/generator/main/download-
 
 <br>
 
+### Installation Location
+
+**macOS:**
+
+When installing ctx on macOS, the binary is installed to `~/.local/bin/ctx` by default. However, this directory may not be in your system's PATH, which can cause issues when using ctx with applications like Claude Desktop.
+
+**Verifying Installation:**
+```bash
+which ctx
+# Should output: /Users/yourusername/.local/bin/ctx
+```
+
+**Option 1: Use Full Path (Recommended for MCP)**
+
+When configuring MCP servers in Claude Desktop or similar applications, use the full path to the ctx binary:
+```json
+{
+  "mcpServers": {
+    "ctx": {
+      "command": "/Users/yourusername/.local/bin/ctx",
+      "args": ["server", "-c", "/path/to/your/project"]
+    }
+  }
+}
+```
+
+**Option 2: Add to System PATH**
+
+To use `ctx` as a simple command everywhere, create a symlink in a system directory:
+```bash
+sudo ln -s ~/.local/bin/ctx /usr/local/bin/ctx
+```
+
+Or add `~/.local/bin` to your PATH by adding this line to `~/.zshrc` (or `~/.bash_profile` for bash):
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+Then reload your shell:
+```bash
+source ~/.zshrc
+```
+
+**Note:** Applications like Claude Desktop may not inherit your shell's PATH. In such cases, using the full path in the configuration is the most reliable approach.
+
+**Linux:**
+
+On Linux, ctx is typically installed to `~/.local/bin/ctx` or `/usr/local/bin/ctx` depending on your installation method. The same PATH considerations apply as with macOS.
+
+**Troubleshooting:**
+
+If you encounter "command not found" errors:
+1. Verify ctx is installed: `ls -la ~/.local/bin/ctx`
+2. Check the binary is executable: `chmod +x ~/.local/bin/ctx`
+3. Use the full path in your configuration
+4. For shell usage, ensure `~/.local/bin` is in your PATH
+
+
 ---
 
 <br>
