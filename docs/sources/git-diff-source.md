@@ -16,7 +16,7 @@ documents:
           - vendor
         path: src
         contains: class
-        notContains: @deprecated
+        notContains: "@deprecated"
         render:
           strategy: llm
           showStats: true
