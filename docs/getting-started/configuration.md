@@ -531,3 +531,30 @@ When a configuration file is processed:
 variables, predefined system variables, and custom configuration variables.
 
 Read more about [variables](./variables.md) in the documentation.
+
+## Excluding Files and Directories
+
+You can configure global exclusions to filter out unwanted files and directories from all CTX operations. This is useful
+for hiding sensitive files, build artifacts, and dependencies.
+
+**Example:**
+
+```yaml
+exclude:
+  patterns:
+    - ".env*"           # Environment files
+    - "*.log"           # Log files
+    - "**/*.min.js"     # Minified JavaScript
+  paths:
+    - "vendor"          # PHP dependencies
+    - "node_modules"    # Node dependencies
+    - ".git"            # Git directory
+```
+
+Exclusions automatically apply to:
+
+- MCP filesystem tools (like `directory-list`)
+- Document generation sources
+- All source finders (file, GitHub, GitLab)
+
+Read more about [Exclude System](./exclude-system.md) for comprehensive configuration options and examples.

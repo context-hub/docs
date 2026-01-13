@@ -39,6 +39,7 @@ export default withMermaid({
                 items: [
                     {text: 'Installation', link: '/getting-started'},
                     {text: 'Configuration', link: '/getting-started/configuration'},
+                    {text: 'Exclude System', link: '/getting-started/exclude-system'},
                     {text: 'Json Schema', link: '/getting-started/json-schema'},
                     {text: 'Command Reference', link: '/getting-started/command-reference'},
                     {text: 'Variables in Configuration', link: '/getting-started/variables'},
@@ -112,10 +113,6 @@ export default withMermaid({
                 link: '/contributing',
             }
         ],
-
-        socialLinks: [
-            {icon: 'github', link: 'https://github.com/context-hub/docs'}
-        ]
     },
     mermaid: {
         // refer https://mermaid.js.org/config/setup/modules/mermaidAPI.html#mermaidapi-configuration-defaults for options

@@ -1,0 +1,14 @@
+$schema: 'https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json'
+
+exclude:
+  paths:
+    - "node_modules"
+
+documents:
+  - description: 'Project Structure'
+    outputPath: structure.md
+    overwrite: true
+    sources:
+      - type: tree
+        sourcePaths:
+          - docs
