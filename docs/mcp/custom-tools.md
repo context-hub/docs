@@ -363,11 +363,14 @@ The `schema` property allows you to define the expected arguments for a tool usi
 
 ### Schema Configuration Properties
 
-| Property     | Type   | Required | Description                      |
-|--------------|--------|----------|----------------------------------|
-| `type`       | string | Yes      | Schema type (typically `object`) |
-| `properties` | object | No       | Properties definition            |
-| `required`   | array  | No       | List of required properties      |
+| Property            | Type    | Required | Description                                                  |
+|---------------------|---------|----------|--------------------------------------------------------------|
+| `type`              | string  | Yes      | Schema type (typically `object`)                             |
+| `properties`        | object  | No       | Properties definition                                        |
+| `required`          | array   | No       | List of required properties                                  |
+| `flexibleArg`       | string  | No       | Name of a container argument for dynamic parameters          |
+| `blockedProperties` | array   | No       | List of argument names that are forbidden                    |
+| `allowAny`          | boolean | No       | Allow any additional properties (for compatible MCP clients) |
 
 ### Property Configuration
 
@@ -394,6 +397,142 @@ schema:
       default: "functional"
   required: [ name ]
 ```
+
+### Flexible Arguments
+
+The `flexibleArg` feature allows AI to pass arbitrary parameters through a container argument. This is particularly
+useful when:
+
+- MCP clients filter arguments strictly by the schema's `properties`
+- You need dynamic argument support without knowing all parameters in advance
+- You want to create truly flexible tools where AI decides what parameters to use
+
+#### How It Works
+
+1. Define a container property (e.g., `args`) with `type: object`
+2. Set `flexibleArg` to the container property name
+3. AI passes parameters inside the container object
+4. CTX unpacks the container, making all nested properties available as template variables
+
+#### Flexible Arguments Example
+
+```yaml
+tools:
+  - id: bash
+    description: 'Execute any bash command'
+    type: run
+    schema:
+      flexibleArg: args
+      blockedProperties:
+        - password
+        - secret
+        - token
+        - apiKey
+      properties:
+        args:
+          type: object
+          description: 'Object with cmd: {"cmd": "ls -la /tmp"}'
+    commands:
+      - cmd: bash
+        args:
+          - "-c"
+          - "{{cmd}}"
+```
+
+**AI Input:**
+
+```json
+{
+  "args": {
+    "cmd": "date +%Y-%m-%d"
+  }
+}
+```
+
+**Result:** The `{{cmd}}` variable is replaced with `date +%Y-%m-%d` and executed.
+
+#### Blocked Properties (Security)
+
+The `blockedProperties` option prevents sensitive argument names from being used. If AI attempts to pass a blocked
+argument, the tool execution fails with a clear error message.
+
+```yaml
+schema:
+  flexibleArg: args
+  blockedProperties:
+    - password
+    - secret
+    - token
+    - apiKey
+    - credentials
+```
+
+**Blocked Argument Example:**
+
+```json
+{
+  "args": {
+    "cmd": "echo test",
+    "password": "secret123"
+  }
+}
+```
+
+**Error:**
+`Argument "password" is blocked and cannot be used. Blocked arguments: password, secret, token, apiKey, credentials`
+
+#### Multiple Dynamic Variables
+
+You can use multiple variables from the unpacked container:
+
+```yaml
+tools:
+  - id: flexible-echo
+    description: 'Echo with flexible arguments'
+    type: run
+    schema:
+      flexibleArg: args
+      properties:
+        args:
+          type: object
+          description: 'Any arguments: {"message": "Hello", "name": "World"}'
+    commands:
+      - cmd: echo
+        args:
+          - "Message: {{message}}, Name: {{name}}"
+```
+
+**AI Input:**
+
+```json
+{
+  "args": {
+    "message": "Hello",
+    "name": "World"
+  }
+}
+```
+
+**Output:** `Message: Hello, Name: World`
+
+#### Allow Any Properties
+
+For MCP clients that support `additionalProperties` in JSON Schema, you can use `allowAny`:
+
+```yaml
+schema:
+  allowAny: true
+  blockedProperties:
+    - password
+    - secret
+  properties:
+    query:
+      type: string
+      description: "Search query"
+```
+
+This sets `additionalProperties: true` in the JSON Schema, allowing any additional properties beyond those defined in
+`properties`.
 
 ## Advanced Features
 
