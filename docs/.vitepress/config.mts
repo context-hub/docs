@@ -58,7 +58,8 @@ export default withMermaid({
                     {text: 'Filesystem', link: '/mcp/filesystem'},
                     {text: 'Prompts', link: '/mcp/prompts'},
                     {text: 'Tools', link: '/mcp/tools'},
-                    {text: 'Custom tools', link: '/mcp/custom-tools'}
+                    {text: 'Custom tools', link: '/mcp/custom-tools'},
+                    {text: 'RAG Knowledge Store', link: '/mcp/rag'}
                 ]
             },
             {

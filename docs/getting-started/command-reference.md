@@ -543,3 +543,107 @@ ctx tool:run deploy-app -c tools-config.yaml
 
 This command simplifies testing and executing MCP tools during development without requiring code changes or application
 redeployment.
+
+## RAG Knowledge Store Commands
+
+Commands for managing the RAG (Retrieval-Augmented Generation) knowledge store. These commands require RAG to be configured in your `context.yaml`.
+
+### Check RAG Status
+
+Display knowledge base status and configuration:
+
+```bash
+ctx rag:status
+```
+
+#### Options
+
+| Option   | Description      |
+|----------|------------------|
+| `--json` | Output as JSON   |
+
+```bash
+ctx rag:status --json
+```
+
+### Index Files
+
+Bulk index files from a directory into the knowledge base:
+
+```bash
+ctx rag:index <path>
+```
+
+#### Options
+
+| Option        | Short | Default   | Description                                    |
+|---------------|-------|-----------|------------------------------------------------|
+| `--pattern`   | `-p`  | `*.md`    | File pattern (e.g., `*.php`, `*.md`)           |
+| `--type`      | `-t`  | `general` | Document type (see below)                      |
+| `--recursive` | `-r`  | `true`    | Search recursively                             |
+| `--dry-run`   |       | `false`   | Preview files without indexing                 |
+
+**Document types:** `architecture`, `api`, `testing`, `convention`, `tutorial`, `reference`, `general`
+
+#### Examples
+
+```bash
+# Index markdown documentation
+ctx rag:index docs
+
+# Index PHP architecture files
+ctx rag:index src -p "*.php" -t architecture
+
+# Preview what would be indexed
+ctx rag:index docs --dry-run
+
+# Index non-recursively
+ctx rag:index docs/api --no-recursive
+```
+
+### Clear Knowledge Base
+
+Remove all entries from the knowledge base:
+
+```bash
+ctx rag:clear
+```
+
+#### Options
+
+| Option    | Short | Description                 |
+|-----------|-------|-----------------------------|
+| `--force` | `-f`  | Skip confirmation prompt    |
+
+```bash
+ctx rag:clear -f
+```
+
+### Reindex Files
+
+Atomic clear and reindex operation:
+
+```bash
+ctx rag:reindex <path>
+```
+
+#### Options
+
+| Option        | Short | Default   | Description                        |
+|---------------|-------|-----------|-----------------------------------|
+| `--pattern`   | `-p`  | `*.md`    | File pattern                      |
+| `--type`      | `-t`  | `general` | Document type                     |
+| `--recursive` | `-r`  | `true`    | Search recursively                |
+| `--force`     | `-f`  | `false`   | Skip confirmation prompt          |
+
+#### Examples
+
+```bash
+# Reindex documentation
+ctx rag:reindex docs -t reference
+
+# Force reindex without confirmation
+ctx rag:reindex docs -f
+```
+
+> **Note:** For detailed RAG configuration and MCP tool usage, see the [RAG Knowledge Store](/mcp/rag) documentation.

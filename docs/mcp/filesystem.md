@@ -38,13 +38,15 @@ in a specific project context.
 ### file-read
 
 Reads content from one or more files within the project directory structure. Supports both single-file and batch reading
-operations.
+operations, with optional line range selection for single files.
 
 **Parameters:**
 
 - `path` (optional): Path to a single file relative to project root
 - `paths` (optional): Array of file paths for batch reading
 - `encoding` (optional): File encoding (default: utf-8)
+- `startLine` (optional): First line to read (1-based, inclusive). Only applies to single file requests.
+- `endLine` (optional): Last line to read (1-based, inclusive). Only applies to single file requests.
 - `project` (optional): Project identifier if multiple projects are supported
 
 **Single File Example:**
@@ -53,6 +55,25 @@ operations.
 {
   "path": "src/ExampleClass.php",
   "encoding": "utf-8"
+}
+```
+
+**Reading Specific Lines:**
+
+```json
+{
+  "path": "src/Domain/Entity/User.php",
+  "startLine": 10,
+  "endLine": 50
+}
+```
+
+**Reading From a Specific Line to End:**
+
+```json
+{
+  "path": "src/Config/app.php",
+  "startLine": 100
 }
 ```
 
@@ -69,14 +90,30 @@ operations.
 ```
 
 **Response:**
-For single files, returns the raw file content. For multiple files, returns formatted response with all file contents
-separated by headers.
+
+- For single files (full read): Returns the raw file content
+- For single files (partial read): Returns formatted output with line numbers and metadata
+- For multiple files: Returns formatted response with all file contents separated by headers
+
+**Partial Read Response Example:**
+
+```
+=== src/Domain/Entity/User.php (lines 10-50 of 150) ===
+
+10 | class User
+11 | {
+12 |     public function __construct(
+13 |         private string $name,
+...
+50 |     }
+```
 
 **Limits:**
 
 - Maximum 50 files per batch request
 - Maximum 10 MB per file
 - Maximum 50 MB total response size per request
+- Line range parameters only apply to single file requests (not batch)
 
 ### file-write
 
@@ -147,6 +184,181 @@ Returns success message with:
 - Pattern must be unique (appear exactly once in the file)
 - If pattern not found or appears multiple times, operation fails with helpful error message
 - Use `file-read` first to see actual file content including whitespace
+
+### file-search
+
+Search for text or regex patterns in files. Returns matches with surrounding context lines and line numbers. Useful for
+finding code patterns, function definitions, or specific content across the codebase.
+
+**Parameters:**
+
+- `query` (required): Search query - text string or regex pattern to find in files
+- `path` (optional): Base directory path to search (relative to project root, default: project root)
+- `pattern` (optional): File name pattern(s) to match (e.g., "*.php", comma-separated for multiple)
+- `depth` (optional): Maximum directory depth to search (0 = only specified directory, default: 10)
+- `contextLines` (optional): Number of context lines to show before and after each match (default: 2, max: 10)
+- `caseSensitive` (optional): Whether the search is case-sensitive (default: true)
+- `regex` (optional): Whether to treat query as a regex pattern (default: false)
+- `maxMatchesPerFile` (optional): Maximum matches to return per file, 0 = unlimited (default: 50, max: 1000)
+- `maxTotalMatches` (optional): Maximum total matches across all files, 0 = unlimited (default: 200, max: 5000)
+- `size` (optional): Size filter expression (e.g., "< 1M", "> 1K")
+- `project` (optional): Project identifier if multiple projects are supported
+
+**Basic Text Search Example:**
+
+```json
+{
+  "query": "Repository",
+  "path": "src",
+  "pattern": "*.php"
+}
+```
+
+**Regex Search Example:**
+
+```json
+{
+  "query": "class\\s+\\w+Repository",
+  "path": "src",
+  "pattern": "*.php",
+  "regex": true,
+  "contextLines": 3
+}
+```
+
+**Case-Insensitive Search:**
+
+```json
+{
+  "query": "TODO",
+  "path": "src",
+  "caseSensitive": false,
+  "depth": 5
+}
+```
+
+**Response:**
+Returns formatted results with:
+
+- Total match count and file count
+- For each file with matches:
+    - File path header
+    - Each match with line number
+    - Context lines before and after the match (highlighted with `>` for the matched line)
+
+**Example Output:**
+
+```
+Found 3 matches in 2 files
+
+=== src/Domain/Repository/UserRepository.php ===
+
+[Line 15]
+  13 | use App\Domain\Entity\User;
+  14 |
+> 15 | class UserRepository implements UserRepositoryInterface
+  16 | {
+  17 |     public function __construct(
+
+=== src/Domain/Repository/CustomerRepository.php ===
+
+[Line 12]
+  10 | namespace App\Domain\Repository;
+  11 |
+> 12 | class CustomerRepository implements CustomerRepositoryInterface
+  13 | {
+  14 |     // ...
+```
+
+**Key Features:**
+
+- Automatic binary file detection and skipping
+- Respects global exclude configuration from `context.yaml`
+- Supports both literal text and regex patterns
+- Configurable context lines for understanding matches in context
+- Limits per file and total to prevent overwhelming results
+- Skips large files (> 5 MB) automatically
+
+### php-structure
+
+Analyze PHP file structure and relationships. Returns class/interface/trait/enum signatures with links to related files
+(extends, implements, use statements, type hints). Use depth parameter to follow relationships recursively.
+
+**Parameters:**
+
+- `path` (required): Path to PHP file, relative to project root
+- `depth` (optional): How deep to follow relationships (0 = only requested file, 1-3 = follow local links, default: 1)
+- `showPrivate` (optional): Include private and protected members in output (default: false)
+- `project` (optional): Project identifier if multiple projects are supported
+
+**Basic Example:**
+
+```json
+{
+  "path": "src/Domain/Entity/User.php"
+}
+```
+
+**Deep Analysis Example:**
+
+```json
+{
+  "path": "src/Domain/Repository/UserRepository.php",
+  "depth": 2,
+  "showPrivate": true
+}
+```
+
+**Response:**
+Returns PHP-like signature representation with relationship annotations:
+
+```php
+// src/Domain/Repository/UserRepository.php
+namespace App\Domain\Repository;
+
+use App\Domain\Entity\User;  // → src/Domain/Entity/User.php
+use App\Domain\Repository\UserRepositoryInterface;  // → src/Domain/Repository/UserRepositoryInterface.php
+use Cycle\ORM\RepositoryInterface;  // → (unresolved)
+
+#[Repository]  // → src/Infrastructure/Attribute/Repository.php
+final class UserRepository implements UserRepositoryInterface  // → src/Domain/Repository/UserRepositoryInterface.php
+{
+   public function __construct(private ORMInterface $orm) {}
+   
+   public function findById(int $id): ?User {}
+   public function save(User $user): void {}
+}
+
+// ────────────────────────────────────────────────────────────────
+// Linked (depth 1): src/Domain/Repository/UserRepositoryInterface.php
+
+namespace App\Domain\Repository;
+
+use App\Domain\Entity\User;  // → src/Domain/Entity/User.php
+
+interface UserRepositoryInterface
+{
+   public function findById(int $id): ?User;
+   public function save(User $user): void;
+}
+```
+
+**Key Features:**
+
+- Outputs interface-style signatures (method bodies replaced with `{}` or `;`)
+- Shows file path comments for all referenced types
+- Recursive depth traversal follows local (non-vendor) references
+- Supports classes, interfaces, traits, and enums
+- Shows extends, implements, use statements, and attributes
+- Resolves namespaces and use statements to actual file paths
+- Filters private members by default for cleaner output
+
+**Use Cases:**
+
+- Understanding class hierarchy without reading full source code
+- Quickly mapping relationships between files
+- Generating documentation or API overviews
+- Analyzing dependencies before refactoring
 
 ### directory-list
 
@@ -349,6 +561,112 @@ Efficiently explore and analyze your codebase:
 }
 ```
 
+### Code Search and Pattern Finding
+
+Use `file-search` for powerful text and regex searches across your codebase:
+
+**Finding all TODO comments:**
+
+```json
+{
+  "tool": "file-search",
+  "query": "TODO",
+  "path": "src",
+  "caseSensitive": false,
+  "contextLines": 1
+}
+```
+
+**Finding method definitions with regex:**
+
+```json
+{
+  "tool": "file-search",
+  "query": "public function (find|get|load)\\w+",
+  "path": "src/Domain/Repository",
+  "pattern": "*.php",
+  "regex": true,
+  "contextLines": 3
+}
+```
+
+**Finding deprecated code:**
+
+```json
+{
+  "tool": "file-search",
+  "query": "@deprecated",
+  "path": "src",
+  "pattern": "*.php",
+  "maxTotalMatches": 100
+}
+```
+
+**Searching for specific error handling patterns:**
+
+```json
+{
+  "tool": "file-search",
+  "query": "catch\\s*\\(\\s*\\\\?Exception",
+  "path": "src",
+  "regex": true,
+  "depth": 10
+}
+```
+
+### Understanding PHP Class Hierarchy
+
+Use `php-structure` to analyze class relationships without reading full source:
+
+**Quick class overview:**
+
+```json
+{
+  "tool": "php-structure",
+  "path": "src/Domain/Entity/User.php"
+}
+```
+
+**Deep relationship analysis:**
+
+```json
+{
+  "tool": "php-structure",
+  "path": "src/Application/Handler/CreateUserHandler.php",
+  "depth": 2,
+  "showPrivate": false
+}
+```
+
+**Example workflow for understanding a service:**
+
+1. Start with the main class:
+   ```json
+   {
+     "tool": "php-structure",
+     "path": "src/Application/Service/OrderService.php",
+     "depth": 1
+   }
+   ```
+2. The output shows all related interfaces, repositories, and entities
+3. Increase depth to follow those relationships:
+   ```json
+   {
+     "tool": "php-structure",
+     "path": "src/Application/Service/OrderService.php",
+     "depth": 3
+   }
+   ```
+
+**Use cases for `php-structure`:**
+
+- Understanding unfamiliar code quickly
+- Documenting API boundaries
+- Planning refactoring by mapping dependencies
+- Onboarding new developers to a codebase
+- Generating interface documentation
+```
+
 ### Refactoring Workflows
 
 Systematic refactoring with powerful tools:
@@ -485,6 +803,10 @@ exclude:
 - Maximum 50 files per batch request
 - Each file limited to 10 MB
 - Total response limited to 50 MB per request
+- Use `startLine` and `endLine` for reading specific sections of large files
+- Line numbers are 1-based and inclusive
+- Partial reads include line numbers in output for easy reference
+- Line range only works with single file requests (not batch)
 
 ### File Replacement
 
@@ -504,6 +826,25 @@ exclude:
 - Configure global exclusions in `context.yaml` to automatically hide unwanted files
 - Exclude sensitive files (`.env*`, `*.key`, `*.pem`) for security
 - Exclude large dependency directories (`vendor`, `node_modules`) for performance
+
+### File Search
+
+- Start with literal text search; use regex only when needed
+- Use `contextLines` to understand matches in context (default: 2)
+- Limit results with `maxMatchesPerFile` and `maxTotalMatches` for large codebases
+- Combine with `pattern` parameter to focus on specific file types
+- Use case-insensitive search for user-facing text or comments
+- Binary files are automatically skipped
+- Files larger than 5 MB are skipped for performance
+
+### PHP Structure Analysis
+
+- Use `depth: 0` for quick single-file overview
+- Use `depth: 1-2` to understand immediate dependencies
+- Keep `showPrivate: false` (default) for cleaner public API view
+- Enable `showPrivate: true` when debugging internal implementation
+- The tool resolves local project files but marks vendor dependencies as "(unresolved)"
+- Great for generating documentation or understanding unfamiliar code
 
 ### General Tips
 

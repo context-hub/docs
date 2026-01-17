@@ -28,11 +28,14 @@ The tools system can be configured using environment variables to enable or disa
 Master switch for all file operation tools. When set to `false`, all below file tools are disabled regardless of their
 individual settings.
 
-| Tool Key         | Description                                    | Environment Variable                              | Default |
-|------------------|------------------------------------------------|---------------------------------------------------|---------|
-| `file-read`      | Read content from a file                       | Always available when file operations are enabled | -       |
-| `directory-list` | List files and directories in a specified path | `MCP_FILE_DIRECTORIES_LIST`                       | `true`  |
-| `file-write`     | Create new files or modify existing ones       | `MCP_FILE_WRITE`                                  | `true`  |
+| Tool Key              | Description                                              | Environment Variable                              | Default |
+|-----------------------|----------------------------------------------------------|---------------------------------------------------|---------|
+| `file-read`           | Read content from a file                                 | Always available when file operations are enabled | -       |
+| `file-search`         | Search for text or regex patterns in files               | Always available when file operations are enabled | -       |
+| `file-replace-content`| Replace text in files with exact matching                | Always available when file operations are enabled | -       |
+| `directory-list`      | List files and directories in a specified path           | `MCP_FILE_DIRECTORIES_LIST`                       | `true`  |
+| `file-write`          | Create new files or modify existing ones                 | `MCP_FILE_WRITE`                                  | `true`  |
+| `php-structure`       | Analyze PHP file structure and class relationships       | Always available when file operations are enabled | -       |
 
 ### Context Operations
 
@@ -117,3 +120,15 @@ These tools are always available regardless of environment configuration:
 | `json-schema`           | Get JSON schema for various entities             |
 | `document-content`      | Get document content by ID                       |
 | `list-tools`            | List all available tools (what you're using now) |
+
+### RAG Knowledge Store Tools
+
+Tools for storing and retrieving project knowledge. Requires RAG configuration in `context.yaml`.
+
+| Tool Key     | Description                                           | Requires RAG Enabled |
+|--------------|-------------------------------------------------------|---------------------|
+| `rag-store`  | Store documentation, insights, and explanations       | Yes                 |
+| `rag-search` | Search knowledge base using natural language          | Yes                 |
+| `rag-manage` | View statistics and manage the knowledge base         | Yes                 |
+
+> **Note:** For detailed RAG configuration and usage, see the [RAG Knowledge Store](./rag.md) documentation.
