@@ -14,6 +14,8 @@ This allows AI models to request specific information about your codebase withou
 - [Quick Start](#quick-start)
 - [Configuration Guide](#configuration-guide)
 - [HTTP Server Mode](#http-server-mode)
+- [Dynamic Projects Switching](#dynamic-projects-switching)
+- [Hot-Reload Configuration](#hot-reload-configuration)
 
 ## How Integration Works
 
@@ -168,3 +170,15 @@ SSE (Server-Sent Events). Learn more about [HTTP Server Configuration](http.md).
 
 The MCP server supports dynamic project switching, allowing you to work with multiple projects. Read more about
 dynamic project switching in the [Projects](projects.md) section.
+
+## Hot-Reload Configuration
+
+The MCP server supports automatic hot-reload of configuration changes. When you modify your `context.yaml` file,
+tools, prompts, and resources are updated automatically without requiring a server restart.
+
+Key features:
+- **No restart required** - Changes apply within seconds
+- **No client reconnection** - MCP clients stay connected
+- **Incremental updates** - Only changed items are processed
+
+Learn more in the [Hot-Reload Configuration](hot-reload.md) guide.
