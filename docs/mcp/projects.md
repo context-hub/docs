@@ -29,12 +29,12 @@ When the `-c` option is omitted, CTX will use the globally registered projects c
 
 CTX provides several commands for managing your projects:
 
-## Adding a Project (`project:add`)
+### Adding a Project (`project:add`)
 
 Register a new project with the system:
 
 ```bash
-ctx project:add <path> [--name=<alias>] [--config-file=<path>] [--env-file=<path>]
+ctx project:add <path> [--name=<alias>] [--config-file=<path>] [--env-file=<path>] [--switch]
 ```
 
 **Example:**
@@ -60,8 +60,23 @@ ctx project:add . --name=my-backend --env-file=.env.dev
 - `--name`: Alias name for the project (optional)
 - `--config-file` or `-c`: Path to custom configuration file within the project (optional)
 - `--env-file` or `-e`: Path to .env file within the project (optional)
+- `--switch` or `-s`: Switch to this project after adding it (optional)
 
-## Switching Between Projects (`project`)
+**Example output:**
+
+```
+  ✓ Project added successfully
+
+╭─● CURRENT ─────────────────────────────────────────────────────────╮
+│  /home/user/projects/my-backend
+│  Aliases: my-backend
+│  Added: Jan 18, 2025
+╰────────────────────────────────────────────────────────────────────╯
+
+  → Set as current project (first project added)
+```
+
+### Switching Between Projects (`project`)
 
 Switch to a different registered project:
 
@@ -93,6 +108,13 @@ or you can omit the argument to see a list of all registered projects:
 ctx project
 ```
 
+**Example output:**
+
+```
+  ✓ Switched to project: /home/user/projects/my-backend
+    Aliases: my-backend
+```
+
 ### Listing Projects (`project:list` or `projects`)
 
 View all registered projects:
@@ -104,16 +126,99 @@ ctx project:list
 **Example output:**
 
 ```
-┌─────────────────────────────┬────────────────────┬──────────┬─────────────────┬─────────────────┬─────────┐
-│ Path                        │ Config File        │ Env File │ Aliases         │ Added           │ Current │
-├─────────────────────────────┼────────────────────┼──────────┼─────────────────┼─────────────────┼─────────┤
-│ /home/user/projects/my-app  │                    │          │ my-app          │ 2025-05-01 10:15│         │
-├─────────────────────────────┼────────────────────┼──────────┼─────────────────┼─────────────────┼─────────┤
-│ /home/user/projects/backend │ custom-context.yaml│ .env.dev │ my-backend,     │ 2025-05-01 14:30│ active  │
-│                             │                    │          │ backend         │                 │         │
-├─────────────────────────────┼────────────────────┼──────────┼─────────────────┼─────────────────┼─────────┤
-│ /home/user/projects/frontend│                    │          │ my-ui           │ 2025-05-02 09:45│         │
-└─────────────────────────────┴────────────────────┴──────────┴─────────────────┴─────────────────┴─────────┘
+╭─● CURRENT ─────────────────────────────────────────────────────────╮
+│  /home/user/projects/my-app
+│  Aliases: my-app
+│  Config: context.yaml
+│  Added: Jan 18, 2025
+╰────────────────────────────────────────────────────────────────────╯
+
+╭─○──────────────────────────────────────────────────────────────────╮
+│  /home/user/projects/backend
+│  Aliases: my-backend, backend
+│  Config: custom-context.yaml
+│  Env: .env.dev
+│  Added: Jan 15, 2025
+╰────────────────────────────────────────────────────────────────────╯
+
+╭─○──────────────────────────────────────────────────────────────────╮
+│  /home/user/projects/frontend
+│  Aliases: my-ui
+│  Added: Jan 10, 2025
+╰────────────────────────────────────────────────────────────────────╯
+
+Commands:
+  ctx project <path|alias>         Switch to a project
+  ctx project:add <path>           Add a new project
+  ctx project:remove <path|alias>  Remove a project
+```
+
+The output uses visual indicators:
+
+- `●` (green) — Current active project
+- `○` (gray) — Other registered projects
+
+### Removing a Project (`project:remove`)
+
+Remove a project from the registry:
+
+```bash
+ctx project:remove [<path_or_alias>] [--force] [--keep-aliases]
+```
+
+**Arguments:**
+
+- `path_or_alias`: Path or alias to the project (optional). If omitted, displays an interactive selection menu.
+
+**Options:**
+
+- `--force` or `-f`: Skip confirmation prompt
+- `--keep-aliases`: Keep aliases when removing project (not recommended)
+
+**Example:**
+
+Remove a project using its alias:
+
+```bash
+ctx project:remove my-backend
+```
+
+Remove without confirmation:
+
+```bash
+ctx project:remove my-backend --force
+```
+
+Interactive selection (when no argument provided):
+
+```bash
+ctx project:remove
+```
+
+**Example output:**
+
+```
+╭─○──────────────────────────────────────────────────────────────────╮
+│  /home/user/projects/old-project
+│  Aliases: old-project
+│  Added: Jan 10, 2025
+╰────────────────────────────────────────────────────────────────────╯
+
+  Are you sure you want to remove this project? [y/N] y
+
+  ✓ Project removed: /home/user/projects/old-project
+  → Aliases removed: old-project
+```
+
+If you remove the current project, CTX will suggest switching to another:
+
+```
+  ! This is the current project. It will be unset after removal.
+
+  ✓ Project removed: /home/user/projects/my-app
+  → Aliases removed: my-app
+
+  → Use ctx project my-backend to switch to another project
 ```
 
 ## Configuring MCP Server for Project Switching
