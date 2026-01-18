@@ -546,7 +546,8 @@ redeployment.
 
 ## RAG Knowledge Store Commands
 
-Commands for managing the RAG (Retrieval-Augmented Generation) knowledge store. These commands require RAG to be configured in your `context.yaml`.
+Commands for managing the RAG (Retrieval-Augmented Generation) knowledge store. These commands require RAG to be
+configured in your `context.yaml`.
 
 ### Check RAG Status
 
@@ -558,9 +559,9 @@ ctx rag:status
 
 #### Options
 
-| Option   | Description      |
-|----------|------------------|
-| `--json` | Output as JSON   |
+| Option   | Description    |
+|----------|----------------|
+| `--json` | Output as JSON |
 
 ```bash
 ctx rag:status --json
@@ -576,12 +577,12 @@ ctx rag:index <path>
 
 #### Options
 
-| Option        | Short | Default   | Description                                    |
-|---------------|-------|-----------|------------------------------------------------|
-| `--pattern`   | `-p`  | `*.md`    | File pattern (e.g., `*.php`, `*.md`)           |
-| `--type`      | `-t`  | `general` | Document type (see below)                      |
-| `--recursive` | `-r`  | `true`    | Search recursively                             |
-| `--dry-run`   |       | `false`   | Preview files without indexing                 |
+| Option        | Short | Default   | Description                          |
+|---------------|-------|-----------|--------------------------------------|
+| `--pattern`   | `-p`  | `*.md`    | File pattern (e.g., `*.php`, `*.md`) |
+| `--type`      | `-t`  | `general` | Document type (see below)            |
+| `--recursive` | `-r`  | `true`    | Search recursively                   |
+| `--dry-run`   |       | `false`   | Preview files without indexing       |
 
 **Document types:** `architecture`, `api`, `testing`, `convention`, `tutorial`, `reference`, `general`
 
@@ -611,9 +612,9 @@ ctx rag:clear
 
 #### Options
 
-| Option    | Short | Description                 |
-|-----------|-------|-----------------------------|
-| `--force` | `-f`  | Skip confirmation prompt    |
+| Option    | Short | Description              |
+|-----------|-------|--------------------------|
+| `--force` | `-f`  | Skip confirmation prompt |
 
 ```bash
 ctx rag:clear -f
@@ -629,12 +630,12 @@ ctx rag:reindex <path>
 
 #### Options
 
-| Option        | Short | Default   | Description                        |
-|---------------|-------|-----------|-----------------------------------|
-| `--pattern`   | `-p`  | `*.md`    | File pattern                      |
-| `--type`      | `-t`  | `general` | Document type                     |
-| `--recursive` | `-r`  | `true`    | Search recursively                |
-| `--force`     | `-f`  | `false`   | Skip confirmation prompt          |
+| Option        | Short | Default   | Description              |
+|---------------|-------|-----------|--------------------------|
+| `--pattern`   | `-p`  | `*.md`    | File pattern             |
+| `--type`      | `-t`  | `general` | Document type            |
+| `--recursive` | `-r`  | `true`    | Search recursively       |
+| `--force`     | `-f`  | `false`   | Skip confirmation prompt |
 
 #### Examples
 
@@ -647,3 +648,139 @@ ctx rag:reindex docs -f
 ```
 
 > **Note:** For detailed RAG configuration and MCP tool usage, see the [RAG Knowledge Store](/mcp/rag) documentation.
+
+## Project Management Commands
+
+Commands for managing multiple projects. These allow you to register, switch between, list, and remove projects from the
+CTX registry.
+
+> **Note:** For detailed project management information, see the [Dynamic Project Switching](/mcp/projects)
+> documentation.
+
+### Add a Project (`project:add`)
+
+Register a new project with the system:
+
+```bash
+ctx project:add <path> [--name=<alias>] [--config-file=<path>] [--env-file=<path>] [--switch]
+```
+
+#### Arguments
+
+| Argument | Description                                                   |
+|----------|---------------------------------------------------------------|
+| `path`   | Path to the project directory. Use `.` for current directory. |
+
+#### Options
+
+| Option          | Short | Description                                          |
+|-----------------|-------|------------------------------------------------------|
+| `--name`        |       | Alias name for the project                           |
+| `--config-file` | `-c`  | Path to custom configuration file within the project |
+| `--env-file`    | `-e`  | Path to .env file within the project                 |
+| `--switch`      | `-s`  | Switch to this project after adding it               |
+
+#### Examples
+
+```bash
+# Add current directory as a project
+ctx project:add . --name=my-project
+
+# Add with custom configuration
+ctx project:add /path/to/project --name=backend --env-file=.env.dev
+
+# Add and switch to the project
+ctx project:add . --name=frontend --switch
+```
+
+### Switch Project (`project`)
+
+Switch to a different registered project:
+
+```bash
+ctx project [<path_or_alias>]
+```
+
+#### Arguments
+
+| Argument        | Description                                                       |
+|-----------------|-------------------------------------------------------------------|
+| `path_or_alias` | Path or alias to the project. If omitted, shows interactive menu. |
+
+#### Examples
+
+```bash
+# Switch using alias
+ctx project my-backend
+
+# Switch using path
+ctx project /path/to/project
+
+# Interactive selection
+ctx project
+```
+
+### List Projects (`project:list`)
+
+View all registered projects:
+
+```bash
+ctx project:list
+# or
+ctx projects
+```
+
+#### Example Output
+
+```
+╭─● CURRENT ─────────────────────────────────────────────────────────╮
+│  /home/user/projects/my-app
+│  Aliases: my-app
+│  Added: Jan 18, 2025
+╰────────────────────────────────────────────────────────────────────╯
+
+╭─○──────────────────────────────────────────────────────────────────╮
+│  /home/user/projects/backend
+│  Aliases: backend
+│  Added: Jan 15, 2025
+╰────────────────────────────────────────────────────────────────────╯
+
+Commands:
+  ctx project <path|alias>         Switch to a project
+  ctx project:add <path>           Add a new project
+  ctx project:remove <path|alias>  Remove a project
+```
+
+### Remove a Project (`project:remove`)
+
+Remove a project from the registry:
+
+```bash
+ctx project:remove [<path_or_alias>] [--force]
+```
+
+#### Arguments
+
+| Argument        | Description                                                       |
+|-----------------|-------------------------------------------------------------------|
+| `path_or_alias` | Path or alias to the project. If omitted, shows interactive menu. |
+
+#### Options
+
+| Option           | Short | Description                                  |
+|------------------|-------|----------------------------------------------|
+| `--force`        | `-f`  | Skip confirmation prompt                     |
+| `--keep-aliases` |       | Keep aliases when removing (not recommended) |
+
+#### Examples
+
+```bash
+# Remove by alias
+ctx project:remove my-backend
+
+# Remove without confirmation
+ctx project:remove old-project --force
+
+# Interactive selection
+ctx project:remove
+```
