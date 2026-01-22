@@ -11,6 +11,24 @@ CTX allows you to manage multiple projects and seamlessly switch between them.
 - Need to provide context from different codebases to AI assistants
 - Want to maintain separate configurations for different projects
 
+## Project Configuration Methods
+
+CTX supports two ways to configure projects:
+
+### 1. Global Registry (CLI-based)
+
+Register projects globally using CLI commands. These projects can be accessed from anywhere using their alias name.
+
+### 2. Path-based Projects (YAML-based)
+
+Define projects directly in your `context.yaml` using relative or absolute paths. This method is ideal for:
+
+- Projects that live alongside your main project (monorepos, shared libraries)
+- Temporary project references without polluting the global registry
+- Portable configurations that work across different machines
+
+See [Configuring Projects in YAML](#configuring-projects-in-yaml) for details.
+
 ## Using Dynamic Project Switching
 
 With Project Switching, you can start the MCP server without specifying a project path:
@@ -273,6 +291,113 @@ In your Claude app configuration, set up the MCP Server without specifying a pro
 
 This configuration allows the MCP server to automatically use the currently active project from your project registry
 without requiring a specific path at startup time.
+
+## Configuring Projects in YAML
+
+You can define projects directly in your `context.yaml` file using the `projects` section. This allows you to reference sibling directories, shared libraries, or any other project without registering them globally.
+
+### Basic Syntax
+
+```yaml
+projects:
+  # Path-based project (no global registration needed)
+  - name: shared-lib
+    path: ../shared/lib
+    description: "Shared utility library"
+    
+  # Alias-based project (references globally registered project)
+  - name: ctx-mcp-server
+    description: "MCP Server library"
+```
+
+### Path Types
+
+#### Relative Paths
+
+Paths are resolved relative to the directory containing `context.yaml`:
+
+```yaml
+projects:
+  # Sibling directory
+  - name: common-models
+    path: ../common/models
+    
+  # Subdirectory
+  - name: packages-utils
+    path: ./packages/utils
+    
+  # Complex relative path
+  - name: vendor-lib
+    path: ../../vendor/company/package
+```
+
+#### Absolute Paths
+
+You can also use absolute paths for system-wide libraries:
+
+```yaml
+projects:
+  - name: system-lib
+    path: /opt/company/libs/system
+```
+
+### Mixed Configuration
+
+Combine path-based and alias-based projects in the same configuration:
+
+```yaml
+projects:
+  # Path-based (local to this project)
+  - name: local-vendor
+    path: ./vendor/company/package
+    description: "Local vendor package"
+    
+  # Alias-based (globally registered)
+  - name: company-tools
+    description: "Company-wide tools"
+```
+
+### Priority Rules
+
+When a path-based project and a global alias point to the same physical directory:
+
+1. **Path-based definitions take priority** over global aliases
+2. The local definition's name is used for the project
+3. This allows you to override global aliases with local configurations
+
+**Example:**
+
+If you have a global alias `mylib` pointing to `/home/user/mylib`, and your `context.yaml` contains:
+
+```yaml
+projects:
+  - name: my-custom-name
+    path: ../mylib  # Resolves to /home/user/mylib
+```
+
+The project will be registered as `my-custom-name`, not `mylib`.
+
+### Validation
+
+CTX validates path-based projects during configuration parsing:
+
+- **Path must exist** — Non-existent paths are logged and skipped
+- **Path must be a directory** — Files are rejected
+- **Path must be readable** — Unreadable directories are skipped
+
+Invalid paths do not cause errors; they are simply not registered as available projects.
+
+### Using Path-based Projects with MCP Tools
+
+Once configured, path-based projects work exactly like alias-based projects with MCP tools:
+
+```
+# Example: Read a file from a path-based project
+file-read path="src/utils.php" project="shared-lib"
+
+# Example: List directory in a path-based project
+directory-list path="." project="common-models"
+```
 
 ## MCP Tools for Project Management
 
