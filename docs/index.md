@@ -45,7 +45,7 @@ into a chat session or provided via the built-in [MCP server](./mcp/index.md).
 - [Code files and directories](./sources/file-source.md)
 - [GitHub repositories](./sources/github-source.md)
 - [Git commit changes and diffs](./sources/git-diff-source.md)
-- W[eb pages (URLs) with CSS selectors](./sources/url-source.md)
+- [Web pages (URLs) with CSS selectors](./sources/url-source.md)
 - Plain text
 - and more!
 
