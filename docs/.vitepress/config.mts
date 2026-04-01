@@ -52,6 +52,7 @@ export default withMermaid({
                 items: [
                     {text: 'Integration', link: '/mcp'},
                     {text: 'Configuration', link: '/mcp/config'},
+                    {text: 'Hot-Reload', link: '/mcp/hot-reload'},
                     {text: 'HTTP Server', link: '/mcp/http'},
                     {text: 'Docker', link: '/mcp/docker'},
                     {text: 'Projects', link: '/mcp/projects'},
